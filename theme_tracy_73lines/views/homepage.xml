@@ -1,0 +1,777 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template name="Homepage" id="website.homepage">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure oe_empty">
+                <div id="myCarousel1530091277909" class="carousel slide s_banner" data-interval="10000"
+                     style="height: 544px;">
+                    <div class="carousel-inner">
+                        <div class="item oe_img_bg oe_custom_bg banner-set-cover active"
+                             style="background-image: url(&quot;/theme_tracy_73lines/static/imgs/business-agency-2.jpg&quot;);">
+                            <div class="container">
+                                <div class="row content">
+                                    <div class="carousel-content mb96">
+                                        <h6 style="font-size: 20px;color: #ffffff;line-height: 30px;text-align: left"
+                                            class="vc_custom_heading font-weight-regular letter-spacing-1 vc_custom_1528177691867">
+                                            YOUR FINANCES ARE IN SAFE HANDS
+                                        </h6>
+                                        <h1 style="font-size: 50px;color: #ffffff;line-height: 60px;text-align: left"
+                                            class="vc_custom_heading vc_custom_1528178000163">Think Ahead and Boost Your
+                                            <br/>
+                                            Online Business Growth
+                                        </h1>
+                                        <p style="font-size: 15px;color: #ffffff;line-height: 26px;text-align: left"
+                                           class="vc_custom_heading vc_custom_1528177569474">Lorem ipsum dolor sit amet
+                                            consectetur adipiscing elit sed do eiusmod
+                                            <br/>
+                                            tempor incididunt ut labore et dolore magna.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <section class="about-us mt64 mb64">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="title">
+                                    <h1 class="o_default_snippet_text">About US</h1>
+                                </div>
+                                <div class="line"/>
+                                <div class="col-md-6 mt64">
+                                    <div class="header-text">
+                                        <p class="o_default_snippet_text">Lorem ipsum dolor sit amet, conse ctetur
+                                            adipiscing
+                                            elit.
+                                            Nullam etted mpus metus, et commodo. leo
+                                            sit amet tempor
+                                            maximus.
+                                        </p>
+                                    </div>
+                                    <div class="body-text mt8">
+                                        <p class="o_default_snippet_text">Etiam eu molestie eros, commodo hendrerit
+                                            sapien.
+                                            Maecenas
+                                            tempus leo ac nisi iaculis porta. Sed sapien
+                                            tortor, aliquet a
+                                            velit ut, lacinia molestie velit.
+                                            Maecenas ornare consequat
+                                            massa
+                                            ullamcorper dapibus.
+                                            Aliquam auctor, sapien sit amet
+                                            accumsan
+                                            facilisis, enim
+                                            enim aliquet arcu, tincidunt
+                                            pellentesque justo
+                                            turpis id
+                                            neque. Duis eleifend nunc sit amet
+                                            mi dapibus ornare.
+                                            Suspendisse vel libero sem.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-6 col-sm-6 col-xs-6">
+                                        <div class="services_large style_1">
+                                            <div class="chart_skill">
+                                                <div class="chart" data-percent="86%" data-color="#2e96db">
+                                                    <span class="text o_default_snippet_text" style="">86%</span>
+                                                </div>
+                                            </div>
+                                            <h4>
+                                                <a class="o_default_snippet_text">Reliability</a>
+                                            </h4>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-6 col-xs-6">
+                                        <div class="services_large style_1">
+                                            <div class="chart_skill">
+                                                <div class="chart" data-percent="100%" data-color="#2e96db">
+                                                    <span class="text o_default_snippet_text" style="">100%</span>
+                                                </div>
+                                            </div>
+                                            <h4>
+                                                <a class="o_default_snippet_text">Income</a>
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-sm-12 col-xs-12 mt16 mb16">
+                                <div class="oe_structure">
+                                    <div class="ttbannerblock layout2 style1">
+                                        <div class="ttbanner1 ttbanner col-md-4 col-sm-4">
+                                            <div id="ttbanner-img" class="ttbanner-img">
+                                                <a>
+                                                    <img src="/theme_tracy_73lines/static/imgs/Blog-Image-001-1024x683.png"
+                                                         class="img img-responsive"/>
+                                                    <span class="hover hover1"/>
+                                                    <span class="hover hover2"/>
+                                                    <span class="hover hover3"/>
+                                                    <span class="hover hover4"/>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="ttbanner1 ttbanner col-md-4 col-sm-4">
+                                            <div id="ttbanner-img" class="ttbanner-img">
+                                                <a>
+                                                    <img src="/theme_tracy_73lines/static/imgs/Blog-Image-0010-1024x683.jpg"
+                                                         class="img img-responsive"/>
+                                                    <span class="hover hover1"/>
+                                                    <span class="hover hover2"/>
+                                                    <span class="hover hover3"/>
+                                                    <span class="hover hover4"/>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="ttbanner1 ttbanner col-md-4 col-sm-4">
+                                            <div id="ttbanner-img" class="ttbanner-img">
+                                                <a>
+                                                    <img src="/theme_tracy_73lines/static/imgs/Blog-Image-004-1024x683.png"
+                                                         class="img img-responsive"/>
+                                                    <span class="hover hover1"/>
+                                                    <span class="hover hover2"/>
+                                                    <span class="hover hover3"/>
+                                                    <span class="hover hover4"/>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+                <section class="bg-gray-lighter" style="padding:64px; 0">
+                    <div class="container">
+                        <div class="row text-center">
+                            <div class="section-head text-center">
+                                <h2 class="text-uppercase">Our Services</h2>
+                                <div class="line mt16 mb48" style="margin: auto;"/>
+                                <div class="wt-separator-outer">
+                                    <div class="wt-separator bg-primary"></div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-3 col-sm-6">
+                                <div class="serviceBox">
+                                    <div class="service-icon">
+                                        <i class="fa fa-globe"></i>
+                                    </div>
+                                    <h3 class="title">Web Design</h3>
+                                    <p class="description">
+                                        Lorem ipsum dolor sit amet, consecte adipisicing elit. A alias aspernatur autem
+                                        blanditiis. Lorem ipsum dolor sit amet.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 col-sm-6">
+                                <div class="serviceBox blue">
+                                    <div class="service-icon">
+                                        <i class="fa fa-rocket"></i>
+                                    </div>
+                                    <h3 class="title">Web Development</h3>
+                                    <p class="description">
+                                        Lorem ipsum dolor sit amet, consecte adipisicing elit. A alias aspernatur autem
+                                        blanditiis. Lorem ipsum dolor sit amet.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 col-sm-6">
+                                <div class="serviceBox darkblue">
+                                    <div class="service-icon">
+                                        <i class="fa fa-briefcase"></i>
+                                    </div>
+                                    <h3 class="title">Brand Building</h3>
+                                    <p class="description">
+                                        Lorem ipsum dolor sit amet, consecte adipisicing elit. A alias aspernatur autem
+                                        blanditiis. Lorem ipsum dolor sit amet.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 col-sm-6">
+                                <div class="serviceBox purple">
+                                    <div class="service-icon">
+                                        <i class="fa fa-mobile"/>
+                                    </div>
+                                    <h3 class="title">Responsive Design</h3>
+                                    <p class="description">
+                                        Lorem ipsum dolor sit amet, consecte adipisicing elit. A alias aspernatur autem
+                                        blanditiis. Lorem ipsum dolor sit amet.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="mt64 mb64">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col col-md-5 col-lg-6 col--no-gutters">
+                                <img src="http://www.demo-ninetheme.com/crypterium/wp-content/uploads/2018/05/img_4.1.jpg"
+                                     class="img-responsive" alt="img_4.1.jpg"/>
+                            </div>
+                            <div class="col hide--md mb48"/>
+                            <div class="col col-md-7 col-lg-6 ">
+                                <div class="content-grid" style="margin-right: auto;max-width: 570px;">
+                                    <div class="section-heading  section-heading--white col-MB-30 ">
+                                        <h5 class="__subtitle">OUR MISSION</h5>
+                                        <h2 class="title h2_title">Lorem Ipsum is simply dummy text of the printing!
+                                        </h2>
+                                    </div>
+                                    <p class="col-MB-35">Lorem Ipsum is simply dummy text of the printing and
+                                        typesetting industry. Lorem Ipsum has been the industry's standard dummy text
+                                        ever since the 1500s, when an unknown printer took a galley of type and
+                                        scrambled it to make a type specimen book. It has survived not only five
+                                        centuries, but also the leap into electronic typesetting, remaining essentially
+                                        unchanged.
+                                    </p>
+                                    <p>
+                                        <a class="btn btn-primary btn-lg mt32" href="#">
+                                            Discover
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+                <section class="services-square-section bg-white mt64 mb64" style="padding-bottom: 12px;padding-top: 12px;">
+                    <div class="container">
+                        <div class="row text-center">
+                            <div class="section-head text-center">
+                                <h2 class="text-uppercase">Skill Charts</h2>
+                                <div class="line mt16 mb48" style="margin: auto;"/>
+                                <div class="wt-separator-outer">
+                                    <div class="wt-separator bg-primary"></div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="services_large style_1">
+                                    <div class="chart_skill">
+                                        <div class="chart" data-percent="100%" data-color="#2e96db"
+                                             data-color2="#ebebeb">
+                                            <span class="text o_default_snippet_text" style="">100%</span>
+                                        </div>
+                                    </div>
+                                    <h4>
+                                        <a href="#" class="o_default_snippet_text">Simplicity Is The Key</a>
+                                    </h4>
+                                    <p class="pad0 o_default_snippet_text">Click edit button to change this text. Lorem
+                                        ipsum dolor sit amet,
+                                        consectetur
+                                        adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus
+                                        leo.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="services_large style_1">
+                                    <div class="chart_skill">
+                                        <div class="chart" data-percent="75%" data-color="#2e96db"
+                                             data-color2="#ebebeb">
+                                            <span class="text o_default_snippet_text" style="">75%</span>
+                                        </div>
+                                    </div>
+                                    <h4>
+                                        <a href="#" class="o_default_snippet_text">Creativity At Its Finest</a>
+                                    </h4>
+                                    <p class="pad0 o_default_snippet_text">Click edit button to change this text. Lorem
+                                        ipsum dolor sit amet,
+                                        consectetur
+                                        adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus
+                                        leo.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="services_large style_1">
+                                    <div class="chart_skill">
+                                        <div class="chart" data-percent="20%" data-color="#2e96db"
+                                             data-color2="#ebebeb">
+                                            <span class="text o_default_snippet_text" style="">20%</span>
+                                        </div>
+                                    </div>
+                                    <h4>
+                                        <a href="#" class="o_default_snippet_text">Online Supporting</a>
+                                    </h4>
+                                    <p class="pad0 o_default_snippet_text">Click edit button to change this text. Lorem
+                                        ipsum dolor sit amet,
+                                        consectetur
+                                        adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus
+                                        leo.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="mt64 mb64" style="background: #f0f3f2;">
+                    <div class="container">
+                        <div class="row">
+                            <div class="section-head text-center">
+                                <h2 class="text-uppercase mt48">Price Table</h2>
+                                <div class="line mt16 mb48" style="margin: auto;"/>
+                                <div class="wt-separator-outer">
+                                    <div class="wt-separator bg-primary"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb48">
+                            <div class="col-md-4 col-sm-6">
+                                <div class="pricingTable">
+                                    <h3 class="title">Standard</h3>
+                                    <div class="price-value">$10
+                                        <span class="month">Per Month</span>
+                                    </div>
+                                    <div class="pricing-content">
+                                        <ul>
+                                            <li>50GB Disk Space</li>
+                                            <li>50 Email Accounts</li>
+                                            <li>50GB Monthly Bandwidth</li>
+                                            <li>10 Subdomains</li>
+                                            <li>15 Domains</li>
+                                        </ul>
+                                        <a href="#" class="pricingTable-signup">Order Now</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 col-sm-6">
+                                <div class="pricingTable">
+                                    <h3 class="title">Business</h3>
+                                    <div class="price-value">$20
+                                        <span class="month">Per Month</span>
+                                    </div>
+                                    <div class="pricing-content">
+                                        <ul>
+                                            <li>60GB Disk Space</li>
+                                            <li>60 Email Accounts</li>
+                                            <li>60GB Monthly Bandwidth</li>
+                                            <li>15 Subdomains</li>
+                                            <li>20 Domains</li>
+                                        </ul>
+                                        <a href="#" class="pricingTable-signup">Order Now</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 col-sm-6">
+                                <div class="pricingTable">
+                                    <h3 class="title">Premium</h3>
+                                    <div class="price-value">$30
+                                        <span class="month">Per Month</span>
+                                    </div>
+                                    <div class="pricing-content">
+                                        <ul>
+                                            <li>70GB Disk Space</li>
+                                            <li>70 Email Accounts</li>
+                                            <li>70GB Monthly Bandwidth</li>
+                                            <li>20 Subdomains</li>
+                                            <li>25 Domains</li>
+                                        </ul>
+                                        <a href="#" class="pricingTable-signup">Order Now</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="progress-bar-section mt64 mb64">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h1 class="o_default_snippet_text">We're all working together, that's the secret.</h1>
+                                <span class="divider">
+                                    <span class="circle">
+                                        <span class="line appeared"/>
+                                    </span>
+                                </span>
+                                <h4 class="o_default_snippet_text">Lorem ipsum dolor sit amet, consectetur adipiscing
+                                    elit, sed eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint
+                                    occaecat aute irure dolor in reprehenderit.
+                                </h4>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p class="o_default_snippet_text">I am text block. Click edit button to change
+                                            this text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit
+                                            tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p class="o_default_snippet_text">I am text block. Click edit button to change
+                                            this text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit
+                                            tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mt32 s_progress_bar_change">
+                                <section id="progress-bar1" class="progress_bars">
+                                    <div class="progress_bar">
+                                        <div class="progress_title">
+                                            <h4 class="o_default_snippet_text">Section</h4>
+                                        </div>
+                                        <span class="progress_number o_default_snippet_text" style="opacity: 1;"><span
+                                                class="progress_bar_1 o_default_snippet_text">100</span>%
+                                        </span>
+                                        <div class="progress_content_outer">
+                                            <div data-percentage="100" data-active="text-primary"
+                                                 data-nonactive="#ECF0F1" class="progress_content bg-primary"/>
+                                        </div>
+                                    </div>
+                                </section>
+                                <section id="progress-bar2" class="progress_bars">
+                                    <div class="progress_bar">
+                                        <div class="progress_title">
+                                            <h4 class="o_default_snippet_text">Section</h4>
+                                        </div>
+                                        <span class="progress_number o_default_snippet_text" style="opacity: 1;"><span
+                                                class="progress_bar_1 o_default_snippet_text">80</span>%
+                                        </span>
+                                        <div class="progress_content_outer">
+                                            <div data-percentage="80" data-active="text-primary"
+                                                 data-nonactive="#ECF0F1" class="progress_content bg-primary"/>
+                                        </div>
+                                    </div>
+                                </section>
+                                <section id="progress-bar3" class="progress_bars">
+                                    <div class="progress_bar">
+                                        <div class="progress_title">
+                                            <h4 class="o_default_snippet_text">Section</h4>
+                                        </div>
+                                        <span class="progress_number o_default_snippet_text" style="opacity: 1;"><span
+                                                class="progress_bar_1 o_default_snippet_text">60</span>%
+                                        </span>
+                                        <div class="progress_content_outer">
+                                            <div data-percentage="60" data-active="text-primary"
+                                                 data-nonactive="#ECF0F1" class="progress_content bg-primary"/>
+                                        </div>
+                                    </div>
+                                </section>
+                                <section id="progress-bar4" class="progress_bars">
+                                    <div class="progress_bar">
+                                        <div class="progress_title">
+                                            <h4 class="o_default_snippet_text">Section</h4>
+                                        </div>
+                                        <span class="progress_number o_default_snippet_text" style="opacity: 1;"><span
+                                                class="progress_bar_1 o_default_snippet_text">30</span>%
+                                        </span>
+                                        <div class="progress_content_outer">
+                                            <div data-percentage="50" data-active="text-primary"
+                                                 data-nonactive="#ECF0F1" class="progress_content bg-primary"/>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section  class="bg-gray-lighter" style="padding:64px; 0">
+                    <div class="container">
+                        <div class="row">
+                            <div class="section-head text-center">
+                                <h2 class="text-uppercase">Our Team</h2>
+                                <div class="line mt16 mb48" style="margin: auto;"/>
+                                <div class="wt-separator-outer">
+                                    <div class="wt-separator bg-primary"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 col-sm-6">
+                                <div class="our-team">
+                                    <div class="pic">
+                                        <img src="http://bestjquery.com/tutorial/our-team/demo74/images/img-1.jpg"/>
+                                        <ul class="social">
+                                            <li>
+                                                <a href="#" class="fa fa-facebook"></a>
+                                            </li>
+                                            <li>
+                                                <a href="#" class="fa fa-google-plus"></a>
+                                            </li>
+                                            <li>
+                                                <a href="#" class="fa fa-instagram"></a>
+                                            </li>
+                                            <li>
+                                                <a href="#" class="fa fa-linkedin"></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="team-content">
+                                        <h3 class="title">Williamson</h3>
+                                        <span class="post">Web Developer</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 col-sm-6">
+                                <div class="our-team">
+                                    <div class="pic">
+                                        <img src="http://bestjquery.com/tutorial/our-team/demo74/images/img-2.jpg"/>
+                                        <ul class="social">
+                                            <li>
+                                                <a href="#" class="fa fa-facebook"></a>
+                                            </li>
+                                            <li>
+                                                <a href="#" class="fa fa-google-plus"></a>
+                                            </li>
+                                            <li>
+                                                <a href="#" class="fa fa-instagram"></a>
+                                            </li>
+                                            <li>
+                                                <a href="#" class="fa fa-linkedin"></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="team-content">
+                                        <h3 class="title">Kristiana</h3>
+                                        <span class="post">Web Designer</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 col-sm-6">
+                                <div class="our-team">
+                                    <div class="pic">
+                                        <img src="http://bestjquery.com/tutorial/our-team/demo74/images/img-3.jpg"/>
+                                        <ul class="social">
+                                            <li>
+                                                <a href="#" class="fa fa-facebook"></a>
+                                            </li>
+                                            <li>
+                                                <a href="#" class="fa fa-google-plus"></a>
+                                            </li>
+                                            <li>
+                                                <a href="#" class="fa fa-instagram"></a>
+                                            </li>
+                                            <li>
+                                                <a href="#" class="fa fa-linkedin"></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="team-content">
+                                        <h3 class="title">Steve Thomas</h3>
+                                        <span class="post">Web Developer</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="mb64 mt64">
+                    <div class="container">
+                        <div class="row">
+                            <div class="section-head text-center">
+                                <h2 class="text-uppercase">Testimonial</h2>
+                                <div class="line mt16 mb48" style="margin: auto;"/>
+                                <div class="wt-separator-outer">
+                                    <div class="wt-separator bg-primary"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div id="testimonial-slider" class="owl-carousel">
+                                    <div class="testimonial">
+                                        <div class="pic">
+                                            <img src="http://bestjquery.com/tutorial/testimonial/demo64/images/img-1.jpg"/>
+                                        </div>
+                                        <div class="testimonial-profile">
+                                            <h3 class="title">williamson</h3>
+                                            <span class="post">Web Developer</span>
+                                        </div>
+                                        <p class="description">
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam varius eros
+                                            consequat auctor gravida. Fusce tristique lacus at urna sollicitudin
+                                            pulvinar.
+                                            Suspendisse hendrerit ultrices mauris.
+                                        </p>
+                                    </div>
+                                    <div class="testimonial">
+                                        <div class="pic">
+                                            <img src="http://bestjquery.com/tutorial/testimonial/demo64/images/img-2.jpg"/>
+                                        </div>
+                                        <div class="testimonial-profile">
+                                            <h3 class="title">Kristina</h3>
+                                            <span class="post">Web Designer</span>
+                                        </div>
+                                        <p class="description">
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam varius eros
+                                            consequat auctor gravida. Fusce tristique lacus at urna sollicitudin
+                                            pulvinar.
+                                            Suspendisse hendrerit ultrices mauris.
+                                        </p>
+                                    </div>
+                                    <div class="testimonial">
+                                        <div class="pic">
+                                            <img src="http://bestjquery.com/tutorial/testimonial/demo64/images/img-3.jpg"/>
+                                        </div>
+                                        <div class="testimonial-profile">
+                                            <h3 class="title">Steve Thomas</h3>
+                                            <span class="post">Web Developer</span>
+                                        </div>
+                                        <p class="description">
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam varius eros
+                                            consequat auctor gravida. Fusce tristique lacus at urna sollicitudin
+                                            pulvinar.
+                                            Suspendisse hendrerit ultrices mauris.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="mt64 mb64">
+                    <div class="container">
+                        <div class="row">
+                            <div class="section-head text-center">
+                                <h2 class="text-uppercase">Our Blog</h2>
+                                <div class="line mt16 mb48" style="margin: auto;"/>
+                                <div class="wt-separator-outer">
+                                    <div class="wt-separator bg-primary"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div id="news-slider" class="owl-carousel">
+                                    <div class="post-slide">
+                                        <div class="post-img">
+                                            <img src="/theme_tracy_73lines/static/imgs/img-1.jpg" alt=""/>
+                                            <div class="category">HTML</div>
+                                        </div>
+                                        <div class="post-review">
+                                            <h3 class="post-title">
+                                                <a href="#">Latest News Post</a>
+                                            </h3>
+                                            <p class="post-description">
+                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad assumenda
+                                                culpa cumque dicta sint soluta voluptas eius iusto modi reprehenderit
+                                                sint soluta voluptas.
+                                            </p>
+                                            <div class="post-bar">
+                                                <span>
+                                                    <i class="fa fa-user"></i>
+                                                    <a href="#">Williamson</a>
+                                                </span>
+                                                <span class="comments">
+                                                    <i class="fa fa-comments"></i>
+                                                    <a href="#">2 Comments</a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="post-slide">
+                                        <div class="post-img">
+                                            <img src="/theme_tracy_73lines/static/imgs/img-2.jpg" alt=""/>
+                                            <div class="category">HTML</div>
+                                        </div>
+                                        <div class="post-review">
+                                            <h3 class="post-title">
+                                                <a href="#">Latest News Post</a>
+                                            </h3>
+                                            <p class="post-description">
+                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad assumenda
+                                                culpa cumque dicta sint soluta voluptas eius iusto modi reprehenderit
+                                                sint soluta voluptas.
+                                            </p>
+                                            <div class="post-bar">
+                                                <span>
+                                                    <i class="fa fa-user"></i>
+                                                    <a href="#">Williamson</a>
+                                                </span>
+                                                <span class="comments">
+                                                    <i class="fa fa-comments"></i>
+                                                    <a href="#">2 Comments</a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="post-slide">
+                                        <div class="post-img">
+                                            <img src="/theme_tracy_73lines/static/imgs/img-3.jpg" alt=""/>
+                                            <div class="category">HTML</div>
+                                        </div>
+                                        <div class="post-review">
+                                            <h3 class="post-title">
+                                                <a href="#">Latest News Post</a>
+                                            </h3>
+                                            <p class="post-description">
+                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad assumenda
+                                                culpa cumque dicta sint soluta voluptas eius iusto modi reprehenderit
+                                                sint soluta voluptas.
+                                            </p>
+                                            <div class="post-bar">
+                                                <span>
+                                                    <i class="fa fa-user"></i>
+                                                    <a href="#">Williamson</a>
+                                                </span>
+                                                <span class="comments">
+                                                    <i class="fa fa-comments"></i>
+                                                    <a href="#">2 Comments</a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="post-slide">
+                                        <div class="post-img">
+                                            <img src="/theme_tracy_73lines/static/imgs/img-4.jpg" alt=""/>
+                                            <div class="category">CSS</div>
+                                        </div>
+                                        <div class="post-review">
+                                            <h3 class="post-title">
+                                                <a href="#">Latest News Post</a>
+                                            </h3>
+                                            <p class="post-description">
+                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad assumenda
+                                                culpa cumque dicta sint soluta voluptas eius iusto modi reprehenderit
+                                                sint soluta voluptas.
+                                            </p>
+                                            <div class="post-bar">
+                                                <span>
+                                                    <i class="fa fa-user"></i>
+                                                    <a href="#">Kristiana</a>
+                                                </span>
+                                                <span class="comments">
+                                                    <i class="fa fa-comments"></i>
+                                                    <a href="#">4 Comments</a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+            </div>
+        </t>
+    </template>
+</odoo>

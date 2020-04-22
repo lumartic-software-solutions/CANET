@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="navbar_mid_menu" inherit_id="website.layout" name="Header Layout Menu"
+              active="True" customize_show="False">
+        <xpath expr="//div[@id='wrapwrap']/header/div[contains(@class, 'navbar navbar-default navbar-static-top')]"
+               position="before">
+            <section class="top-bar-liner">
+                <div class="container top-bar">
+                    <div class="row">
+                        <div class="wt-topbar-left clearfix hidden-sm hidden-xs">
+                            <ul class="list-unstyled pull-right tb-info-liner">
+                                <li><i class="fa fa-envelope text-primary"></i> info@yourcompany.com
+                                </li>
+                                <li><i class="fa fa-phone text-primary"></i> +1 555 123 8069</li>
+                            </ul>
+                        </div>
+                        <div class="wt-topbar-right clearfix">
+                            <ul class="list-inline pull-right tb-social-liner">
+                                <li>
+                                    <a href="javascript:void(0);" class="fa fa-facebook"></a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0);" class="fa fa-twitter"></a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0);" class="fa fa-linkedin"></a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0);" class="fa fa-rss"></a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0);" class="fa fa-youtube"></a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0);" class="fa fa-instagram"></a>
+                                </li>
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </xpath>
+    </template>
+    <template id="website.layout_logo_show" inherit_id="website.layout" customize_show="False" active="False"
+              name="Show Logo">
+    </template>
+
+
+</odoo>

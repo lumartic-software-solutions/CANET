@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="snippets_place_in_tab" inherit_id="website.snippets">
+        <xpath expr="//div[@id='snippet_structure']" position="inside">
+            <div class="o_panel_body">
+                <t t-snippet="business_all_in_one_73lines.s_three_images"
+                   t-thumbnail="/business_all_in_one_73lines/static/src/img/thumb/3-images.png"/>
+                <t t-snippet="business_all_in_one_73lines.s_three_same_size_images"
+                   t-thumbnail="/business_all_in_one_73lines/static/src/img/thumb/3-images.png"/>
+                <t t-snippet="business_all_in_one_73lines.s_two_images"
+                   t-thumbnail="/business_all_in_one_73lines/static/src/img/thumb/2-images.png"/>
+                <t t-snippet="business_all_in_one_73lines.s_four_images"
+                   t-thumbnail="/business_all_in_one_73lines/static/src/img/thumb/4-images.png"/>
+                <t t-snippet="business_all_in_one_73lines.s_grid_images"
+                   t-thumbnail="/business_all_in_one_73lines/static/src/img/thumb/grid-image.png"/>
+                <t t-snippet="business_all_in_one_73lines.s_three_boxes_with_icon"
+                   t-thumbnail="/business_all_in_one_73lines/static/src/img/thumb/three-boxes-with-icon.png"/>
+                <t t-snippet="business_all_in_one_73lines.s_3x6x3"
+                   t-thumbnail="/business_all_in_one_73lines/static/src/img/thumb/three-boxes-with-icon.png"/>
+                <t t-snippet="business_all_in_one_73lines.s_4x4x4"
+                   t-thumbnail="/business_all_in_one_73lines/static/src/img/thumb/three-boxes-with-icon.png"/>
+                <t t-snippet="business_all_in_one_73lines.s_3x5x4"
+                   t-thumbnail="/business_all_in_one_73lines/static/src/img/thumb/three-boxes-with-icon.png"/>
+                <t t-snippet="business_all_in_one_73lines.s_counter_text"
+                   t-thumbnail="/business_all_in_one_73lines/static/src/img/s_counter_1.png"/>
+                <t t-snippet="business_all_in_one_73lines.s_progress_bar"
+                   t-thumbnail="/business_all_in_one_73lines/static/src/img/s_progress_1.png"/>
+                <t t-snippet="business_all_in_one_73lines.s_skill_chart"
+                   t-thumbnail="/business_all_in_one_73lines/static/src/img/s_skill_1.png"/>
+                <t t-snippet="business_all_in_one_73lines.s_1x1_promo_banner_images"
+                   t-thumbnail="/business_all_in_one_73lines/static/src/img/thumb/s_1x1_promo_banner_icon.png"/>
+                <t t-snippet="business_all_in_one_73lines.s_3_1_box_images"
+                   t-thumbnail="/business_all_in_one_73lines/static/src/img/thumb/s_3_1_box_icon.png"/>
+                <t t-snippet="business_all_in_one_73lines.s_ecommerce_service"
+                   t-thumbnail="/business_all_in_one_73lines/static/src/img/thumb/s_ecommerce_service_icon.png"/>
+                <t t-snippet="business_all_in_one_73lines.s_about_us_skill_chart"
+                   t-thumbnail="/business_all_in_one_73lines/static/src/img/thumb/s_about_us_skill_chart_icon.png"/>
+            </div>
+        </xpath>
+    </template>
+
+    <template id="assets_frontend_js" name="73lines Snippet Boxed Frontend Assets"
+              inherit_id="website.assets_frontend">
+        <xpath expr="." position="inside">
+            <link
+                    href="/business_all_in_one_73lines/static/src/less/s_three_boxes_with_icon.less"
+                    rel="stylesheet" type="text/less"/>
+            <link href="/business_all_in_one_73lines/static/src/less/s_progress_bar.less"
+                  rel="stylesheet" type="text/less"/>
+            <link
+                    href="/business_all_in_one_73lines/static/src/less/odometer-theme-minimal.css"
+                    rel="stylesheet" type="text/css"/>
+            <link
+                    href="/business_all_in_one_73lines/static/src/less/jquery.easy-pie-chart.css"
+                    rel="stylesheet" type="text/css"/>
+            <link href="/business_all_in_one_73lines/static/src/less/odometer.less"
+                  rel="stylesheet" type="text/less"/>
+            <link href="/business_all_in_one_73lines/static/src/less/skill_chart.less"
+                  rel="stylesheet" type="text/less"/>
+            <link
+                    href="/business_all_in_one_73lines/static/src/less/s_1x1_promo_banner_images.less"
+                    rel="stylesheet" type="text/less"/>
+            <link
+                    href="/business_all_in_one_73lines/static/src/less/s_ecommerce_service.less"
+                    rel="stylesheet" type="text/less"/>
+            <link rel="stylesheet" type="text/less"
+                  href="/business_all_in_one_73lines/static/src/less/s_about_us_skill_chart.less"></link>
+            <link href="/business_all_in_one_73lines/static/src/less/s_bar_chart.less"
+                  rel="stylesheet" type="text/less"/>
+            <script type="text/javascript"
+                    src="/business_all_in_one_73lines/static/src/js/bar_chart.js"/>
+            <script type="text/javascript"
+                    src="/business_all_in_one_73lines/static/src/js/jquery.appear.js"/>
+            <script type="text/javascript" src="/business_all_in_one_73lines/static/src/js/chart.js"/>
+            <script type="text/javascript"
+                    src="/business_all_in_one_73lines/static/src/js/progress_bar.js"/>
+
+            <script type="text/javascript"
+                    src="/business_all_in_one_73lines/static/src/js/jquery.easy-pie-chart.js"/>
+
+            <script type="text/javascript"
+                    src="/business_all_in_one_73lines/static/src/js/s_state_box.js"/>
+            <script type="text/javascript"
+                    src="/business_all_in_one_73lines/static/src/js/odometer.js"/>
+            <script type="text/javascript" src="/business_all_in_one_73lines/static/src/js/main.js"/>
+
+            <script type="text/javascript"
+                    src="/business_all_in_one_73lines/static/src/js/s_ecommerce_service.js"/>
+        </xpath>
+    </template>
+
+    <template id="editor_js" name="Editor Js" inherit_id="web_editor.assets_editor">
+        <xpath expr="." position="inside">
+            <script src="/business_all_in_one_73lines/static/src/js/rte_options.js"
+                    type="text/javascript"/>
+        </xpath>
+    </template>
+
+
+</odoo>

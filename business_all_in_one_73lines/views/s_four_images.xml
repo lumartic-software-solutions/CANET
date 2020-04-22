@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+	
+
+		<!-- Snippet's Body -->
+		<template id="s_four_images" name="4 Images">
+			<section class="s_four_images">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-3 col-sm-3 col-xs-12">
+							<a class="image-link" href="#">
+								<img class="img img-responsive"
+									src="/business_all_in_one_73lines/static/src/img/262x194.png"></img>
+							</a>
+						</div>
+						<div class="col-md-3 col-sm-3 col-xs-12">
+							<a class="image-link" href="#">
+								<img class="img img-responsive"
+									src="/business_all_in_one_73lines/static/src/img/262x194.png"></img>
+							</a>
+						</div>
+						<div class="col-md-3 col-sm-3 col-xs-12">
+							<a class="image-link" href="#">
+								<img class="img img-responsive"
+									src="/business_all_in_one_73lines/static/src/img/262x194.png"></img>
+							</a>
+						</div>
+						<div class="col-md-3 col-sm-3 col-xs-12">
+							<a class="image-link" href="#">
+								<img class="img img-responsive"
+									src="/business_all_in_one_73lines/static/src/img/262x194.png"></img>
+							</a>
+						</div>
+					</div>
+				</div>
+			</section>
+		</template>
+
+	
+</odoo>

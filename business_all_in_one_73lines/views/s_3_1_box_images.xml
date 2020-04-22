@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="s_3_1_box_images" name="Three Box Image">
+        <section class="s_3_1_box_images">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12 mt16 mb16">
+                        <div class="oe_structure">
+                            <div class="ttbannerblock layout2 style1">
+                                <div class="ttbanner1 ttbanner col-md-4 col-sm-4">
+                                    <div id="ttbanner-img" class="ttbanner-img">
+                                        <a>
+                                            <img
+                                                    src="/business_all_in_one_73lines/static/src/img/s_3_1_box_images.png"
+                                                    class="img img-responsive"/>
+                                            <span class="hover hover1"></span>
+                                            <span class="hover hover2"></span>
+                                            <span class="hover hover3"></span>
+                                            <span class="hover hover4"></span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="ttbanner1 ttbanner col-md-4 col-sm-4">
+                                    <div id="ttbanner-img" class="ttbanner-img">
+                                        <a>
+                                            <img
+                                                    src="/business_all_in_one_73lines/static/src/img/s_3_1_box_images.png"
+                                                    class="img img-responsive"/>
+                                            <span class="hover hover1"></span>
+                                            <span class="hover hover2"></span>
+                                            <span class="hover hover3"></span>
+                                            <span class="hover hover4"></span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="ttbanner1 ttbanner col-md-4 col-sm-4">
+                                    <div id="ttbanner-img" class="ttbanner-img">
+                                        <a>
+                                            <img
+                                                    src="/business_all_in_one_73lines/static/src/img/s_3_1_box_images.png"
+                                                    class="img img-responsive"/>
+                                            <span class="hover hover1"></span>
+                                            <span class="hover hover2"></span>
+                                            <span class="hover hover3"></span>
+                                            <span class="hover hover4"></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+    <template id="s_3_1_box_images_option" inherit_id="website.snippet_options">
+        <xpath expr="//div[@data-js='background']" position="after">
+            <div data-js='s_3_1_box_images' data-selector=".s_one_promo_banner"></div>
+        </xpath>
+    </template>
+</odoo>

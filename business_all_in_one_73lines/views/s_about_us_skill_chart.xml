@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template name="About US Snippet" id="s_about_us_skill_chart">
+        <section class="about-us">
+            <div class="container mt32 mb32">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div>
+                            <h3 class="heading-about">Digitalization – Culture – Marketing</h3>
+                        </div>
+                        <div class="title">
+                            <h1>About US</h1>
+                        </div>
+                        <div class='line'/>
+                        <div class="col-md-6 mt16">
+                            <div class="header-text">
+                                <p>Lorem ipsum dolor sit amet, conse ctetur
+                                    adipiscing
+                                    elit.
+                                    Nullam etted mpus metus, et commodo. leo
+                                    sit amet tempor
+                                    maximus.
+                                </p>
+                            </div>
+                            <div class="body-text mt8">
+                                <p>Etiam eu molestie eros, commodo hendrerit sapien.
+                                    Maecenas
+                                    tempus leo ac nisi iaculis porta. Sed sapien
+                                    tortor, aliquet a
+                                    velit ut, lacinia molestie velit.
+                                    Maecenas ornare consequat
+                                    massa
+                                    ullamcorper dapibus.
+                                    Aliquam auctor, sapien sit amet
+                                    accumsan
+                                    facilisis, enim
+                                    enim aliquet arcu, tincidunt
+                                    pellentesque justo
+                                    turpis id
+                                    neque. Duis eleifend nunc sit amet
+                                    mi dapibus ornare.
+                                    Suspendisse vel libero sem.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="services_large style_1">
+                                    <div class="chart_skill">
+                                        <div class="chart" data-percent="86%"
+                                             data-color2="#ebebeb">
+                                            <span class="text" style="">86%</span>
+                                        </div>
+                                    </div>
+                                    <h4>
+                                        <a>Reliability</a>
+                                    </h4>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="services_large style_1">
+                                    <div class="chart_skill">
+                                        <div class="chart" data-percent="100%"
+                                             data-color2="#ebebeb">
+                                            <span class="text" style="">100%</span>
+                                        </div>
+                                    </div>
+                                    <h4>
+                                        <a>Income</a>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+</odoo>
