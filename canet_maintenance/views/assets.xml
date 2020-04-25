@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<!-- Register css -->
+		<template id="assets_backend" name="Open Mobile Assets" inherit_id="web.assets_backend">
+			<xpath expr=".">
+				<link rel="stylesheet" href="/canet_maintenance/static/src/css/custom.css" />
+					</xpath>
+		</template>
+	</data>
+</odoo>

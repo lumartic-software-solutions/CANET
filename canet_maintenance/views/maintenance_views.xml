@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+	<record id="view_canet_maintenance_request" model="ir.ui.view">
+            <field name="name">maintenance_request</field>
+            <field name="model">maintenance.request</field>
+            <field name="inherit_id" ref="maintenance.hr_equipment_request_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet" position="attributes">
+                    <attribute name="class">canet_o_form_sheet</attribute>
+                </xpath>
+                <button name="archive_equipment_request"  position="before" >
+                        <button name="%(canet_maintenance.action_task_time_wizard_custom)d" attrs="{'invisible': [ ('state','in',['in_process','to_repair'])]}"
+                    type="action" string="Start Process"  class="oe_highlight" state="draft" context="{'start_process':True}"/>
+                       <button name="%(canet_maintenance.action_task_time_wizard_custom)d" attrs="{'invisible': [ ('state','in',['to_repair','draft'])]}"
+                    type="action" string="Stop Process"  class="oe_highlight"  context="{'stop_process':True}"/>
+                        <button name="%(canet_maintenance.action_task_time_wizard_custom)d" attrs="{'invisible': [ ('state','in',['in_process','draft'])]}"
+                    type="action" string="Continue Process"  class="oe_highlight"  context="{'continue_process':True}"/>
+                </button>
+				<field name="technician_user_id" position="replace">
+                    <field name="user_ids" widget="many2many_tags"/>
+                     <field name="start_datetime" readonly="1"/>
+                     <field name="end_datetime" invisble="1"/>
+                </field>
+
+                 <xpath
+					expr="//form/sheet/div[2]"
+					position="replace">
+                     <label for="reference" class="oe_edit_only" string="Reference"/>
+                        <h2>
+                            <field name="reference" placeholder="Reference Number"/>
+                        </h2>
+                 </xpath>
+                <field name="description" position="replace"></field>
+                 <field name="stage_id" position="replace">
+                        <field name="state" widget="statusbar" statusbar_visible="draft,in_process,to_repair"/>
+                 </field>
+                <xpath
+					expr="//form/sheet"
+					position="inside">
+                    <notebook>
+                        <page name="parts" string="Parts">
+                             <field name="operations">
+                                <form string="Parts">
+                                    <notebook>
+                                        <page string="Maintenance Line">
+                                            <group>
+                                                <group>
+                                                    <field name="product_id" />
+                                                    <field name="name"/>
+                                                    <label for="product_uom_qty"/>
+                                                    <div class="o_row">
+                                                        <field name="product_uom_qty"/>
+                                                        <field name="product_uom" groups="product.group_uom"/>
+                                                    </div>
+                                                    <field name="price_unit"/>
+                                                    <field name="tax_id" widget="many2many_tags" domain="[('type_tax_use','=','sale')]"/>
+                                                    <field name="price_subtotal" widget="monetary" invisible="1"/>
+                                                </group>
+                                                <group groups="stock.group_stock_multi_locations">
+                                                    <field name="location_id" domain="[('usage','not in', ['supplier','production'])]" context="{'location_id': location_id}"/>
+
+                                                    <field name="location_dest_id" domain="[('usage','not in', ['supplier','production'])]"/>
+                                                </group>
+                                            </group>
+                                        </page>
+                                        <!--<page string="History" attrs="{'invisible':[('move_id','=', False)]}">
+                                            <group>
+                                                <field name="move_id" />
+                                                <field name="invoice_line_id" invisible="1"/>
+                                            </group>
+                                        </page>-->
+                                     </notebook>
+                                </form>
+                                <tree string="Operations" editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name='name'/>
+
+                                    <field name="lot_id" domain="[('product_id', '=', product_id)]" context="{'default_product_id': product_id}" groups="stock.group_production_lot"/>
+                                    <field name="location_id" groups="stock.group_stock_multi_locations" domain="[('usage','not in', ['supplier','production'])]"/>
+                                    <field name="location_dest_id" groups="stock.group_stock_multi_locations" domain="[('usage','not in', ['supplier','production'])]"/>
+                                    <field name="product_uom_qty" string="Quantity"/>
+                                    <field name="product_uom" string="Unit of Measure" groups="product.group_uom"/>
+                                    <field name="price_unit"/>
+                                    <field name="tax_id" widget="many2many_tags" domain="[('type_tax_use','=','sale')]"/>
+                                    <field name="price_subtotal" widget="monetary"/>
+                                </tree>
+                             </field>
+                            <group class="oe_subtotal_footer oe_right">
+                                <field name="amount_untaxed" sum="Untaxed amount"/>
+                                <field name="amount_tax"/>
+                                <div class="oe_subtotal_footer_separator oe_inline">
+                                    <label for="amount_total" />
+                                    <button name="button_dummy"
+                                         string="(update)" type="object" class="oe_edit_only oe_link"/>
+                                </div>
+                                <field name="amount_total" nolabel="1" sum="Total amount" class="oe_subtotal_footer_separator"/>
+                            </group>
+                            <div class="oe_clear"/>
+                        </page>
+                        <page name="time" string="Time">
+                                 <field name="timesheet_ids" readonly="1">
+                                <tree>
+                                    <field name="employee_id"/>
+                                    <field name="name"/>
+                                    <field name="time"/>
+                                </tree>
+                                </field>
+                        </page>
+                        <page name="note" string="Note">
+                            <field name="description"/>
+                        </page>
+
+                    </notebook>
+                 </xpath>
+
+            </field>
+        </record>
+</odoo>
