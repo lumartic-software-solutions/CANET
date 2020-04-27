@@ -65,7 +65,7 @@ class TaskTimeWizard(models.TransientModel):
                     'employee_id': emp_id,
                     'time': duration
                 }
-                maintenance_ids.write({'state': 'to_repair', 'end_datetime': p_time, 'timesheet_ids': [(0, 0, timesheet_vals)]})
+                maintenance_ids.write({'state': 'end', 'end_datetime': p_time, 'timesheet_ids': [(0, 0, timesheet_vals)]})
         if context.get('ok') and context.get('continue_process') :
             if maintenance_ids:
                 pausetime_diff = datetime.strptime(str(p_time), '%Y-%m-%d %H:%M:%S') - datetime.strptime(

@@ -20,7 +20,7 @@ class Maintenanace(models.Model):
     amount_untaxed = fields.Float('Untaxed Amount', compute='_amount_untaxed', store=True)
     amount_tax = fields.Float('Taxes', compute='_amount_tax', store=True)
     amount_total = fields.Float('Total', compute='_amount_total', store=True)
-    state = fields.Selection([('draft','Draft'),('in_process','In Process'),('to_repair','To Repair'),('cancel','Cancel')], string='State',readonly=True, copy=False, index=True, track_visibility='onchange', default='draft')
+    state = fields.Selection([('draft','New Request'),('in_process','In Process'),('end','End'),('cancel','Cancel')], string='State',readonly=True, copy=False, index=True, track_visibility='onchange', default='draft')
 
     @api.one
     @api.depends('operations.price_subtotal')
@@ -45,6 +45,10 @@ class Maintenanace(models.Model):
     @api.depends('amount_untaxed', 'amount_tax')
     def _amount_total(self):
         self.amount_total = (self.amount_untaxed + self.amount_tax)
+
+    @api.multi
+    def archive_equipment_request(self):
+        self.write({'state': 'cancel'})
 
     @api.model
     def create(self, vals):
