@@ -20,10 +20,10 @@ class TaskTimeWizard(models.TransientModel):
         wash_obj = self.env['maintenance.request'].search([('id', '=', context.get('active_id'))])
         if context.get('start_process'):
             result.update({'name': "Are you sure You want to start Process?"})
-        if context.get('stop_process'):
+        '''if context.get('stop_process'):
             result.update({'name': "Are you sure You want to Stop Process?"})
         if context.get('continue_process'):
-            result.update({'name': "Are you sure You want to Continue Process?"})
+            result.update({'name': "Are you sure You want to Continue Process?"})'''
         return result
 
     @api.multi
@@ -46,8 +46,13 @@ class TaskTimeWizard(models.TransientModel):
                 maintenance_ids.write({'state': 'in_process', 'start_datetime': p_time})
         if context.get('ok') and context.get('stop_process') :
             if maintenance_ids:
-                pausetime_diff = datetime.strptime(str(p_time), '%Y-%m-%d %H:%M:%S') - datetime.strptime(
+                if maintenance_ids[0].start_datetime != False and maintenance_ids[0].con_time == False:
+                    pausetime_diff = datetime.strptime(str(p_time), '%Y-%m-%d %H:%M:%S') - datetime.strptime(
                     str(maintenance_ids.start_datetime), '%Y-%m-%d %H:%M:%S')
+                if maintenance_ids[0].con_time != False:
+                    pausetime_diff = datetime.strptime(str(p_time), '%Y-%m-%d %H:%M:%S') - datetime.strptime(
+                    str(maintenance_ids.con_time), '%Y-%m-%d %H:%M:%S')
+
                 m, s = divmod(pausetime_diff.total_seconds(), 60)
                 h, m = divmod(m, 60)
                 dur_h = (_('%0*d') % (2, h))
@@ -58,7 +63,7 @@ class TaskTimeWizard(models.TransientModel):
                 amount = float(hr_duration)
                 timesheet_vals = {
 
-                    'name': 'Process Time',
+                    'name': self.description,
                     'date': start_date,
                     'amount': amount,
                     'account_id': account_id,
@@ -80,12 +85,12 @@ class TaskTimeWizard(models.TransientModel):
                 amount = float(hr_duration)
                 timesheet_vals = {
 
-                    'name': 'Repair Time',
+                    'name': self.description,
                     'date': start_date,
                     'amount': amount,
                     'account_id': account_id,
                     'employee_id': emp_id,
                     'time': duration
                 }
-                maintenance_ids.write({'state': 'in_process', 'timesheet_ids': [(0, 0, timesheet_vals)]})
+                maintenance_ids.write({'state': 'in_process', 'con_time':p_time,'timesheet_ids': [(0, 0, timesheet_vals)]})
         return True

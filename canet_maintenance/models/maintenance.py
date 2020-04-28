@@ -3,6 +3,7 @@ from odoo import models, fields, api, _
 
 class AnalyticLine(models.Model):
     _inherit = 'account.analytic.line'
+
     maintenance_id = fields.Many2one('maintenance.request','Maintenanance')
     time = fields.Char('Maintenance Time')
 
@@ -12,6 +13,7 @@ class Maintenanace(models.Model):
     reference = fields.Char('Reference', readonly=True)
     start_datetime = fields.Datetime('Start Process Datetime')
     end_datetime = fields.Datetime('Stop Process Datetime')
+    con_time = fields.Datetime('Restart Process Datetime')
     user_ids = fields.Many2many('res.users', 'req_id', 'user_id', 'maintenance_user_rel', 'Responsible')
     operations = fields.One2many(
         'maintenance.request.line', 'maintenance_id', 'Parts',

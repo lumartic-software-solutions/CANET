@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+<record id="project_task_form_view_inherit_canet" model="ir.ui.view">
+		<field name="name">project.task.inherit</field>
+		<field name="model">project.task</field>
+		<field name="inherit_id" ref="project.view_task_form2"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='project_id']" position="after">
+				<field name="start_date" invisible="1"/>
+			</xpath>
+			<xpath  expr="//field[@name='stage_id']" position="replace">
+				<field name="stage_id" widget="statusbar" invisible="1"/>
+			</xpath>
+
+			<xpath expr="header" position="inside">
+				<field name="state" widget="statusbar"/>
+				<button name="%(canet_maintenance.action_task_time_wizard_custom)d" string="Restart" type="action"
+					style="background-color: #C6CB2E;" context="{'restart_task' : True}" attrs="{'invisible':
+					[('state', 'in', ('draft', 'start','continue','end'))]}" />
+				<button name="%(canet_maintenance.action_task_time_wizard_custom)d" string="Start Task" type="action"
+					style="background-color: #4CAF50;" context="{'start_task' : True}" attrs="{'invisible':
+					[('state', 'in', ('start','continue','end','stop'))]}"/>
+				<button name="%(canet_maintenance.action_task_time_wizard_custom)d" string="Continue" type="action"
+					context="{'continue_task' : True}" style="background-color: #4CAF50;" attrs="{'invisible':
+					[('state', 'in', ('draft','end','continue','start','stop'))]}"/>
+				<button name="%(canet_maintenance.action_task_time_wizard_custom)d" string="Stop Task" type="action"
+					context="{'stop_task' : True}" style="background-color: #f44336;" attrs="{'invisible':
+					[('state', 'in', ('end','stop'))]}"/>
+				<button name="%(canet_maintenance.action_task_time_wizard_custom)d" string="End Task" type="action"
+					context="{'end_task' : True}" style="background-color: #FF9933;" attrs="{'invisible':
+					[('state', 'in', ('draft','end','stop'))]}" />
+			</xpath>
+
+		</field>
+	</record>
+
+	<record id="hr_timesheet_form_view_inherit_canet" model="ir.ui.view">
+		<field name="name">project.task.inherit</field>
+		<field name="model">project.task</field>
+		<field name="inherit_id" ref="hr_timesheet.view_task_form2_inherited"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='timesheet_ids']" position="replace">
+				<field name="timesheet_ids" context="{'default_project_id': project_id}" readonly="1">
+					<tree editable="bottom" string="Timesheet Activities" default_order="date">
+						<field name="start_date" string="Start Date"/>
+						<field name="date" string="End Date"/>
+						<field name="user_id" required="1"/>
+						<field name="name"/>
+						<field name="unit_amount" string="Duration" widget="float_time"/>
+						<field name="project_id" invisible="1"/>
+					</tree>
+				</field>
+			</xpath>
+		</field>
+	</record>
+
+</odoo>
