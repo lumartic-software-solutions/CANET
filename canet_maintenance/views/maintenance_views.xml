@@ -14,7 +14,7 @@
                        <button name="%(canet_maintenance.action_task_time_wizard_custom)d" attrs="{'invisible': [ ('state','in',['end','draft','cancel'])]}"
                     type="action" string="Stop Process" style="background-color:#f44336;" context="{'stop_process':True}"/>
                         <button name="%(canet_maintenance.action_task_time_wizard_custom)d" attrs="{'invisible': [ ('state','in',['in_process','draft'])]}"
-                    type="action" string="Restart Process"  class="oe_highlight"  context="{'continue_process':True}"/>
+                    type="action" string="Restart Process"  style="background-color: #C6CB2E;" context="{'continue_process':True}"/>
                 </button>
 				<field name="technician_user_id" position="replace">
                     <field name="user_ids" widget="many2many_tags"/>

@@ -33,6 +33,63 @@
 					[('state', 'in', ('draft','end','stop'))]}" />
 			</xpath>
 
+			<xpath expr="//notebook/page" position="before">
+				<page string="Parts">
+					<field name="operations">
+						<form>
+						<notebook>
+							<page string="Task Lines">
+								<group>
+									<group>
+										<field name="product_id" />
+										<field name="name"/>
+										<label for="product_uom_qty"/>
+										<div class="o_row">
+											<field name="product_uom_qty"/>
+											<field name="product_uom" groups="product.group_uom"/>
+										</div>
+										<field name="price_unit"/>
+										<field name="tax_id" widget="many2many_tags" domain="[('type_tax_use','=','sale')]"/>
+										<field name="price_subtotal" widget="monetary" invisible="1"/>
+									</group>
+									<group groups="stock.group_stock_multi_locations">
+										<field name="location_id" domain="[('usage','not in', ['supplier','production'])]" context="{'location_id': location_id}"/>
+
+										<field name="location_dest_id" domain="[('usage','not in', ['supplier','production'])]"/>
+									</group>
+								</group>
+							</page>
+
+						</notebook>
+					</form>
+					<tree string="Operations" editable="bottom">
+						<field name="product_id"/>
+						<field name='name'/>
+
+						<field name="lot_id" domain="[('product_id', '=', product_id)]" context="{'default_product_id': product_id}" groups="stock.group_production_lot"/>
+						<field name="location_id" groups="stock.group_stock_multi_locations" domain="[('usage','not in', ['supplier','production'])]"/>
+						<field name="location_dest_id" groups="stock.group_stock_multi_locations" domain="[('usage','not in', ['supplier','production'])]"/>
+						<field name="product_uom_qty" string="Quantity"/>
+						<field name="product_uom" string="Unit of Measure" groups="product.group_uom"/>
+						<field name="price_unit"/>
+						<field name="tax_id" widget="many2many_tags" domain="[('type_tax_use','=','sale')]"/>
+						<field name="price_subtotal" widget="monetary"/>
+					</tree>
+					</field>
+					<group class="oe_subtotal_footer oe_right">
+                                <field name="amount_untaxed" sum="Untaxed amount"/>
+                                <field name="amount_tax"/>
+                                <div class="oe_subtotal_footer_separator oe_inline">
+                                    <label for="amount_total" />
+                                    <button name="button_dummy"
+                                         string="(update)" type="object" class="oe_edit_only oe_link"/>
+                                </div>
+                                <field name="amount_total" nolabel="1" sum="Total amount" class="oe_subtotal_footer_separator"/>
+					</group>
+					<div class="oe_clear"/>
+				</page>
+			</xpath>
+
 		</field>
 	</record>
 
