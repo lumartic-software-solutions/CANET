@@ -17,16 +17,15 @@ class TaskTimeWizard(models.TransientModel):
     def default_get(self, vals):
         result = super(TaskTimeWizard, self).default_get(vals)
         context = self.env.context
-        wash_obj = self.env['maintenance.request'].search([('id', '=', context.get('active_id'))])
-        if context.get('start_process'):
-            result.update({'name': "Are you sure You want to start Process?"})
-        '''if context.get('stop_process'):
-            result.update({'name': "Are you sure You want to Stop Process?"})
-        if context.get('continue_process'):
-            result.update({'name': "Are you sure You want to Continue Process?"})'''
+        if context.get('start_task') and context.get('active_model') == 'maintenance.request':
+            result.update({'name': "Are you going to start the task " })
+        if context.get('continue_task') and context.get('active_model') == 'maintenance.request':
+            result.update({'name': "Are you going to continue the task " })
+        if context.get('restart_task') and context.get('active_model') == 'maintenance.request':
+            result.update({'name': "Are you going to restart the task " })
         return result
 
-    @api.multi
+    '''@api.multi
     def accept_task(self):
         context = self._context
         maintenance_ids = self.env['maintenance.request'].sudo().search([('id', '=', context.get('active_id'))])
@@ -93,4 +92,97 @@ class TaskTimeWizard(models.TransientModel):
                     'time': duration
                 }
                 maintenance_ids.write({'state': 'in_process', 'con_time':p_time,'timesheet_ids': [(0, 0, timesheet_vals)]})
+        return True'''
+
+    @api.multi
+    def accept_task(self):
+        context = self._context
+        print ("^^^^^^^context^^^^^^^^^",context)
+        maintenance_ids = self.env['maintenance.request'].sudo().search([('id', '=', context.get('active_id'))])
+        data_list = []
+        start_date = datetime.today()
+        account_id = self.env.ref('canet_maintenance.analytic_account_maintenance_id', False).id
+        p_time = fields.Datetime.now()
+        '''if project_task:
+            if not project_task.project_id:
+                raise UserError(_("Por favor asigne Proyecto primero"))'''
+        if context.get('ok') and context.get('start_task') and context.get('active_model') == 'maintenance.request' :
+            if maintenance_ids:
+                maintenance_ids.write({'state': 'start', 'start_time': p_time, 'start_date': start_date})
+        if context.get('ok') and context.get('restart_task') and context.get('active_model') == 'maintenance.request':
+            if maintenance_ids:
+                maintenance_ids.write({'state': 'start', 'restart_time': p_time, 'start_date': start_date})
+        if context.get('ok') and context.get('continue_task') and context.get('active_model') == 'maintenance.request':
+            if maintenance_ids:
+                maintenance_ids.write({'state': 'continue', 'con_time': p_time, 'start_date': start_date})
+        if context.get('ok') and context.get('end_task') and context.get('active_model') == 'maintenance.request':
+            if maintenance_ids.start_time != False and maintenance_ids.con_time == False and maintenance_ids.restart_time == False:
+                start_time = maintenance_ids.start_time
+                endtime_diff = datetime.strptime(str(p_time), '%Y-%m-%d %H:%M:%S') - datetime.strptime(
+                    str(maintenance_ids.start_time), '%Y-%m-%d %H:%M:%S')
+            if maintenance_ids.restart_time != False and maintenance_ids.con_time == False:
+                start_time = maintenance_ids.restart_time
+                endtime_diff = datetime.strptime(str(p_time), '%Y-%m-%d %H:%M:%S') - datetime.strptime(
+                    str(maintenance_ids.restart_time), '%Y-%m-%d %H:%M:%S')
+            if maintenance_ids.con_time != False and maintenance_ids.restart_time == False:
+                start_time = maintenance_ids.con_time
+                endtime_diff = datetime.strptime(str(p_time), '%Y-%m-%d %H:%M:%S') - datetime.strptime(
+                    str(maintenance_ids.con_time), '%Y-%m-%d %H:%M:%S')
+            if maintenance_ids.restart_time != False and maintenance_ids.con_time != False:
+                start_time = maintenance_ids.restart_time
+                endtime_diff = datetime.strptime(str(p_time), '%Y-%m-%d %H:%M:%S') - datetime.strptime(
+                    str(maintenance_ids.restart_time), '%Y-%m-%d %H:%M:%S')
+            print("---------------------", endtime_diff)
+            m, s = divmod(endtime_diff.total_seconds(), 60)
+            h, m = divmod(m, 60)
+            dur_h = (_('%0*d') % (2, h))
+            dur_m = (_('%0*d') % (2, m * 1.677966102))
+            dur_s = (_('%0*d') % (2, s))
+            duration = dur_h + '.' + dur_m + '.' + dur_s
+            print("<<<<<<<duration<<<<<<<", duration)
+            data = {'name': self.description,
+                    'date': datetime.now(),
+                    'start_date': start_time if maintenance_ids else '',
+                    'time': duration,
+                    'account_id': account_id,
+                    'user_id': self._uid}
+            data_list.append((0, 0, data))
+            maintenance_ids.write({'state': 'end', 'timesheet_ids': data_list})
+        if context.get('ok') and context.get('stop_task') and context.get('active_model') == 'maintenance.request':
+            if maintenance_ids.start_time != False and maintenance_ids.con_time == False and maintenance_ids.restart_time == False:
+                start_time = maintenance_ids.start_time
+                stoptime_diff = datetime.strptime(str(p_time), '%Y-%m-%d %H:%M:%S') - datetime.strptime(
+                    str(maintenance_ids.start_time), '%Y-%m-%d %H:%M:%S')
+            if maintenance_ids.restart_time != False and maintenance_ids.con_time == False:
+                start_time = maintenance_ids.restart_time
+                stoptime_diff = datetime.strptime(str(p_time), '%Y-%m-%d %H:%M:%S') - datetime.strptime(
+                    str(maintenance_ids.restart_time), '%Y-%m-%d %H:%M:%S')
+            if maintenance_ids.con_time != False and maintenance_ids.restart_time == False:
+                start_time = maintenance_ids.con_time
+                stoptime_diff = datetime.strptime(str(p_time), '%Y-%m-%d %H:%M:%S') - datetime.strptime(
+                    str(maintenance_ids.con_time), '%Y-%m-%d %H:%M:%S')
+            if maintenance_ids.restart_time != False and maintenance_ids.con_time != False:
+                start_time = maintenance_ids.restart_time
+                stoptime_diff = datetime.strptime(str(p_time), '%Y-%m-%d %H:%M:%S') - datetime.strptime(
+                    str(maintenance_ids.restart_time), '%Y-%m-%d %H:%M:%S')
+            if maintenance_ids.start_time == False and maintenance_ids.con_time == False and maintenance_ids.restart_time == False:
+                start_time = p_time
+                stoptime_diff = datetime.strptime(str(p_time), '%Y-%m-%d %H:%M:%S') - datetime.strptime(str(p_time),
+                                                                                                        '%Y-%m-%d %H:%M:%S')
+            m, s = divmod(stoptime_diff.total_seconds(), 60)
+            h, m = divmod(m, 60)
+            dur_h = (_('%0*d') % (2, h))
+            dur_m = (_('%0*d') % (2, m * 1.677966102))
+            dur_s = (_('%0*d') % (2, s))
+            duration = dur_h + '.' + dur_m + '.' + dur_s
+            data = {'name': self.description,
+                    'date': datetime.now(),
+                    'start_date': start_time if maintenance_ids else '',
+                   # 'project_id': project_task.project_id.id,
+                   # 'task_id': project_task.id,
+                    'time': duration,
+                    'account_id': account_id,
+                    'user_id': self._uid}
+            data_list.append((0, 0, data))
+            maintenance_ids.write({'state': 'stop', 'timesheet_ids': data_list})
         return True

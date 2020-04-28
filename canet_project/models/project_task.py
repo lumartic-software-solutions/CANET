@@ -1,15 +1,6 @@
 from odoo import models, fields, api, _
 import datetime
 
-
-class AccountAnalyticLine(models.Model):
-    _inherit = 'account.analytic.line'
-
-    start_date = fields.Datetime(string="Start Date")
-    date = fields.Datetime('End Date', required=True, index=True, default=datetime.datetime.now())
-
-
-
 class ProjectTask(models.Model):
     _inherit = 'project.task'
     start_date = fields.Date(string="Start Date")
@@ -24,7 +15,7 @@ class ProjectTask(models.Model):
     amount_tax = fields.Float('Taxes', compute='_amount_tax', store=True)
     amount_total = fields.Float('Total', compute='_amount_total', store=True)
     state = fields.Selection(
-        [('draft', 'New'), ('start', 'Start'), ('continue', 'Continue'), ('end', 'End'), ('stop', 'Stop')],
+        [('draft', 'New'), ('start', 'Start'), ('continue', 'Continue'),  ('stop', 'Stop'),('end', 'End')],
         string='Status', default='draft')
 
     @api.one

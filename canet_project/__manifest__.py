@@ -16,7 +16,6 @@
 """,
     'depends': ['base','account','project','hr_timesheet','canet_maintenance'],
     'data': [
-        'wizard/task_time_wizard_view.xml',
         'views/project_task_view.xml'
 
     ],

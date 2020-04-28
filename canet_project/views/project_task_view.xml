@@ -105,7 +105,7 @@
 						<field name="date" string="End Date"/>
 						<field name="user_id" required="1"/>
 						<field name="name"/>
-						<field name="unit_amount" string="Duration" widget="float_time"/>
+						<field name="time" string="Duration" />
 						<field name="project_id" invisible="1"/>
 					</tree>
 				</field>

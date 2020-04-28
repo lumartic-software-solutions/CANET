@@ -6,11 +6,11 @@
 		<field name="arch" type="xml">
 			<form>
 				<group>
-					<field name="name" readonly="1" invisible="context.get('stop_process') or context.get('continue_process')"
+					<field name="name" readonly="1" invisible="context.get('stop_process') or context.get('continue_process') or context.get('stop_task') or context.get('end_task')"
 						nolabel="1"/>
 				</group>
 				<group>
-					<field name="description" placeholder="Write Reason"  invisible="context.get('start_process')" required="context.get('stop_process') or context.get('continue_process')"
+					<field name="description" placeholder="Write Reason"  invisible="context.get('start_process') or context.get('start_task') or context.get('continue_task') or context.get('restart_task')" required="context.get('stop_process') or context.get('continue_process') or context.get('stop_task') or context.get('end_task')"
 						/>
 				</group>
 				<footer>

@@ -1,19 +1,24 @@
 from odoo import models, fields, api, _
-
+import datetime
 
 class AnalyticLine(models.Model):
     _inherit = 'account.analytic.line'
 
     maintenance_id = fields.Many2one('maintenance.request','Maintenanance')
     time = fields.Char('Maintenance Time')
+    start_date = fields.Datetime(string="Start Date")
+    date = fields.Datetime('End Date', required=True, index=True, default=datetime.datetime.now())
+
 
 class Maintenanace(models.Model):
     _inherit = 'maintenance.request'
 
     reference = fields.Char('Reference', readonly=True)
-    start_datetime = fields.Datetime('Start Process Datetime')
-    end_datetime = fields.Datetime('Stop Process Datetime')
-    con_time = fields.Datetime('Restart Process Datetime')
+    start_date = fields.Date(string="Start Date")
+    start_time = fields.Datetime("Start Time")
+    con_time = fields.Datetime("Continue Time")
+    end_time = fields.Datetime("End Time")
+    restart_time = fields.Datetime("Restart Time")
     user_ids = fields.Many2many('res.users', 'req_id', 'user_id', 'maintenance_user_rel', 'Responsible')
     operations = fields.One2many(
         'maintenance.request.line', 'maintenance_id', 'Parts',
@@ -22,7 +27,9 @@ class Maintenanace(models.Model):
     amount_untaxed = fields.Float('Untaxed Amount', compute='_amount_untaxed', store=True)
     amount_tax = fields.Float('Taxes', compute='_amount_tax', store=True)
     amount_total = fields.Float('Total', compute='_amount_total', store=True)
-    state = fields.Selection([('draft','New Request'),('in_process','In Process'),('end','End'),('cancel','Cancel')], string='State',readonly=True, copy=False, index=True, track_visibility='onchange', default='draft')
+    state = fields.Selection(
+        [('draft', 'New'), ('start', 'Start'), ('continue', 'Continue'), ('stop', 'Stop'), ('end', 'End')],
+        string='Status', default='draft')
 
     @api.one
     @api.depends('operations.price_subtotal')

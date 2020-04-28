@@ -9,17 +9,25 @@
                     <attribute name="class">canet_o_form_sheet</attribute>
                 </xpath>
                 <button name="archive_equipment_request"  position="before" >
-                        <button name="%(canet_maintenance.action_task_time_wizard_custom)d" attrs="{'invisible': [ ('state','in',['in_process','end','cancel'])]}"
-                    type="action" string="Start Process" style="background-color:#4CAF50;font-color:white;" state="draft" context="{'start_process':True}"/>
-                       <button name="%(canet_maintenance.action_task_time_wizard_custom)d" attrs="{'invisible': [ ('state','in',['end','draft','cancel'])]}"
-                    type="action" string="Stop Process" style="background-color:#f44336;" context="{'stop_process':True}"/>
-                        <button name="%(canet_maintenance.action_task_time_wizard_custom)d" attrs="{'invisible': [ ('state','in',['in_process','draft'])]}"
-                    type="action" string="Restart Process"  style="background-color: #C6CB2E;" context="{'continue_process':True}"/>
+                        <button name="%(canet_maintenance.action_task_time_wizard_custom)d" string="Restart" type="action"
+					style="background-color: #C6CB2E;" context="{'restart_task' : True}" attrs="{'invisible':
+					[('state', 'in', ('draft', 'start','continue','end'))]}" />
+                    <button name="%(canet_maintenance.action_task_time_wizard_custom)d" string="Start Task" type="action"
+                        style="background-color: #4CAF50;" context="{'start_task' : True}" attrs="{'invisible':
+                        [('state', 'in', ('start','continue','end','stop'))]}"/>
+                    <button name="%(canet_maintenance.action_task_time_wizard_custom)d" string="Continue" type="action"
+                        context="{'continue_task' : True}" style="background-color: #4CAF50;" attrs="{'invisible':
+                        [('state', 'in', ('draft','end','continue','start','stop'))]}"/>
+                    <button name="%(canet_maintenance.action_task_time_wizard_custom)d" string="Stop Task" type="action"
+                        context="{'stop_task' : True}" style="background-color: #f44336;" attrs="{'invisible':
+                        [('state', 'in', ('end','stop'))]}"/>
+                    <button name="%(canet_maintenance.action_task_time_wizard_custom)d" string="End Task" type="action"
+                        context="{'end_task' : True}" style="background-color: #FF9933;" attrs="{'invisible':
+                        [('state', 'in', ('draft','end','stop'))]}" />
                 </button>
 				<field name="technician_user_id" position="replace">
                     <field name="user_ids" widget="many2many_tags"/>
-                     <field name="start_datetime" readonly="1"/>
-                     <field name="end_datetime" invisible="1"/>
+                     <field name="start_time" readonly="1"/>
                 </field>
 
                  <xpath
@@ -100,9 +108,11 @@
                         <page name="time" string="Time">
                                  <field name="timesheet_ids" readonly="1">
                                 <tree>
-                                    <field name="employee_id"/>
+                                    <field name="start_date" string="Start Date"/>
+                                    <field name="date" string="End Date"/>
+                                    <field name="user_id" required="1"/>
                                     <field name="name"/>
-                                    <field name="time"/>
+                                    <field name="time" string="Duration" />
                                 </tree>
                                 </field>
                         </page>

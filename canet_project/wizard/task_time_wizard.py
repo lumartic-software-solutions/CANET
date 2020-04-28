@@ -15,35 +15,37 @@ class TaskTimeWizard(models.TransientModel):
         result = super(TaskTimeWizard, self).default_get(vals)
         context = self.env.context
         project_task = self.env['project.task'].search([('id', '=', context.get('active_id'))])
-        if context.get('start_task'):
+        if context.get('start_task')  and context.get('active_model') == 'project.task':
             result.update({'name': "Are you going to start the task " + project_task.name + '?'})
-        if context.get('continue_task'):
+        if context.get('continue_task')  and context.get('active_model') == 'project.task':
             result.update({'name': "Are you going to continue the task " + project_task.name + '?'})
-        if context.get('restart_task'):
+        if context.get('restart_task')  and context.get('active_model') == 'project.task':
             result.update({'name': "Are you going to restart the task " + project_task.name + '?'})
         return result
 
     @api.multi
     def accept_task(self):
         context = self._context
+        print("-----------context----------", context)
         result = super(TaskTimeWizard, self).accept_task()
         project_task = self.env['project.task'].sudo().search([('id', '=', context.get('active_id'))])
         data_list = []
         start_date = datetime.today()
         p_time = fields.Datetime.now()
+        account_id = self.env.ref('canet_maintenance.analytic_account_maintenance_id', False).id
         if project_task:
             if not project_task.project_id:
                 raise UserError(_("Por favor asigne Proyecto primero"))
-        if context.get('ok') and context.get('start_task'):
+        if context.get('ok') and context.get('start_task') and context.get('active_model') == 'project.task':
             if project_task:
                 project_task.write({'state': 'start', 'start_time': p_time, 'start_date': start_date})
-        if context.get('ok') and context.get('restart_task'):
+        if context.get('ok') and context.get('restart_task') and context.get('active_model') == 'project.task':
             if project_task:
                 project_task.write({'state': 'start', 'restart_time': p_time, 'start_date': start_date})
-        if context.get('ok') and context.get('continue_task'):
+        if context.get('ok') and context.get('continue_task') and context.get('active_model') == 'project.task':
             if project_task:
                 project_task.write({'state': 'continue', 'con_time': p_time, 'start_date': start_date})
-        if context.get('ok') and context.get('end_task'):
+        if context.get('ok') and context.get('end_task') and context.get('active_model') == 'project.task':
 
             if project_task.start_time != False and project_task.con_time == False and project_task.restart_time == False:
                 start_time = project_task.start_time
@@ -66,20 +68,19 @@ class TaskTimeWizard(models.TransientModel):
             h, m = divmod(m, 60)
             dur_h = (_('%0*d') % (2, h))
             dur_m = (_('%0*d') % (2, m * 1.677966102))
-            duration = dur_h + '.' + dur_m
+            dur_s = (_('%0*d') % (2, s))
+            duration = dur_h + '.' + dur_m + '.' + dur_s
             print ("<<<<<<<duration<<<<<<<",duration)
             data = {'name': self.description,
                     'date': datetime.now(),
                     'start_date': start_time if project_task else '',
-                    'project_id': project_task.project_id.id,
                     'task_id': project_task.id,
-                    'unit_amount': float(duration),
+                    'time' :duration,
+                    'account_id': account_id,
                     'user_id': self._uid}
             data_list.append((0, 0, data))
-            marivi_user_id = self.env['res.users'].search([('login', '=', 'oroval.servicios.adm@gmail.com')])
-            project_task.write({'state': 'end', 'timesheet_ids': data_list, 'user_id': marivi_user_id.id})
-            get_task = [task.id for task in project_task.project_id.task_ids if task.state == 'end']
-        if context.get('ok') and context.get('stop_task'):
+            project_task.write({'state': 'end', 'timesheet_ids': data_list})
+        if context.get('ok') and context.get('stop_task') and context.get('active_model') == 'project.task':
             if project_task.start_time != False and project_task.con_time == False and project_task.restart_time == False:
                 start_time = project_task.start_time
                 stoptime_diff = datetime.strptime(str(p_time), '%Y-%m-%d %H:%M:%S') - datetime.strptime(
@@ -104,13 +105,14 @@ class TaskTimeWizard(models.TransientModel):
             h, m = divmod(m, 60)
             dur_h = (_('%0*d') % (2, h))
             dur_m = (_('%0*d') % (2, m * 1.677966102))
-            duration = dur_h + '.' + dur_m
+            dur_s = (_('%0*d') % (2, s))
+            duration = dur_h + '.' + dur_m + '.' + dur_s
             data = {'name': self.description,
                     'date': datetime.now(),
                     'start_date': start_time if project_task else '',
-                    'project_id': project_task.project_id.id,
                     'task_id': project_task.id,
-                    'unit_amount': float(duration),
+                    'account_id': account_id,
+                    'time': duration,
                     'user_id': self._uid}
             data_list.append((0, 0, data))
             project_task.write({'state': 'stop', 'timesheet_ids': data_list})
