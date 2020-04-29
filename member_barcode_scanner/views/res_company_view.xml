@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--     
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Member Barcode Scanner.
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). 
+-->
+<odoo>
+	<data>
+		<!-- added  fields in compny form view -->
+		<record id="view_company_form_inherit_proxy" model="ir.ui.view">
+			<field name="name">res.company.form.proxy.inherit</field>
+			<field name="model">res.company</field>
+			<field name="inherit_id" ref="base.view_company_form" />
+			<field name="arch" type="xml">
+				<data>
+					<xpath expr="//page[last()]" position="after">
+						<page string="Proxy Printer Configuration">
+							<group>
+								<group>
+									<field name="receipt_to_printer"/>
+								</group>
+								<group>
+									<field name="ip_address" attrs="{'invisible': [('receipt_to_printer', '=', False)],
+										'required': [('receipt_to_printer', '=', True)]}"/>
+									<field name="port" attrs="{'invisible': [('receipt_to_printer', '=', False)], 'required':
+										[('receipt_to_printer', '=', True)]}"/>
+								</group>
+							</group>
+						</page>
+					</xpath>
+				</data>
+			</field>
+		</record>
+	</data>
+</odoo>
