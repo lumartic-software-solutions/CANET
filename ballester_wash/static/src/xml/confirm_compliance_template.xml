@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--     
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Screen. 
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). 
+-->
+<template xml:space="preserve">
+	<!-- ================  main menu  ================ -->
+	<t t-name="ConfirmComplinaceWash">
+		<div class="row">
+			<t t-call='LoginUser' />
+		</div>
+		<br/>
+		<div class="row">
+				<div class="o_hr_attendance_kiosk_mode_container o_app_switcher_background">
+					<div class="o_hr_attendance_kiosk_mode">
+						<h2>Answer Submitted</h2>
+					</div>
+				<center><button  class="btn
+						btn-primary container_compliance_screen" id="container_compliance_screen"
+						type="button">Back to Wash Order</button> </center>
+		    	</div>
+			
+			
+			</div>
+	</t>
+
+	<t t-name="ConfirmRepairOrder">
+		<div class="row">
+			<t t-call='LoginUser' />
+		</div>
+		<br/>
+		<div class="row">
+				<div class="o_hr_attendance_kiosk_mode_container o_app_switcher_background">
+					<div class="o_hr_attendance_kiosk_mode">
+						<h2>Successfully Done</h2>
+					</div>
+				<center><button  class="btn
+						btn-primary repair_order_backscreen" 
+						type="button">Back to Repair Order</button> </center>
+		    	</div>
+			
+			
+			</div>
+	</t>
+	
+</template>

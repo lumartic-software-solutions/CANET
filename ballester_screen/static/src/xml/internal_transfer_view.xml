@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--     
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Screen. 
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). 
+-->
+<template xml:space="preserve">
+	<!-- ================ Internal Transfer Button  ================-->
+	<t t-name="InternaltransferButton">
+		<html>
+			<head>
+				<script>$(".locations").editableSelect();
+				$('.dest_locations').editableSelect();
+				$('.select2').select2();
+
+				
+
+				$(".select").editableSelect();
+				
+					  </script>
+
+			     
+			</head>
+		</html>
+		<div class="row">
+			<div class="col-md-8">
+				<ol class="breadcrumb o_portal_submenu" style="font-size: 20px;">
+					<li>
+						<a href="" class="main">
+							<i class="fa fa-home">
+							</i>
+						</a>
+					</li>
+					<li>
+						<a href="" class="warehouse">Almacén</a>
+					</li>
+					<li>
+						<a href="" class="internal_transfers">Transferencias internas</a>
+					</li>
+				</ol>
+			</div>
+         <t t-call='LoginUser' />
+		</div>
+		<br/>
+		<!-- select type of order -->
+		<div class="row" style="margin-left: 30px;">
+			<div class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-100px" >
+			<input type="hidden" name="wash_id" value="None" id="created_wash_id"/>
+				<span>Tipo de orden:</span>
+			</div>
+			<div class="col-md-3" style="width:350px">
+				 <select   id="type-select" style="height: 35px;width:100%;font-size: 22px;margin-top: 20px;" >
+					<option> -- select an option -- </option>
+					<t t-foreach="widget.type_of_order" t-as="i">
+					<option t-attf-value="#{i['order']}"><span t-esc="i['order']" /></option>
+								</t>
+				</select> 
+			</div>
+			<div class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-60px" >
+                       <span>Tipo de lavado:</span>
+                           </div>
+			    <div class="col-md-3 " style="width:350px">
+				 <select class="washing_type" id="washing_type"  style="height:35px;font-size: 22px;margin-top: 20px;" >
+				    <option> -- select an option -- </option>
+				    <t t-foreach="widget.washing_type" t-as="i">
+				    <option t-attf-value="#{i['washing']}"><span t-esc="i['washing']" /></option>
+				                </t>
+				</select> 
+			    </div>
+		</div>
+		
+		<!-- location design --> 
+		<div class="row" style="margin-left: 30px;">
+			<div class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-100px" >
+				<span>Source Location:</span>
+			</div>
+			<div class="col-md-3" style="width:350px">
+				 <select  id="my-select" style="height: 35px;font-size: 22px;margin-top: 20px;" >
+				<option> -- select an option -- </option>
+				<t t-foreach="widget.location_list" t-as="i">
+						<option t-attf-value="#{i['name']}"  t-attf-ids="#{i['id']}"><span t-esc="i['name']" /></option>
+					</t>
+				</select> 
+			</div>
+			<div class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-60px" >
+				<span>Destination Location:</span>
+			</div>
+			<div class="col-md-3" style="width:350px">
+				 <select   id="my-dest-select" style="height: 35px;font-size: 22px;margin-top: 20px;" >
+				<option> -- select an option -- </option>
+				<t t-foreach="widget.location_list" t-as="i">
+						<option t-attf-value="#{i['name']}"  t-attf-ids="#{i['id']}"><span t-esc="i['name']" /></option>
+					</t>
+				</select> 
+			</div>
+		</div>
+		<!-- barcode design-->
+		<div id="lot_selection" class="row" style="margin-left: 30px;">
+
+			<div class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-100px" >
+				<span style="margin-left: 50px;">Select Lot /Series Number:</span>
+			</div>
+			<div class="col-md-8 " style="width:1050px;">
+				 <select  class="select2 barcode_wash" id="barcode_wash" multiple="multiple"   style="height:35px;width:300px;font-size: 22px;margin-top: 20px;  overflow: hidden !important;
+    height: auto !important;" >
+				</select> 
+			</div>
+		</div>
+		<!-- product design  -->
+		<div class="row" style="margin-left: 30px;">
+			<div class="col-md-3" id="product_wash_div" style="text-align:right; font-size:22px; margin-top:20px; margin-left:-100px" >
+				<span>Producto a Lavar:</span>
+			</div>
+		<div class="col-md-8" style="width:850px">
+				 <select   id="my-wash-product" multiple="multiple"  style="height: 35px;font-size: 22px;margin-top: 20px;" >
+				</select>  
+			</div>
+		</div>
+		<div id="recyled_product_div" class="row" style="margin-left: 30px;">
+			<div class="col-md-3 recycled"  id="recycled" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-100px" >
+				<span>Producto Reciclado:</span>
+			</div>
+			<div class="col-md-8 " style="width:920px">
+				 <select class="product_recycled" multiple="multiple"  name="my-recycled-product" id="my-recycled-product" style="height: 35px;font-size: 22px;margin-top: 20px;">
+				</select> 
+			</div>
+		</div>
+		
+		
+
+	     <!--buttons -->
+		<div class="row" style="margin-left: 20px;">
+				<div class="col-md-2">
+					<button style="display:none;margin-left:180px;margin-top: 25px;" class="btn btn-primary common_button
+						create_wash_order" id="create_wash_order_button"
+						 type="button">Create Wash Order</button>	
+				</div>
+				
+				<div class="col-md-2">
+					<button style=" margin-left: 25px;margin-top: 25px;" class="btn
+						btn-primary common_button save_wash_order" id="save_wash_order_button"
+						type="button">Save</button>
+				</div>
+
+				<div class="col-md-2">
+					<button style="display:none; margin-left: -385px;margin-top: 25px;" class="btn
+						btn-primary common_button edit_wash_order" id="edit_wash_order_button"
+						type="button">Edit</button>
+					
+				</div>
+				<div class="col-md-2">
+					<button style="display:none;margin-left: -180px;margin-top: 25px;" class="btn btn-primary common_button
+						create_internal_transfer_button" id="create_internal_transfer_button"
+						 type="button">Create Internal Transfer</button>	
+				</div>
+				<div class="col-md-2">
+					<t  t-call='internaldestructiontemplate'/>	
+					
+				</div >
+				<div class="col-md-2">
+			     <t t-call='ExitPopup'     style="margin-left: 1000px;"/></div>
+			</div>
+
+
+	</t>
+</template>

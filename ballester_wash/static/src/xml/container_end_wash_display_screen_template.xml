@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Screen.
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+-->
+<template xml:space="preserve">
+	<!-- ================ Internal Transfer Button  ================-->
+	<t t-name="ContainerEndDisplay">
+		<html>
+			<head>
+
+			<script>
+				$('#barcode_number').focus();
+			 </script>
+
+			</head>
+		</html>
+		<div class="row">
+            <div class="col-md-8">
+				<ol class="breadcrumb o_portal_submenu" style="font-size: 20px;">
+					<li>
+						<a href="" class="main">
+							<i class="fa fa-home">
+							</i>
+						</a>
+					</li>
+				</ol>
+			</div>
+         <t t-call='LoginUser' />
+		</div>
+		<br/>
+
+		<!-- barcode design -->
+		<div class="row" style="margin-left: 30px;">
+
+			<div class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 10px;margin-left:-100px" >
+				<span style="margin-left:150px" >Select Lot /Series Number:</span>
+			</div>
+			<div class="col-md-6" style="width:350px;margin-top: 20px;">
+
+
+						<input type="text" class="barcode" autofocus="autofocus" id="barcode_number" name="barcode_wash" style="height:45px;color:00bfff" maxlength="13"/>
+			</div>
+			<!--<div class="col-md-3" style="width:350px;margin-top: 35px;">
+
+
+						<button  class="btn btn-primary common_button
+						display_container_detail" id="display_container_button"
+						 type="button">Click</button>
+			</div>-->
+
+		</div>
+		<div class="row" style="margin-left: 30px;">
+
+			<div id="image_div"  class="col-md-4" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-100px" >
+			<img id="image_container"  style="display:none;" height='200'  width='200'>  </img>			
+
+</div>
+			<div class="col-md-8" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:10px" >
+
+				<table class="table_detail" id="table_detail" style="display:none;">
+					<!--<tr> 
+				<td>No of washing order: </td>
+			         <td><input type="text" id="" name="" style="height:30px;"/></td>
+
+						</tr>
+				
+					<tr>
+                    <td>  Type Of Order:</td>
+			<td><input type="text" id="" name="" style="height:30px;"/></td>
+ </tr>
+					<tr> 
+                        <td> Dangerous characteristics: </td>
+			<td><input type="text" id="" name="" style="height:30px;"/></td>
+
+			</tr>
+					<tr>
+			<td>  Variants:</td>
+			<td><input type="text" id="" name="" style="height:30px;"/></td>
+
+
+			 </tr>
+				
+					<tr> 
+                      <td> State: </td>
+			<td><input type="text" id="" name="" style="height:30px;"/></td>
+                             </tr>
+ 					<tr> 
+                        <td> LER: </td>
+			<td><input type="text" id="" name="" style="height:30px;"/></td>
+                        </tr>
+					<tr>
+                         <td> UN code: </td>
+			<td><input type="text" id="" name="" style="height:30px;"/></td>
+                            </tr>-->
+
+				</table>
+				
+			</div>
+			
+
+		</div>
+
+	     <!--buttons -->
+		<div class="row" style="margin-left: 10px;">
+
+			<t  t-call='EndWashTemplte'/>
+				
+			<t  t-call='EndWashemptyingTemplte'/>
+
+			<t  t-call='EndPreWashTemplte'/>
+
+			<t  t-call='Backtowashtemplate'/>	
+
+					<t  t-call='destructiontemplate'/>
+					
+					<!--<button style=" margin-left:-85px;margin-top: 25px;display:none;" class="btn
+						btn-primary common_button cancel_wash_order" id="cancel_wash_order_button"
+						type="button">Cancel</button>-->
+					
+			            <t t-call='ExitPopup'     style="margin-left:1000px;"/>
+			</div>
+
+
+	</t>
+</template>

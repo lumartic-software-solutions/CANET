@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--     
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Screen. 
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). 
+-->
+<template xml:space="preserve">
+	<t t-name="CrushCreateTemplate">
+		<html>
+			<head>
+				<script>$(".locations").editableSelect();
+				$('.dest_locations').editableSelect();
+				$('.select2').select2();
+
+				
+					  </script>
+
+			     
+			</head>
+		</html>
+		<div class="row">
+			<div class="col-md-8">
+				<ol class="breadcrumb o_portal_submenu" style="font-size: 20px;">
+					<li>
+						<a href="" class="main">
+							<i class="fa fa-home">
+							</i>
+						</a>
+					</li>
+					<li>
+						<a href="" class="create_crush_compact_button">Create New Order</a>
+					</li>
+					<li>
+						<a href="" class="create_crush_button">Crush Order</a>
+					</li>
+				</ol>
+			</div>
+                  <t t-call='LoginUser' />
+		</div><br/>
+		
+		<div class="row" style="margin-left: 20px;">
+			<div class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-100px" >
+			<input type="hidden" name="wash_id" value="None" id="created_wash_id"/>
+				<span>Type Of Order:</span>
+			</div>
+			<div class="col-md-3" style="width:350px">
+				 <select   id="type-select" style="height: 35px;width:100%;font-size: 22px;margin-top: 20px;" >
+					<option> -- select an option -- </option>
+					<t t-foreach="widget.type_of_order" t-as="i">
+					<option t-attf-value="#{i['order']}"><span t-esc="i['order']" /></option>
+								</t>
+				</select> 
+			</div>
+			<div class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-60px" >
+                           </div>
+			    <div class="col-md-3 " style="width:350px">
+			    </div>
+		</div>
+
+		<!-- product design -->
+		<div class="row" style="margin-left: 20px;">
+			<div class="col-md-3" style="text-align:right; font-size:22px; margin-top:20px; margin-left:-100px" >
+				<span>Product To Wash:</span>
+			</div>
+			<div class="col-md-3" style="width:350px">
+				 <select class="product_wash"  id="my-wash-product" style="height: 45px;font-size: 22px;margin-top: 20px;" >
+				<!--<t t-foreach="widget.operation_data.internal_product_list" t-as="i">
+						<option t-attf-value="#{i['name']}"  t-attf-ids="#{i['id']}"                                     t-attf-recycled_product_id="#{i['recycled_product_id']}" ><span t-esc=" i['name']" style=" width: 25%;"/></option>
+				</t>-->
+				</select>  
+			</div>
+			<div class="col-md-3 recycled"  id="recycled" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-50px" >
+				<span>Recycled Product:</span>
+			</div>
+			<div class="col-md-3 " style="width:350px">
+				 <select class="product_recycled"  id="my-recycled-product" style="height: 45px;font-size: 22px;margin-top: 20px;">
+				<!--<t t-foreach="widget.operation_data.internal_product_list" t-as="i">
+							<option t-attf-value="#{i['name']}"  t-attf-ids="#{i['id']}"><span t-esc="i['name']" /></option>
+				</t>-->
+				</select> 
+			</div>
+		</div>
+
+		<div class="row" style="margin-left: 20px;">
+			<div class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-100px" >
+				<span>Source Location:</span>
+			</div>
+			<div class="col-md-3" style="width:350px">
+				 <select class="locations" id="my-select" style="height: 45px;font-size: 22px;margin-top: 20px;" >
+				<t t-foreach="widget.location_list" t-as="i">
+						<option t-attf-value="#{i['name']}"  t-attf-ids="#{i['id']}"><span t-esc="i['name']" /></option>
+					</t>
+				</select> 
+			</div>
+			<div class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-50px" >
+				<span>Destination Location:</span>
+			</div>
+			<div class="col-md-3" style="width:350px">
+				 <select class="dest_locations"  id="my-dest-select" style="height: 45px;font-size: 22px;margin-top: 20px;" >
+				<t t-foreach="widget.location_list" t-as="i">
+						<option t-attf-value="#{i['name']}"  t-attf-ids="#{i['id']}"><span t-esc="i['name']" /></option>
+					</t>
+				</select> 
+			</div>
+		</div>
+
+		<!-- barcode design -->
+		<div class="row" style="margin-left: 20px;">
+
+			<div class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-100px" >
+				<span style="margin:50px">Select Lot /Series Number:</span>
+			</div>
+			<div class="col-md-8 " style="width:850px">
+				 <select  class="select2 barcode_wash" id="barcode_wash" multiple="multiple"   style="height:45px;width:300px;font-size: 22px;margin-top: 20px;" >
+				<!--<t t-foreach="widget.used_set_barcode_list" t-as="i">
+							<option t-attf-value="#{i['barcode']}"  t-attf-ids="#{i['id']}"><span t-esc="i['barcode']" /></option>
+							</t>-->
+				</select> 
+			</div>
+		</div>
+		<br/>
+
+	     <!--buttons -->
+		<div class="row" style="margin-left: 20px;">
+			<div class="col-md-3" >
+					<button style="display:none;margin-left: 250px;margin-top: 25px;" class="btn btn-primary common_button
+						create_crush" id="create_crush"
+						 type="button">Create Order</button>	
+				</div>
+				
+				<div class="col-md-3" >
+					<button style=" margin-left: 25px;margin-top: 25px;" class="btn
+						btn-primary common_button save_crush_order" id="save_crush_order_button"
+						type="button">Save</button>
+				</div>
+
+				<div class="col-md-3" >
+					<button style="display:none; margin-left: 25px;margin-top: 25px;" class="btn
+						btn-primary common_button edit_crush_order" id="edit_crush_order_button"
+						type="button">Edit</button>
+					
+				</div>
+			<t t-call='ExitPopup'     style="margin-left: 1000px;"/>
+			</div>
+
+	</t>
+
+	<t t-name="CompactCreateTemplate">
+		<html>
+			<head>
+				<script>$(".locations").editableSelect();
+				$('.dest_locations').editableSelect();
+				$('.select2').select2();
+
+				
+				
+				
+					  </script>
+
+			     
+			</head>
+		</html>
+		<div class="row">
+			<div class="col-md-8">
+				<ol class="breadcrumb o_portal_submenu" style="font-size: 20px;">
+					<li>
+						<a href="" class="main">
+							<i class="fa fa-home">
+							</i>
+						</a>
+					</li>
+					<li>
+						<a href="" class="create_crush_compact_button">Create New Order</a>
+					</li>
+					<li>
+						<a href="" class="create_crush_button">Compact Order</a>
+					</li>
+				</ol>
+			</div>
+                  <t t-call='LoginUser' />
+		</div>
+		
+		<!-- location design -->
+		<div class="row" style="margin-left: 20px;">
+			<div class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-100px" >
+			<input type="hidden" name="wash_id" value="None" id="created_wash_id"/>
+				<span>Type Of Order:</span>
+			</div>
+			<div class="col-md-3" style="width:350px">
+				 <select   id="type-select" style="height: 35px;width:100%;font-size: 22px;margin-top: 20px;" >
+					<option> -- select an option -- </option>
+					<t t-foreach="widget.type_of_order" t-as="i">
+					<option t-attf-value="#{i['order']}"><span t-esc="i['order']" /></option>
+								</t>
+				</select> 
+			</div>
+			<div class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-60px" >
+                           </div>
+			    <div class="col-md-3 " style="width:350px">
+			    </div>
+		</div>
+
+
+		<!-- product design -->
+		<div class="row" style="margin-left: 20px;">
+			<div class="col-md-3" style="text-align:right; font-size:22px; margin-top:20px; margin-left:-100px" >
+				<span>Product To Wash:</span>
+			</div>
+			<div class="col-md-3" style="width:350px">
+				 <select class="product_wash"  id="my-wash-product" style="height: 45px;font-size: 22px;margin-top: 20px;" >
+				<!--<t t-foreach="widget.operation_data.internal_product_list" t-as="i">
+						<option t-attf-value="#{i['name']}"  t-attf-ids="#{i['id']}"                                     t-attf-recycled_product_id="#{i['recycled_product_id']}" ><span t-esc=" i['name']" style=" width: 25%;"/></option>
+				</t>-->
+				</select>  
+			</div>
+			<div class="col-md-3 recycled"  id="recycled" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-50px" >
+				<span>Recycled Product:</span>
+			</div>
+			<div class="col-md-3 " style="width:350px">
+				 <select class="product_recycled"  id="my-recycled-product" style="height: 45px;font-size: 22px;margin-top: 20px;">
+				<!--<t t-foreach="widget.operation_data.internal_product_list" t-as="i">
+							<option t-attf-value="#{i['name']}"  t-attf-ids="#{i['id']}"><span t-esc="i['name']" /></option>
+				</t>-->
+				</select> 
+			</div>
+		</div>
+
+		<div class="row" style="margin-left: 20px;">
+			<div class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-100px" >
+				<span>Source Location:</span>
+			</div>
+			<div class="col-md-3" style="width:350px">
+				 <select class="locations" id="my-select" style="height: 45px;font-size: 22px;margin-top: 20px;" >
+				<t t-foreach="widget.location_list" t-as="i">
+						<option t-attf-value="#{i['name']}"  t-attf-ids="#{i['id']}"><span t-esc="i['name']" /></option>
+					</t>
+				</select> 
+			</div>
+			<div class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-50px" >
+				<span>Destination Location:</span>
+			</div>
+			<div class="col-md-3" style="width:350px">
+				 <select class="dest_locations"  id="my-dest-select" style="height: 45px;font-size: 22px;margin-top: 20px;" >
+				<t t-foreach="widget.location_list" t-as="i">
+						<option t-attf-value="#{i['name']}"  t-attf-ids="#{i['id']}"><span t-esc="i['name']" /></option>
+					</t>
+				</select> 
+			</div>
+		</div>
+
+		<!-- barcode design -->
+		<div class="row" style="margin-left: 20px;">
+
+			<div class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-100px" >
+				<span>Select Lot /Series Number:</span>
+			</div>
+			<div class="col-md-8 " style="width:850px">
+				 <select  class="select2 barcode_wash" id="barcode_wash" multiple="multiple"   style="height:45px;width:300px;font-size: 22px;margin-top: 20px;" >
+				<!--<t t-foreach="widget.operation_data.used_set_barcode_list" t-as="i">
+							<option t-attf-value="#{i['barcode']}"  t-attf-ids="#{i['id']}"><span t-esc="i['barcode']" /></option>
+							</t>-->
+				</select> 
+			</div>
+		</div>
+		<br/>
+
+	     <!--buttons -->
+		<div class="row" style="margin-left: 20px;">
+			<div class="col-md-3" >
+					<button style="display:none;margin-left: 250px;margin-top: 25px;" class="btn btn-primary common_button
+						create_compact" id="create_compact"
+						 type="button">Create Order</button>	
+				</div>
+				
+				<div class="col-md-3" >
+					<button style=" margin-left: 25px;margin-top: 25px;" class="btn
+						btn-primary common_button save_compact_order" id="save_compact_order_button"
+						type="button">Save</button>
+				</div>
+
+				<div class="col-md-3" >
+					<button style="display:none; margin-left: 25px;margin-top: 25px;" class="btn
+						btn-primary common_button edit_compact_order" id="edit_compact_order_button"
+						type="button">Edit</button>
+					
+				</div>
+			<t t-call='ExitPopup'     style="margin-left: 1000px;"/>
+			</div>
+
+	</t>
+</template>

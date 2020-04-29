@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+   	<!-- repair inherit form view -->
+        <record id="inherit_form_repair" model="ir.ui.view">
+            <field name="name">mrp.repair.form</field>
+            <field name="model">mrp.repair</field>
+            <field name="inherit_id" ref="mrp_repair.view_repair_order_form" />
+            <field name="arch" type="xml">
+			    <field name="lot_id" position="after">
+				    <field name="wash_id" readonly="1"/>
+				     <field name="start_datetime" />
+                </field>
+                <field name="state" position="replace">
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,done,check_compliance"/>
+                </field>
+		 <button name="action_repair_cancel" position="replace">
+                 <button name="action_repair_cancel" states="draft,confirmed,under_repair,done" type="object" string="Cancel Repair"/>
+                 </button>
+                 <button name="action_repair_cancel" position="after">
+                 	 <button name="action_back_wash_order" states="check_compliance" type="object" string="Back To Wash Order"/>
+                 </button>
+                 <button name="action_repair_start" position="replace">
+                    <button name="%(ballester_wash.action_time_part_wizard_custom)d" attrs="{'invisible': ['&amp;', ('state','!=','confirmed'), '!', '&amp;', ('state','=','ready'), ('invoice_method','=','b4repair')]}"
+                    type="action" string="Start Repair" class="oe_highlight" context="{'start_repair':True}"/>
+                 </button>
+                 
+                 <button name="action_repair_end" position="replace">
+                 	 <button name="%(ballester_wash.action_time_part_wizard_custom)d" states="under_repair" type="action" string="End Repair" class="oe_highlight" context="{'end_repair':True}"/>
+                 </button>
+                 
+                 <notebook position="inside">
+                 	 <page string="Time Part">
+                        <field name="timesheet_ids" readonly="1">
+						<tree>
+							 <field name="employee_id"/>
+							<field name="name"/>
+							<field name="time"/>
+						</tree>
+						</field>
+                    </page>
+                 	
+                 </notebook>
+            </field>
+        </record>
+	
+	<menuitem  id="mrp_repair.menu_repair_order" groups="stock.group_stock_user" name="Repairs" sequence="36"
+            web_icon="mrp_repair,static/description/icon.png"/>
+
+	<menuitem parent="mrp_repair.menu_repair_order"   id="menu_repair_configure"  name="Configurations" sequence="13"/>
+	<menuitem parent="mrp_repair.menu_repair_order"  action="mrp_repair.action_repair_order_tree"  id="menu_repair"  name="Repair" sequence="1"/>
+    </data>
+</odoo>

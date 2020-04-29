@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--     
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Screen. 
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). 
+-->
+<template xml:space="preserve">
+	<!-- ================  Main 2 Button ================-->
+	<!-- ================  Output Of Products Button  ================-->
+	<t t-name="OutputOfProductsButton">
+		<div class="row">
+			<div class="col-md-8">
+				<ol class="breadcrumb o_portal_submenu" style="font-size: 20px;">
+					<li>
+						<a href="" class="main">
+							<i class="fa fa-home">
+							</i>
+						</a>
+					</li>
+					<li>
+						<a href="" class="warehouse">Output Of Products</a>
+					</li>
+				</ol>
+			</div>
+			 <t t-call='LoginUser' />
+		</div>
+		<br/>
+		<div class="row">
+			<div class="col-md-6">
+				<a href="javascript:;" class="oe_highlight dashborad_button exit_of_containers">Exit of Containers</a>
+			</div>
+			<div class="col-md-6">
+				<a href="javascript:;" class="oe_highlight dashborad_button exit_management_by">Exit Management by
+3rd</a>
+			</div>
+		</div>
+		<div class="row" style="margin-top:50px;">
+			<div class="col-md-4 pull-right">
+				<t t-call='ExitPopup'  style="height:50px;"/>
+			</div>
+		</div>
+	</t>
+</template>

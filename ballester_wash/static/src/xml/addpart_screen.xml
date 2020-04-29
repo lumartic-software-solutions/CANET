@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Screen.
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+-->
+<template xml:space="preserve">
+	<!-- ================ Crush Display Screen  ================-->
+	<t t-name="AddPartsRepair">
+		<html>
+
+			<head>
+
+			     
+			</head>
+		</html>
+		<div class="row">
+            <div class="col-md-8">
+				<ol class="breadcrumb o_portal_submenu" style="font-size: 20px;">
+					<li>
+						<a href="" class="main">
+							<i class="fa fa-home">
+							</i>
+						</a>
+					</li>
+				</ol>
+			</div>
+         <t t-call='LoginUser' />
+		</div>
+		<br/>
+
+		<!--add parts-->
+		<div class="row" style="margin-left: 30px;">
+			<div class="col-md-12">
+				<h2>Repair Order</h2><br/>
+				<div class="scrollbar" style=" margin-right: 7px;" >
+					<table class="common_table table table-condensed table-striped o_list_view_ungrouped"
+						id="repair_parts_table" style="border-collapse:
+						collapse;   width:100%;">
+						<thead class="navbar-default common_color" style="width: 100%;">
+							<tr  style="width: 100%;">
+								<th style="width: 50%;">
+									<span>Product</span>
+								</th>
+								<th style="width: 40%;">
+									<span>Quantity</span>
+								</th>
+								<th style="width: 10%;">
+								</th>
+								
+							</tr>
+						</thead>
+						<tbody>
+							<tr id="add_an_item">
+								<td colspan="4" class="o_field_x2many_list_row_add add_repair_part" >
+									<a href="#">Add Repair Parts</a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+
+	     <!--buttons -->
+		<div class="row" style="margin-left: 50px;">
+
+			<div class="col-md-3" >
+				<button  style="margin-top: 25px;" class="btn btn-primary common_button
+						save_repair_parts" id="save_repair_parts" 
+						 type="button">Save</button>
+
+			</div>
+			
+			<!--<div class="col-md-3" >
+				<button  style="display:none;margin-top: 25px;" class="btn btn-primary common_button
+						edit_repair_parts" id="edit_repair_parts" 
+						 type="button">edit</button>
+
+			</div>-->
+
+			<div class="col-md-3" >
+				<button  style="display:none;margin-top: 25px;" class="btn btn-primary common_button
+						backto_repair" id="backto_repair" 
+						 type="button">Back To Repair Order</button>
+
+			</div>
+			
+		</div>
+
+
+	</t>
+</template>

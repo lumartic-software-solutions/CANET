@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--     
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Washed Screen.
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). 
+-->
+<odoo>
+	<data>
+		<!-- Washed Operations  action -->
+		<record id="action_ballester_washed_container_screen" model="ir.actions.client">
+			<field name="name">Washed Container Operations</field>
+			<field name="tag">ballester_washed_container_screen_act</field>
+			<field name="target">fullscreen</field>
+		</record>
+		
+		<record id="action_ballester_end_washed_container_screen" model="ir.actions.client">
+			<field name="name">End Washed Container Operations</field>
+			<field name="tag">ballester_end_washed_container_screen_act</field>
+			<field name="target">fullscreen</field>
+		</record>
+		<record id="action_ballester_container_drying_control_screen" model="ir.actions.client">
+			<field name="name">Container drying and Control Operations</field>
+			<field name="tag">ballester_washed_drying_screen_act</field>
+			<field name="target">fullscreen</field>
+		</record>
+		
+               <record id="action_ballester_drum_drying_control_screen" model="ir.actions.client">
+			<field name="name">Drum Drying And Control Operations</field>
+			<field name="tag">ballester_drum_control_screen_act</field>
+			<field name="target">fullscreen</field>
+		</record>
+               <record id="action_ballester_crush_compact_screen" model="ir.actions.client">
+			<field name="name">Crush and Compact Operations</field>
+			<field name="tag">ballester_crush_compact_screen_act</field>
+			<field name="target">fullscreen</field>
+		</record>
+
+
+		<record id="action_ballester_container_display_screen" model="ir.actions.client">
+			<field name="name">Container Start Display Screen</field>
+			<field name="tag">ballester_container_display_screen_act</field>
+			<field name="target">main</field>
+		</record>
+
+		<record id="action_ballester_container_end_display_screen" model="ir.actions.client">
+			<field name="name">Container End Display Screen</field>
+			<field name="tag">ballester_container_end_display_screen_act</field>
+			<field name="target">main</field>
+		</record>
+		
+		<record id="action_ballester_container_drying_display_screen" model="ir.actions.client">
+			<field name="name">Container Drying and Control  Display Screen</field>
+			<field name="tag">ballester_container_drying_display_screen_act</field>
+			<field name="target">main</field>
+		</record>
+		
+		<record id="action_ballester_drum_wash_display_screen" model="ir.actions.client">
+			<field name="name">Drum Wash and Drying  Display Screen</field>
+			<field name="tag">ballester_drum_wash_drying_display_screen_act</field>
+			<field name="target">main</field>
+		</record>
+
+		<record id="action_ballester_crush_compact_display_screen" model="ir.actions.client">
+			<field name="name">Crush and Compact  Display Screen</field>
+			<field name="tag">ballester_crush_compact_display_screen_act</field>
+			<field name="target">main</field>
+		</record>
+		
+		<record id="action_ballester_crush_continue_screen" model="ir.actions.client">
+			<field name="name">Crush   Display Screen</field>
+			<field name="tag">ballester_crush_contine_screen_act</field>
+			<field name="target">main</field>
+		</record>
+
+		<record id="action_ballester_compact_continue_screen" model="ir.actions.client">
+			<field name="name">Crush   Display Screen</field>
+			<field name="tag">ballester_compact_contine_screen_act</field>
+			<field name="target">main</field>
+		</record>
+
+		<record id="action_ballester_repair_order_view" model="ir.actions.client">
+			<field name="name">Reapir_order</field>
+			<field name="tag">ballester_repair_order_act</field>
+			<field name="target">main</field>
+		</record>
+
+
+		<!-- main Washed Container Operations menu -->
+		<menuitem id="menu_washed_container_ballester_screen" name="Container Wash" sequence="25" action="ballester_wash.action_ballester_washed_container_screen" groups="group_screen_user"/>
+
+		<!-- main End  Washed Container Operations menu -->
+		<menuitem id="menu_end_washed_container_ballester_screen" name="Container End Wash" sequence="26" action="ballester_wash.action_ballester_end_washed_container_screen" groups="group_screen_user"/>
+
+		<!-- main Container drying and control Operations menu -->
+		<menuitem id="menu_container_drying_control_ballester_screen" name="Container Drying and quality control" sequence="27" action="ballester_wash.action_ballester_container_drying_control_screen" groups="group_screen_user"/>
+
+		<!-- main drum drying and control menu -->
+		<menuitem id="menu_washed_drum_drying_control_ballester_screen" name="Drum Drying and Quality Control" sequence="28" action="ballester_wash.action_ballester_drum_drying_control_screen" groups="group_screen_user"/>
+
+		<!-- main crush and compact Operations menu -->
+		<menuitem id="menu_crush_compact_ballester_screen" name="Crush and Compact" sequence="29" action="ballester_wash.action_ballester_crush_compact_screen" groups="group_screen_user"/>
+		
+	</data>
+</odoo>

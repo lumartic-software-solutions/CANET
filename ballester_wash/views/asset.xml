@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--     
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Member Barcode Scanner.
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). 
+-->
+<odoo>
+	<!-- register js -->
+	<template id="wash_container_asset_id" name="wash_container_assets" inherit_id="web.assets_backend">
+		<xpath expr="." position="inside">
+			<script type="text/javascript" src="/ballester_wash/static/src/js/wash_container.js"></script>
+ 			<link rel="stylesheet" href="/ballester_wash/static/src/css/screen.css" />
+			<script type="text/javascript" src="/ballester_wash/static/src/js/container_drying_control.js"></script>
+			<script type="text/javascript" src="/ballester_wash/static/src/js/crushed_compact.js"></script>
+			<script type="text/javascript" src="/ballester_wash/static/src/js/drum_wash_drying_control.js"></script>
+			<script type="text/javascript" src="/ballester_wash/static/src/js/end_container.js"></script>
+			<script type="text/javascript" src="/ballester_wash/static/src/js/container_display.js"></script>	
+			<script type="text/javascript" src="/ballester_wash/static/src/js/container_end_display.js"></script>
+			<script type="text/javascript" src="/ballester_wash/static/src/js/container_drying_control_display.js"></script>
+			<script type="text/javascript" src="/ballester_wash/static/src/js/drum_wash_display.js"></script>
+			<script type="text/javascript" src="/ballester_wash/static/src/js/crush_compact_display.js"></script>
+                        <script type="text/javascript" src="/ballester_wash/static/src/js/crush_screen.js"></script>
+			  <script type="text/javascript" src="/ballester_wash/static/src/js/compact_screen.js"></script>
+		<script type="text/javascript" src="/ballester_wash/static/src/js/repair_order_display.js"></script>
+				
+		</xpath>
+	</template>
+</odoo>

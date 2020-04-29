@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Screen.
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+-->
+<template xml:space="preserve">
+	<!-- ================ Internal Transfer Button  ================-->
+	<t t-name="ContainerDisplay">
+		<html>
+			<head>
+
+			<script>
+				$('#barcode_number').focus();
+			 </script>
+
+			</head>
+		</html>
+		<div class="row">
+            <div class="col-md-8">
+				<ol class="breadcrumb o_portal_submenu" style="font-size: 20px;">
+					<li>
+						<a href="" class="main">
+							<i class="fa fa-home">
+							</i>
+						</a>
+					</li>
+				</ol>
+			</div>
+         <t t-call='LoginUser' />
+		</div>
+		<br/>
+
+		<!-- barcode design -->
+		<div class="row" style="margin-left: 30px;">
+		<t t-if="widget.continue_button != true">
+			<div class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 10px;margin-left:-100px" >
+				<span style="margin-left:150px">Select Lot /Series Number:</span>
+			</div>
+			<div class="col-md-6" style="width:350px;margin-top: 20px;">
+
+
+						<input type="text" class="barcode"  autofocus="autofocus" id="barcode_number" name="barcode_wash" style="height:45px;color:00bfff" maxlength="13"/>
+			</div>
+
+		</t>
+
+		</div>
+
+		<div class="row" style="margin-left: 30px;">
+
+			<div id="image_div"  class="col-md-4" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-100px" >
+			<img id="image_container"  style="display:none;" height='200'  width='200'>  </img>			
+
+</div>
+			<div class="col-md-8" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:10px" >
+
+				<table class="table_detail" id="table_detail" >
+
+				</table>
+				
+			</div>
+			
+
+		</div>
+		<t t-if="widget.continue_button" >
+				<div id="image_div"  class="col-md-4" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-100px" >
+				    <img id="image_container"  height='200'  width='200' t-attf-src="data:image/png;base64,#{widget.img_url}">  </img>			
+
+		               </div>
+	
+			       <div class="col-md-8" style="text-align: right; font-size: 20px; margin-top: 20px;margin-left:10px" >
+
+				<table class="table_detail" id="table_detail" >
+					<tr> 
+						<td  style='color:blue'>Barcode: </td>
+						 <td style='color:blue'>
+							<span t-esc="widget.barcode">  </span>
+							</td>
+
+								</tr>
+							<tr> 
+						<td width="30%"  style='color:blue'>No of washing order: </td>
+						 <td style='color:blue'>
+
+								<span t-esc="widget.order_number"/> 	
+							</td>
+
+								</tr>
+						
+							<tr>
+				    <td style='color:blue'>  Type Of Order:</td>
+					<td style='color:blue'>
+						<span t-esc="widget.order_type"/> 
+					</td>
+		                             </tr>
+							<tr> 
+				        <td style='color:blue'> Dangerous characteristics: </td>
+					<td style='color:blue'>
+							<span t-esc="widget.dangerous_char"/>
+						</td>
+
+					</tr>
+							<tr>
+					<td style='color:blue'>  Variants:</td>
+					<td style='color:blue'>
+
+						<span t-esc="widget.variants"/></td>
+					 </tr>
+						
+							<tr> 
+				      <td style='color:blue; font-size:25px'><b> State: </b></td>
+					<td style='color:blue; font-size:25px'>
+						<span t-esc="widget.state"/>
+							</td>
+				             </tr>
+		 					<tr> 
+				        <td style='color:blue'> LER: </td>
+					<td style='color:blue'>
+							<span t-esc="widget.ler"/>
+							</td>
+				        </tr>
+							<tr>
+				         <td style='color:blue'> UN code: </td>
+					<td style='color:blue'>
+						<span t-esc="widget.un_code"/>
+							</td>
+				            </tr>
+
+						<tr>
+				         <td style='color:blue'> Recycled Product: </td>
+					<td style='color:blue'>
+						<span t-esc="widget.recycled_product_name"/>
+							</td>
+				            </tr>
+
+						</table>
+				
+			       </div>
+			
+                       </t>
+
+	     <!--buttons -->
+		<div class="row" style="margin-left: 20px;">
+
+			              <t  t-call='ConfirmEmptying'/>
+				<!--<t t-if="widget.end_emptying == true">
+				   <t  t-call='EndWashemptyingTemplte1'/>
+				</t>-->
+					<t  t-call='EndWashemptyingTemplte'/>
+			
+				
+				<!--<t t-if="widget.start_pre_wash == true">
+				   <t  t-call='Confirmprewash1'/>
+				</t>-->
+
+			            <t  t-call='Confirmprewash'/>	
+
+				<!--<t t-if="widget.end_prewash == true">
+					<t  t-call='EndPreWashTemplte1'/>
+				</t>-->
+					<t  t-call='EndPreWashTemplte'/>
+				<!--<t t-if="widget.start_wash == true">
+					<t  t-call='Confirmstartwash1'/>
+				</t>-->
+				
+					<t  t-call='Confirmstartwash'/>
+					
+					<!--<button style=" margin-left: 55px;margin-top: 25px;display:none;" class="btn
+						btn-primary common_button cancel_wash_order" id="cancel_wash_order_button"
+						type="button">Cancel</button>-->
+					
+			            <t t-call='ExitPopup1'     />
+			</div>
+
+
+	</t>
+</template>

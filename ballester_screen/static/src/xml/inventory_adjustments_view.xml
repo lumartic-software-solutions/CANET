@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--     
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Screen. 
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). 
+-->
+<template xml:space="preserve">
+	<!-- ================ Inventory Adjustments Button  ================-->
+	<t t-name="InventoryAdjustmentsButton">
+		<html>
+			<head>
+				<script>$(".locations").editableSelect();
+					
+					  </script>
+			</head>
+		</html>
+		<div class="row">
+			<div class="col-md-8">
+				<ol class="breadcrumb o_portal_submenu" style="font-size: 20px;">
+					<li>
+						<a href="" class="main">
+							<i class="fa fa-home">
+							</i>
+						</a>
+					</li>
+					<li>
+						<a href="" class="warehouse">Almacén</a>
+					</li>
+					<li>
+						<a href="" class="inventory_adjustments">Ajustes de inventario</a>
+					</li>
+				</ol>
+			</div>
+         <t t-call='LoginUser' />
+		</div>
+		<div class="row" style="margin-left: 10px;">
+<!--			<div class="col-md-1" style="text-align:right;">-->
+<!--			</div>-->
+			<div class="col-md-4">
+				<input type="hidden" name="inventory_id" value="None" id="created_inventory_id"/>
+				<h2>Inventoried Location :</h2>
+			</div>
+			<div class="col-md-4" id="location_data">
+				<select class="locations" style="margin-top: 18px; margin-bottom: 9px; overflow-y:
+					auto!important; width:100%; font-size: 18px; ">
+					<t t-foreach="widget.location_list" t-as="i">
+						<option t-attf-value="#{i['name']}"  t-attf-ids="#{i['id']}"><span t-esc="i['name']" /></option>
+					</t>
+				</select>
+			</div>
+			<div class="col-md-4">
+			</div> 
+		</div>
+		<div class="row" style="margin-left: 10px;">
+			<div class="col-md-4">
+				<input type="hidden" name="categ_id" value="None" id="created_categ_id"/>
+				<h2>Product Category :</h2>
+			</div>
+			<div class="col-md-4" id="categ_data">
+				<select class="category" id="categ_select_id" style="height:35px;margin-top: 18px; margin-bottom: 9px; overflow-y:
+					auto!important; width:100%; font-size: 18px; ">
+					<option> -- select an option -- </option>
+					<t t-foreach="widget.category_list" t-as="i">
+						<option t-attf-value="#{i['name']}"  t-attf-ids="#{i['id']}"><span t-esc="i['name']" /></option>
+					</t>
+				</select>
+			</div>
+			<div class="col-md-4">
+			</div> 
+		</div>
+		<br/>
+		
+		<div class="row" style="margin-left: 10px;">
+			<div class="col-md-12">
+				<h2>Inventory Adjustments</h2><br/>
+				<div class="scrollbar" style=" margin-right: 7px;" >
+					<table class="common_table table table-condensed table-striped o_list_view_ungrouped"
+						id="inventory_adjustments_table" style="border-collapse:
+						collapse;   width:100%;">
+						<thead class="navbar-default common_color" style="width: 100%;">
+							<tr  style="width: 100%;">
+								<th style="width: 25%;">
+									<span>Product</span>
+								</th>
+								<th style="width: 15%;">
+									<span>LER Code</span>
+								</th>
+								<th style="width: 20%;">
+									<span>Barcode</span>
+								</th>
+								<th style="width: 20%;">
+									<span>End of Life Date</span>
+								</th>
+								<th style="width: 5%;">
+								</th>
+								<th style="width: 5%;">
+								</th>
+								<th style="width: 5%;">
+								</th>
+								<th style="width: 5%;">
+								</th>
+								
+							</tr>
+						</thead>
+						<tbody>
+							<tr id="add_an_item">
+								<td colspan="4" class="o_field_x2many_list_row_add add_an_item" >
+									<a href="#">Add an item</a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+			<br/>
+			<div class="row" style="margin-left: 10px;">
+				<div class="col-md-4"></div>
+				<div class="col-md-8 pull-right">
+					<button style="margin-left: 25px;margin-top: 25px;" class="btn btn-primary common_button
+						save_inventory_adjustments" id="save_inventory_adjustments_button"
+						 type="button">Save</button>
+					<button style="display:none; margin-left: 25px;margin-top: 25px;" class="btn
+						btn-primary common_button edit_inventory_adjustments" id="edit_inventory_adjustments_button"
+						type="button">Edit</button>
+					<button style="display:none; margin- left: 25px; margin-top: 25px;" class="btn
+						btn-primary common_button validate_barcode" id="validate_barcode_button"
+						type="button">Validate Barcode</button>
+					<t t-call='ExitPopup' />
+				</div>
+			</div>
+		
+	</t>
+</template>

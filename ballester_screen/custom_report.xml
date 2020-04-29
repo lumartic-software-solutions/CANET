@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--     
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Screen .
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). 
+-->
+<odoo>
+	<data>
+		<!-- barcode paper formate report -->
+		 <record id="paperformat_report_barcode" model="report.paperformat">
+            <field name="name">Report barcode</field>
+            <field name="default" eval="False" />
+             <field name="format">custom</field>
+            <field name="page_height">25</field>
+            <field name="page_width">95</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">0</field>
+            <field name="margin_bottom">0</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">0</field>
+            <field name="dpi">90</field>
+        </record>
+		
+		<!-- barcode report -->
+		<report id="barcode_report_id" string="Barcode Report" model="stock.inventory.line"
+			report_type="qweb-pdf" file="ballester_screen.report_barcode" name="ballester_screen.report_barcode"
+			paperformat="ballester_screen.paperformat_report_barcode"/>
+	</data>
+</odoo>

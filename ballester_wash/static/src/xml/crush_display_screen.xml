@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Screen.
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+-->
+<template xml:space="preserve">
+
+
+	<!-- ================ Crush Display Screen  ================-->
+	<t t-name="CrushDisplayscreen">
+		<html>
+
+			<head>
+				<script>$(".locations").editableSelect();
+			
+				$('.delivery_location').editableSelect();
+				$('.select2').select2();
+
+				$("#checkbox").click(function(){
+				    if($("#checkbox").is(':checked') ){
+				        $("#delivery_location > option").prop("selected","selected");
+				        $("#delivery_location").trigger("change");
+				    }else{
+				        $("#delivery_location > option").removeAttr("selected");
+				         $("#delivery_location").trigger("change");
+				     }
+				});
+				$(".select").editableSelect();
+				
+				$("#checkbox").click(function(){
+				    if($("#checkbox").is(':checked') ){
+				        $("#type-select > option").prop("selected","selected");
+				        $("#type-select").trigger("change");
+				    }else{
+				        $("#type-select > option").removeAttr("selected");
+				         $("#type-select").trigger("change");
+				     }
+				});
+				$(".recycled_product_crush").editableSelect();
+				
+				$("#checkbox").click(function(){
+				    if($("#checkbox").is(':checked') ){
+				        $("#recycled_product_crush > option").prop("selected","selected");
+				        $("#recycled_product_crush").trigger("change");
+				    }else{
+				        $("#recycled_product_crush > option").removeAttr("selected");
+				         $("#recycled_product_crush").trigger("change");
+				     }
+				});
+				$(".product_recycled").editableSelect();
+				
+				$("#checkbox").click(function(){
+				    if($("#checkbox").is(':checked') ){
+				        $("#my-recycled-product > option").prop("selected","selected");
+				        $("#my-recycled-product").trigger("change");
+				    }else{
+				        $("#my-recycled-product > option").removeAttr("selected");
+				         $("#my-recycled-product").trigger("change");
+				     }
+				});
+				
+					  </script>
+
+			     
+			</head>
+		</html>
+		
+
+		<div class="row">
+			<div class="col-md-8">
+				<ol class="breadcrumb o_portal_submenu" style="font-size: 20px;">
+					<li>
+						<a href="" class="main">
+							<i class="fa fa-home">
+							</i>
+						</a>
+					</li>
+					<li>
+						<a href="" class="alreday_crush_compact_button">Alreday Created Order</a>
+					</li>
+					<li>
+						<a href="" class="display_crush_order">Crush Order</a>
+					</li>
+				</ol>
+			</div>
+                  <t t-call='LoginUser' />
+		</div>
+		<br/>
+
+		<!-- barcode design -->
+		<div class="row" style="margin-left: 30px;">
+
+			<div id="image_div"  class="col-md-4" style="margin-top: 20px;margin-right:-100px" >
+			<img id="image_container"   height='200'  width='200' t-attf-src="data:image/png;base64,#{widget.img_url}">  </img>	
+			<br/>
+			
+			<!--<div class="col-md-7" id="qty_div1" style="text-align:right; font-size: 22px; margin-top: 20px;margin-right:-20px;color:blue" >
+				<t t-if="widget.qty_visible"><span > Crush/Compact material Quantity:</span></t>
+			</div>
+			<div class="col-md-5" id="qty_div2" style="width: 100px;margin-top: 30px;color:blue">
+
+			   <t t-if="widget.qty_visible">    <input type="text" class="qty"  id="qty"  style="height:40px;color:00bfff"/></t>
+			</div>-->
+                   </div>
+			<div class="col-md-8" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:10px" >
+
+				<table class="table_detail" id="table_detail" >
+					<tr id='tr8_detail'> 
+				<td style='width: 250px;font-size:20px; color:blue'>Barcode: </td>
+			         <td style='font-size:20px; color:blue'><span id="barcode_number" t-esc="widget.barcode" />
+					</td>
+
+						</tr>
+					<tr id='tr_detail'> 
+				<td style='width: 250px;font-size:20px; color:blue'>No of Washing Order: </td>
+			         <td style='font-size:20px; color:blue'><span id="order_number" t-esc="widget.order_number" />
+					</td>
+
+						</tr>
+				
+			<tr id='tr1_detail'>
+				    <td style='width: 250px;font-size:20px; color:blue'>  Type Of Order:</td>
+					<td   style='font-size:20px; color:blue'><span id="order_type" t-esc="widget.order_type" /></td>
+                        </tr>
+			<tr id='tr2_detail'> 
+		                <td style='width: 250px;font-size:20px; color:blue'> Dangerous characteristics: </td>
+				<td style='font-size:20px; color:blue'> <span id="dangerous_char"  t-esc="widget.dangerous_char" /></td>
+
+			</tr>
+			<tr id='tr3_detail'>
+				<td style='width: 250px;font-size:20px; color:blue'>  Variants:</td>
+				<td style='font-size:20px; color:blue'><span id="variants" t-esc="widget.variants" /></td>
+			 </tr>
+				
+			<tr id='tr4_detail'> 
+		                <td style='width: 250px;font-size:20px; color:blue'> State: </td>
+				<td style='font-size:20px; color:blue'><span id="state" t-esc="widget.state" /></td>
+                             </tr>
+ 			<tr id='tr5_detail'> 
+		                <td style='width: 250px;font-size:20px; color:blue'> LER: </td>
+				<td style='font-size:20px; color:blue'><span id="ler"  t-esc="widget.ler" /></td>
+                        </tr>
+			<tr id='tr6_detail'>
+		                <td style='width: 250px;font-size:20px; color:blue'> UN code: </td>
+				<td style='font-size:20px; color:blue'><span id="un_code"  t-esc="widget.un_code" /></td>
+                          </tr>
+			<tr id='tr8_detail'>
+		                <td style='width: 250px;font-size:20px; color:blue'> Kilos Qty: </td>
+				<td style='font-size:20px; color:blue'><span id="kilo_qty"  t-esc="widget.kilo_qty" /></td>
+                          </tr>
+			<tr id='tr7_detail'>
+		                 <td style='width: 250px;font-size:20px; color:blue'> Recycled Product: </td>
+				<td style='font-size:20px; color:blue'>
+
+			<t t-if="widget.recycled_product == true">
+				     <span t-esc="widget.recycled_product_list" style="width: 25%;"/>
+				</t>
+			<t t-else="widget.recycled_product != true"> <select class="recycled_product_crush"  id="recycled_product_crush" style="height: 40px;font-size: 22px;margin-top: 20px;    margin-left: 20px;" >
+				
+		          <t t-foreach="widget.recycled_product_list" t-as="i">
+							<option t-attf-value="#{i['name']}"  t-attf-ids="#{i['id']}"  ><span t-esc=" i['name']" style=" width: 25%;"/></option>
+					
+				</t>
+				
+				</select> </t>
+				
+				 </td>
+                            </tr>
+			
+<tr id='tr8_detail'>
+                         <td style='width: 250px;font-size:20px; color:blue'> Destination Location: </td>
+			<td style='font-size:20px; color:blue'>
+			<t t-if="widget.dest_location == true">
+				     <span t-esc="widget.delivery_location" style=" width: 25%;"/>
+				</t>
+			<t t-else="widget.dest_location != true"> <select class="delivery_location"  id="delivery_location" style="height: 40px;font-size: 22px;margin-top: 20px;    margin-left: 20px;" >
+			<t t-foreach="widget.delivery_location" t-as="i">
+							<option t-attf-value="#{i['name']}"  t-attf-ids="#{i['id']}"  ><span t-esc=" i['name']" style=" width: 25%;"/></option>
+					</t>
+				
+				</select> </t> 
+				
+				</td>
+                            </tr>
+			
+				</table>
+				
+			</div>
+			
+
+		</div>
+
+	     <!--buttons -->
+		<div class="row" style="margin-left: 10px;">
+
+				<div class="col-md-3" >
+					<t t-if="widget.start_button">
+					     <t  t-call='StratCrushButton'/>
+					</t>
+				</div>	
+				
+				<div class="col-md-3" >
+					<t t-if="widget.stop_crush_wash and widget.continue_button " >
+				  		<t  t-call='StopCrushButton'/>
+					</t>
+				</div>
+
+				<div class="col-md-2" >
+					<t t-if="widget.transfer_crush and widget.continue_button " >
+					     <t  t-call='TransfertoCrushButton'/>
+                                        </t>
+					
+				</div>
+				<div class="col-md-2" >
+			            <t t-call='ExitPopup'     style="margin-left:1000px;"/></div>
+			</div>
+
+
+	</t>
+</template>

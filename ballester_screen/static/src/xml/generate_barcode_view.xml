@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--     
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Screen. 
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). 
+-->
+<template xml:space="preserve">
+	<!-- ================ Generate Barcode Button  ================-->
+	
+	<t t-name="GenerateBarcodeButton">
+		<html>
+			<head>
+				<script type="text/javascript">
+				$('.select2').select2();
+				$("#checkbox").click(function(){
+				    if($("#checkbox").is(':checked') ){
+				        $("#my-select-barcode > option").prop("selected","selected");
+				        $("#my-select-barcode").trigger("change");
+				    }else{
+				        $("#my-select-barcode > option").removeAttr("selected");
+				         $("#my-select-barcode").trigger("change");
+				     }
+				});
+				</script>
+			</head>
+		</html>
+		<div class="row">
+			<div class="col-md-8">
+				<ol class="breadcrumb o_portal_submenu" style="font-size: 20px;">
+					<li>
+						<a href="" class="main">
+							<i class="fa fa-home">
+							</i>
+						</a>
+					</li>
+					<li>
+						<a href="" class="generate_barcode">Generar código de barras</a>
+					</li>
+				</ol>
+			</div>
+		   <t t-call='LoginUser' />
+		</div>
+		<br/>
+		<br/>
+		<br/>
+		<center>
+		<div class="row">
+			<div class="col-md-1">
+			</div>
+			<div class="col-md-10">
+				<h2>¿Cuántos códigos de barras desea generar?</h2>
+			</div>
+			<div class="col-md-1">
+			</div>
+		</div>
+		</center>
+		<br/>
+		<div class="row" style="font-size: 22px;">
+			<div class="col-md-3" >
+			</div>
+			<div class="col-md-2" style="text-align: right;" >
+				<span>No :</span>
+			</div>
+			<div class="col-md-3">
+				<input type="number" id="number_of_barcode" name="number_barcode" min="1" max="100"
+					/>
+			</div>
+			<div class="col-md-5">
+			</div>
+		</div>
+		<br/>
+		<div class="row">
+			<div class="col-md-8 pull-right">
+				<button style=" margin-right: 25px; margin-top: 25px; width: 140px;" class="btn btn-primary
+					common_button generate" id="generate_button" type="button">Generate</button>
+				<t t-call='ExitPopup' />
+				<button style="display:none;  margin-top: 25px; width: 180px;"
+					class=" btn btn-primary common_button print_generate_barcode" id="print_generate_barcode_button"
+					type="button">Print barcode</button>
+			</div>
+		</div>
+		<br/>
+		<div class="row" style="font-size: 18px;">
+			<div class="col-md-1">
+			</div>
+			<div class="col-md-10">
+				<div id="display_generate_barcode">
+				</div>
+			</div>
+			<div class="col-md-1">
+			</div>
+		</div>
+		<br/>
+		<div class="row">
+			<div class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 5px;" >
+				<span>Código de barras, no usado.</span>
+			</div>
+			<div class="col-md-7">
+				 <select class="select2" multiple="multiple" id="my-select-barcode"  style="height: 53px;font-size: 22px;" >
+<!--					<t t-if="widget.operation_data.set_unused_barcode_list == 'True'" -->
+					 	<t t-foreach="widget.operation_data.set_barcode_list" t-as="i">
+							<option t-attf-value="#{i['barcode']}"  t-attf-ids="#{i['id']}"><span t-esc="i['barcode']" /></option>
+						</t>
+<!--					</t-->
+				</select> 
+				<input type="checkbox" id="checkbox" style="margin-left: 5px;"/><span style="font-size: 22px; display: inline-block;">Select All
+			</span></div>
+			<div class="col-md-2">
+				<button style="width: 120px; font-size: 22px;"
+					class="btn btn-primary common_button print_multi_barcode" id="print_multi_barcode_button"
+					type="button">Print</button>
+			</div>
+		</div>
+<br/>
+		<div class="row">
+			<div class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 5px;" >
+				<span>Código de barras, usado.</span>
+			</div>
+			<div class="col-md-7">
+				 <select class="select2" multiple="multiple" id="my-used-select"  style="height: 53px;font-size: 22px;" >
+<!--					<t t-if="widget.operation_data.set_unused_barcode_list == 'True'" -->
+					 	<t t-foreach="widget.operation_data.used_set_barcode_list" t-as="i">
+							<option t-attf-value="#{i['barcode']}"  t-attf-ids="#{i['id']}"><span t-esc="i['barcode']" /></option>
+						</t>
+<!--					</t-->
+				</select> 
+				<input type="checkbox" id="checkbox" style="margin-left: 5px;"/><span style="font-size: 22px; display: inline-block;">Select All
+			</span></div>
+			<div class="col-md-2">
+				<button style="width: 120px; font-size: 22px;"
+					class="btn btn-primary common_button print_multi_barcode" id="print_multi_barcode_button"
+					type="button">Print</button>
+			</div>
+		</div>
+		<br/>
+  	 
+		<!--<div class="row" style="font-size: 18px;">
+			<div class="col-md-1">
+			</div>
+			<div class="col-md-10">
+			<table>
+                    <tbody>
+                        <tr id="barcode_free" align="center"></tr>
+                        <tr align="center">
+                            <td id="barcode_val_free"></td>
+                        </tr>
+                    </tbody>
+                </table>
+			</div>
+			<div class="col-md-1">
+			</div>
+		</div> -->
+			
+			
+
+	</t>
+</template>

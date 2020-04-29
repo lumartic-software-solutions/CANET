@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Screen.
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+-->
+<template xml:space="preserve">
+
+<t t-name="CrushCompactDisplay">
+		<div class="row">
+			<div class="col-md-8">
+				<ol class="breadcrumb o_portal_submenu" style="font-size: 20px;">
+					<li>
+						<a href="" class="crush_main">
+							<i class="fa fa-home">
+							</i>
+						</a>
+					</li>
+				</ol>
+			</div>
+			<t t-call='LoginUser' />
+		</div>
+		<br/>
+		<div class="row">
+			<div class="col-md-6">
+				<a href="javascript:;" class="oe_highlight dashborad_button create_crush_compact_button">Create New order</a>
+			</div>
+			<div class="col-md-6">
+				<a href="javascript:;" class="oe_highlight dashborad_button alreday_crush_compact_button">Alreday created Crush/Compact</a>
+			</div>
+		</div>
+	</t>
+
+		
+<t t-name="SelectCrushCompactTemplate">
+		<div class="row">
+			<div class="col-md-8">
+				<ol class="breadcrumb o_portal_submenu" style="font-size: 20px;">
+					<li>
+						<a href="" class="main">
+							<i class="fa fa-home">
+							</i>
+						</a>
+					</li>
+					<li>
+						<a href="" class="alreday_crush_compact_button">Alreday Created Order</a>
+					</li>
+				</ol>
+			</div>
+                  <t t-call='LoginUser' />
+		</div><br/>
+		<div class="row">
+			<div class="col-md-6">
+				<a href="javascript:;" class="oe_highlight dashborad_button display_crush_order">Start Crush Order</a>
+			</div>
+			<div class="col-md-6">
+				<a href="javascript:;" class="oe_highlight dashborad_button display_compact_order">Start Compact Order</a>
+			</div>
+		</div>
+	</t>
+
+	
+	<!-- ============-->
+	<t t-name="CrushCompactDisplay1">
+		<html>
+			<head>
+
+			<script>
+			$('#barcode_number').focus();
+			 </script>
+
+			</head>
+		</html>
+            <div class="row">
+			<div class="col-md-8">
+				<ol class="breadcrumb o_portal_submenu" style="font-size: 20px;">
+					<li>
+						<a href="" class="main">
+							<i class="fa fa-home">
+							</i>
+						</a>
+					</li>
+					<li>
+						<a href="" class="alreday_crush_compact_button">Alreday Created Order</a>
+					</li>
+					<li>
+						<a href="" class="display_crush_order">Crush Order</a>
+					</li>
+				</ol>
+			</div>
+                  <t t-call='LoginUser' />
+		</div>
+		<br/>
+
+		<div class="row" style="margin-left: 30px;">
+
+			<div class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-100px" >
+				<span style="margin-left:50px">Select Lot /Series Number:</span>
+			</div>
+			<div class="col-md-6" style="width:350px;margin-top: 20px;">
+
+
+						<input type="text" class="barcode"  autofocus="autofocus" id="barcode_number" name="barcode_wash" style="height:45px;color:00bfff" maxlength="13"/>
+			</div>
+
+		</div>
+
+		<div class="row" style="margin-left: 30px;">
+
+			<div id="image_div"  class="col-md-4" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-100px" >
+			<img id="image_container"  style="display:none;" height='200'  width='200'>  </img>			
+
+</div>
+			<div class="col-md-8" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:10px" >
+
+				<table class="table_detail" id="table_detail" style="display:none;">
+
+				</table>
+				
+			</div>
+			
+
+		</div>
+
+		<div class="row" style="margin-left: 20px;">
+
+			<div class="col-md-3" >
+				</div>	
+				
+				
+				<div class="col-md-3" >
+				</div>
+
+				<div class="col-md-3" >
+					
+				</div>
+				<div class="col-md-3" >
+			            <t t-call='ExitPopup'     style="margin-left:1000px;"/></div>
+			</div>
+
+
+	</t>
+
+
+	<!--compact display    -->
+	<t t-name="CrushCompactDisplaycompact">
+		<html>
+			<head>
+
+			<script>
+			$('#barcode_number').focus();
+			 </script>
+
+			</head>
+		</html>
+            <div class="row">
+			<div class="col-md-8">
+				<ol class="breadcrumb o_portal_submenu" style="font-size: 20px;">
+					<li>
+						<a href="" class="main">
+							<i class="fa fa-home">
+							</i>
+						</a>
+					</li>
+					<li>
+						<a href="" class="alreday_crush_compact_button">Alreday Created Order</a>
+					</li>
+					<li>
+						<a href="" class="display_compact_order">Compact Order</a>
+					</li>
+				</ol>
+			</div>
+                  <t t-call='LoginUser' />
+		</div>
+		<br/>
+
+		<div class="row" style="margin-left: 30px;">
+
+			<div class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-100px" >
+				<span style="margin-left:50px">Select Lot /Series Number:</span>
+			</div>
+			<div class="col-md-6" style="width:350px;margin-top: 20px;">
+
+
+						<input type="text" class="barcode"  autofocus="autofocus" id="barcode_number" name="barcode_wash" style="height:45px;color:00bfff"/>
+			</div>
+
+		</div>
+
+		<div class="row" style="margin-left: 30px;">
+
+			<div id="image_div"  class="col-md-4" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-100px" >
+			<img id="image_container"  style="display:none;" height='200'  width='200'>  </img>			
+
+</div>
+			<div class="col-md-8" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:10px" >
+
+				<table class="table_detail" id="table_detail" style="display:none;">
+
+				</table>
+				
+			</div>
+			
+
+		</div>
+
+		<div class="row" style="margin-left: 20px;">
+
+			<div class="col-md-3" >
+				</div>	
+				
+				
+				<div class="col-md-3" >
+				</div>
+
+				<div class="col-md-3" >
+					
+				</div>
+				<div class="col-md-3" >
+			            <t t-call='ExitPopup'     style="margin-left:1000px;"/></div>
+			</div>
+
+
+	</t>
+
+
+</template>

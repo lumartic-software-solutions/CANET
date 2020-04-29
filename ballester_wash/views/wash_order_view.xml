@@ -1,0 +1,537 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+    <record id="view_wash_order_tree" model="ir.ui.view">
+        <field name="name">wash.order.tree</field>
+        <field name="model">wash.order</field>
+        <field name="arch" type="xml">
+            <tree string="Wash order" decoration-muted="state in ('cancel')" decoration-info="state=='draft'">
+                <field name="name" />
+                <field name="product_id" />
+		<field name="wash_date" />
+                <field name="state"/>
+		
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_wash_order_form" model="ir.ui.view">
+        <field name="name">wash.order.form</field>
+        <field name="model">wash.order</field>
+        <field name="arch" type="xml">
+            <form string="Wash Order">
+               <header>
+                   <!--<button name="action_validate" states="draft" type="object" string="Confirm Repair" class="oe_highlight"/>-->
+                   <button name="%(ballester_wash.action_time_part_wizard_custom)d" invisible="context.get('drum') or context.get('compact') or context.get('crush')"
+
+attrs="{'invisible': [ ('state','in',['start_wash','stop_emptying','start_emptying','start_re_wash','stop_re_wash','destructed','start_crush','repair_create','quality_control','stop_crush','check_compliance','cancel','end_wash','start_drying','stop_drying','transfer_to_store'])]}"
+                    type="action" string="Start Emptying" class="oe_highlight" states='draft' context="{'start_emptying':True}"/>
+
+		    <button name="%(ballester_wash.action_time_part_wizard_custom)d" attrs="{'invisible': [ ('state','in',['start_wash','destructed','draft','start_crush','stop_emptying','start_re_wash','stop_re_wash','repair_create','quality_control','stop_crush','check_compliance','cancel','end_wash','start_drying','stop_drying','transfer_to_store'])]}"
+                    type="action" string="Stop Emptying" invisible="context.get('drum') or context.get('compact') or context.get('crush')" class="oe_highlight" states='start_emptying' context="{'stop_emptying':True}"/>
+
+                    <button name="%(ballester_wash.action_time_part_wizard_custom)d" invisible="context.get('drum') or context.get('compact') or context.get('crush')"
+attrs="{'invisible': [ ('state','in',['start_wash','draft','destructed','start_crush','start_emptying','start_re_wash','stop_re_wash','repair_create','quality_control','stop_crush','check_compliance','cancel','end_wash','start_drying','stop_drying','transfer_to_store'] ) ]}"
+                    type="action" string="Start Pre-Wash" class="oe_highlight" states='draft' context="{'start_re_wash':True}"/>
+
+
+                    <button name="%(ballester_wash.action_time_part_wizard_custom)d" attrs="{'invisible': [ ('state','in',['start_wash','draft','destructed','stop_emptying','start_emptying','stop_re_wash','start_crush','repair_create','quality_control','stop_crush','check_compliance','cancel','end_wash','start_drying','stop_drying','transfer_to_store'])]}"
+                    type="action" string="Stop Pre-Wash" invisible="context.get('drum') or context.get('compact') or context.get('crush')"
+ class="oe_highlight" states='start_re_wash' context="{'stop_re_wash':True}"/>
+
+                   <button name="%(ballester_wash.action_time_part_wizard_custom)d" attrs="{'invisible': [ ('state','in',['start_wash','destructed','start_emptying','stop_emptying','start_re_wash','start_crush','repair_create','quality_control','stop_crush','check_compliance','cancel','end_wash','start_drying','stop_drying','transfer_to_store'])]}"
+                    type="action" string="Start Wash" class="oe_highlight" states='draft' context="{'start_wash':True}"/>
+		   
+                <button name="%(action_go_back_wash)d" attrs="{'invisible': [ ('state','in',['draft','check_compliance','stop_emptying','start_emptying','stop_re_wash','start_re_wash','destructed','stop_crush','repair_create','quality_control','cancel','end_wash','start_drying','stop_drying','transfer_to_store'])]}"
+                    type="action" string="Back To Wash" class="oe_highlight" context="{'go_back_wash':True}"/>
+
+
+		   <button name="%(ballester_wash.action_time_part_wizard_custom)d" attrs="{'invisible': [ ('state','in',['draft','check_compliance','destructed','stop_emptying','start_emptying','stop_re_wash','start_re_wash','stop_crush','repair_create','quality_control','cancel','end_wash','start_drying','stop_drying','transfer_to_store'])]}"
+                    type="action" string="End Wash" class="oe_highlight" context="{'end_wash':True}"/>
+
+
+		    <button name="%(ballester_wash.destriction_warning_wizard_action)d" invisible="context.get('drum')"  attrs="{'invisible': [ ('state','in',['draft','check_compliance','stop_crush','stop_emptying','start_emptying','stop_re_wash','start_re_wash','quality_control','repair_create','cancel','destructed','end_wash','transfer_to_store'])]}"
+                    type="action" string="Destruction" class="oe_highlight"  context="{'container_destruction':True ,'type':type_of_order }"/>
+	
+		
+		  <button name="%(ballester_wash.destriction_warning_wizard_action)d" invisible="context.get('container')"  attrs="{'invisible': [ ('state','in',['draft','check_compliance','stop_crush','stop_emptying','start_emptying','stop_re_wash','start_re_wash','quality_control','repair_create','cancel','destructed','transfer_to_store'])]}"
+                    type="action" string="Destruction" class="oe_highlight"  context="{'container_destruction':True ,'type':type_of_order }"/>
+
+
+
+                   <button name="%(ballester_wash.action_time_part_wizard_custom)d" attrs="{'invisible': [ ('state','in',['start_wash','start_crush','check_compliance','stop_emptying','start_emptying','stop_re_wash','start_re_wash','quality_control','repair_create','repair_create','destructed','stop_drying','stop_crush','draft','cancel','start_drying','transfer_to_store'])]}"
+                    type="action" invisible="context.get('drum') or context.get('compact') or context.get('crush')"  string="Start Drying" class="oe_highlight"  context="{'start_drying':True}"/>
+
+                   <button name="%(ballester_wash.action_time_part_wizard_custom)d" attrs="{'invisible': [ ('state','in',['end_wash','start_wash','draft','check_compliance','stop_emptying','start_emptying','stop_re_wash','start_re_wash','repair_create','quality_control','destructed','cancel','stop_drying','transfer_to_store'])]}"
+                    type="action" invisible="context.get('drum') or context.get('compact') or context.get('crush')"  string="End Drying" class="oe_highlight" context="{'end_drying':True}"/>
+
+		<button name="%(ballester_wash.action_time_part_wizard_custom)d" states="check_compliance"
+
+		attrs="{'invisible': [ ('state','in',['end_wash','start_wash','start_drying','stop_emptying','start_emptying','stop_re_wash','start_re_wash','quality_control','draft','destructed','stop_drying','cancel','transfer_to_store'])]}"
+                    type="action" string="Transfer To Store" class="oe_highlight" context="{'transfer_store':True}"/>
+
+		<button name="%(ballester_wash.action_repair_wizard_wash)d" states="quality_control"
+
+		attrs="{'invisible': [ ('state','in',['end_wash','start_wash','start_drying','stop_emptying','start_emptying','stop_re_wash','start_re_wash','draft','destructed','repair_create','stop_drying','check_compliance','cancel','transfer_to_store'])]}"
+                    type="action" string="Create Repair" class="oe_highlight" context="{'create_repair':True}"/>
+
+                   <button name="action_wash_cancel_draft" states="cancel" string="Set to Draft" type="object" context="{'wash_cancel_draft':True}"/>
+
+
+                   <button name="%(ballester_wash.action_time_part_wizard_custom)d" states="draft,check_compliance,start_wash,stop_emptying,start_emptying,quality_control,repair_create,start_re_wash,stop_re_wash,,end_wash,start_drying,stop_drying" type="action" string="Cancel Order" context="{'wash_cancel':True}"/>
+
+
+                   <field name="state" widget="statusbar" statusbar_visible="draft,start_wash,end_wash,convert,check_compliance,destructed,transfer_to_store"/>
+               </header>
+               <sheet string="Wash order">
+                  <div class="oe_button_box" name="button_box">
+			 <button type="object"
+                            name="action_view_repair"
+                            class="oe_stat_button"
+                            string="Repair"
+                            states="repair_create,transfer_to_store"
+                            icon="fa-check">
+                        </button>                    
+			<button type="object"
+                            name="action_view_crush"
+                            class="oe_stat_button"
+                            string="Crush"
+			states="destructed"
+                            icon="fa-check">
+                        </button>  
+
+			<button type="object"
+                            name="action_view_compact"
+                            class="oe_stat_button"
+                            string="Compact"
+			states="destructed"
+                            icon="fa-check" >
+                        </button>  
+
+</div>
+                    <label for="name"/>
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="tracking" invisible="1" attrs="{'readonly': 1}"/>
+			    <field name="type_of_order" required="1"/>
+			     <field name="repair_compliance" invisible="1"/>
+			<field name='cage' invisible="1"/>
+                            <field name="wash_date"  readonly="1"/>
+			    <field name="end_wash_datetime" invisible="1"/>
+                            <field name="product_id"  context="{'type_of_order': type_of_order, 'location_id':location_id}"/>
+                            <field name="type_of_drum"  required="context.get('drum')" invisible="context.get('container') or context.get('compact') or context.get('crush')  "/>
+                            <label for="product_qty"/>
+                            <div class="o_row">
+                                <field name="product_qty" />
+                                <field name="product_uom" groups="product.group_uom"/>
+                            </div>
+                            <field name="lot_id" domain="[('product_id', '=', product_id)]" context="{'default_product_id': product_id}" groups="stock.group_production_lot" attrs="{'required': [('tracking', '!=', 'none')], 'readonly': [('state', '=', 'transfer_to_store','end_wash','start_wash','start_drying','stop_drying','repair_create')]}"/>
+			     <field name="lot_name" invisible="1"/>
+                        </group>
+                        <group>
+			 <field name="start_datetime" string="Start Wash Time" readonly="1"/>
+                            <field name="location_id" domain="[('usage','not in', ['supplier','production'])]" context="{'location_id': location_id}"/>
+                            <field name="dangerous" invisible="1"/>
+				<field name="non_dangerous" invisible="1"/>
+                            <field name="location_dest_id" domain="[('usage','not in', ['supplier','production'])]"/>
+                            <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+			      <field name="recycled_product_id" required="1" context="{'default_recycled': True,'search_default_recycled':True ,'recycle':True ,'type': type_of_order}"/>
+                            <field name="washing_type"  context="{'type': washing_type}" attrs="{'readonly': [('state', '=', 'transfer_to_store','end_wash','start_wash','start_drying','stop_drying','repair_create')]}"/>
+                        </group>
+                    </group>
+                <notebook>
+                    <page string="Washing Products">
+                        <field name="operations" context="{'default_product_uom_qty': product_qty}" 
+			attrs="{'readonly': [('state', 'in', ('start_wash','end_wash','start_drying','stop_drying','cancel','transfer_to_store'))]}">
+                            <form string="Washing Products">
+                                <notebook>
+                                    <page string="Wash Line">
+                                        <group>
+                                            <group>
+                                                <field name="product_id" />
+                                                <field name="name"/>
+                                                <label for="product_uom_qty"/>
+                                                <div class="o_row">
+                                                    <field name="product_uom_qty"/>
+                                                    <field name="product_uom" groups="product.group_uom"/>
+                                                </div>
+                                                <field name="type" invisible="1"/>
+                                                <field name="price_unit"/>
+                                                <field name="tax_id" widget="many2many_tags" domain="[('type_tax_use','=','sale')]"/>
+                                                <field name="price_subtotal" widget="monetary" invisible="1"/>
+                                            </group>
+                                            <group groups="stock.group_stock_multi_locations">
+                                                <field name="location_id" domain="[('usage','not in', ['supplier','production'])]" context="{'location_id': location_id}"/>
+                                                
+                                                <field name="location_dest_id" domain="[('usage','not in', ['supplier','production'])]"/>
+                                            </group>
+                                        </group>
+                                    </page>
+                                    <!--<page string="History" attrs="{'invisible':[('move_id','=', False)]}">
+                                        <group>
+                                            <field name="move_id" />
+                                            <field name="invoice_line_id" invisible="1"/>
+                                        </group>
+                                    </page>-->
+                                 </notebook>
+                            </form>
+                            <tree string="Operations" editable="bottom">
+                                <field name="type"/>
+                                <field name="product_id"/>
+                                <field name='name'/>
+				
+                                <field name="lot_id" domain="[('product_id', '=', product_id)]" context="{'default_product_id': product_id}" groups="stock.group_production_lot"/>
+                                <field name="location_id" groups="stock.group_stock_multi_locations" domain="[('usage','not in', ['supplier','production'])]"/>
+                                <field name="location_dest_id" groups="stock.group_stock_multi_locations" domain="[('usage','not in', ['supplier','production'])]"/>
+                                <field name="product_uom_qty" string="Quantity"/>
+                                <field name="product_uom" string="Unit of Measure" groups="product.group_uom"/>
+                                <field name="price_unit"/>
+                                <field name="tax_id" widget="many2many_tags" domain="[('type_tax_use','=','sale')]"/>
+                                <field name="price_subtotal" widget="monetary"/>
+                            </tree>
+                        </field>
+                        <group class="oe_subtotal_footer oe_right">
+                            <field name="amount_untaxed" sum="Untaxed amount"/>
+                            <field name="amount_tax"/>
+                            <div class="oe_subtotal_footer_separator oe_inline">
+                                <label for="amount_total" />
+                                <button name="button_dummy"
+                                    states="draft" string="(update)" type="object" class="oe_edit_only oe_link"/>
+                            </div>
+                            <field name="amount_total" nolabel="1" sum="Total amount" class="oe_subtotal_footer_separator"/>
+                        </group>
+                        <div class="oe_clear"/>
+                    </page>
+                    
+                    <!-- stock move line -->
+                    <page string="History Lines">
+                        <field name="inventory_ids" readonly="1">
+                            <tree string="Moves" editable="bottom">
+                                       <field name="name"/>
+					 <field name="date"/>
+				  <field name="state"/>
+                            </tree>
+                        </field>
+                    </page>
+                    
+                    
+		          <page string="Time Part">
+                        <field name="timesheet_ids" readonly="1">
+					<tree>
+					 	<field name="employee_id"/>
+						<field name="name"/>
+						<field name="time"/>
+					</tree>
+					</field>
+                </page>
+                    <page string="Notes">
+                        <field name="internal_notes" placeholder="Add internal notes..."/>
+                        <field name="quotation_notes" placeholder="Add quotation notes..."/>
+                    </page>
+                </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+<!--new form view for crishing order -->
+<record id="view_wash_order_crush_form" model="ir.ui.view">
+        <field name="name">wash.order.form</field>
+        <field name="model">wash.order</field>
+        <field name="arch" type="xml">
+            <form string="Crush Order">
+               <header>
+                  <!-- <button name="action_validate" states="draft" type="object" string="Confirm Repair" class="oe_highlight"/>-->
+		<button name="%(ballester_wash.action_time_part_wizard_custom)d" 
+                    type="action"  attrs="{'invisible': [('state','in',['start_crush','transfer_to_store','stop_crush'])]}"  string="Start Crush/Compact" class="oe_highlight" context="{'crush_start': True}" invisible="context.get('compact')" />
+
+
+
+<button name="%(ballester_wash.action_time_part_wizard_custom)d" states="start_crush" 
+                    type="action" string="End Crush/Compact" class="oe_highlight" context="{'crush_end': True}" invisible="context.get('compact')"/>
+
+
+		<button name="%(ballester_wash.action_time_part_wizard_custom)d"   
+			  attrs="{'invisible': [('state','in',['draft','transfer_to_store','start_crush'])]}"  
+                    type="action" string="Transfer To Store" class="oe_highlight" context="{'crush_transfer_to_store': True}" invisible="context.get('compact')"/>
+
+
+<!-- compact -->
+
+		<button name="%(ballester_wash.action_time_part_wizard_custom)d" 
+                    type="action"  attrs="{'invisible': ['|',('cage','=',True),('state','in',['start_crush','stop_crush','transfer_to_store']) ]}"  string="Start Crush/Compact" class="oe_highlight" context="{'crush_start': True}"  invisible="context.get('crush')"/>
+
+
+
+<button name="%(ballester_wash.action_time_part_wizard_custom)d" attrs="{'invisible': ['|',('cage','=',True),('state','in',['draft','stop_crush','transfer_to_store'])]}" states="start_crush"
+                    type="action" string="End Crush/Compact" class="oe_highlight" context="{'crush_end': True}" invisible="context.get('crush')"/>
+
+
+		<button name="%(ballester_wash.action_time_part_wizard_custom)d" states="stop_crush" invisibe="{'state': 'transfer_to_store'}"
+			 attrs="{'invisible': ['|',('cage','=',False),('state','in',['start_crush','transfer_to_store'])]}"  
+                    type="action" string="Transfer To Store" class="oe_highlight" context="{'crush_transfer_to_store': True}" invisible="context.get('crush')"/>
+
+
+<!-- teste-->
+                   <button name="action_wash_cancel_draft" states="cancel" string="Set to Draft" type="object"/>
+		   <!-- <button name="action_wash_done" states="stop_crush" string="Crush Done" type="object"/>-->
+	
+<button name="%(ballester_wash.action_time_part_wizard_custom)d" states="draft,start_crush,stop_crush" type="action" string="Cancel Order" context="{'wash_cancel':True}"/>
+
+                   <field name="state" widget="statusbar" statusbar_visible="draft,start_crush,stop_crush,transfer_to_store"/>
+               </header>
+               <sheet string="Wash order">
+                  <div class="oe_button_box" name="button_box">
+                    </div>
+                    <label for="name"/>
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="tracking" invisible="1" attrs="{'readonly': 1}"/>
+			    <field name="type_of_order" required="1"/>
+			<field name='cage' invisible="1"/>
+                            <field name="product_id"  string="Product to Crush/Compact" context="{'location_id':location_id}"/>
+                            <label for="product_qty"/>
+			
+                            <div class="o_row">
+                                <field name="product_qty"/>
+                                <field name="product_uom" groups="product.group_uom"/>
+                            </div>
+                            <field name="lot_id" domain="[('product_id', '=', product_id)]" context="{'default_product_id': product_id}" groups="stock.group_production_lot" attrs="{'required': [('tracking', '!=', 'none')], 'readonly': [('state', '=', 'transfer_to_store')]}"/>
+                            <field name="wash_date"  readonly="1" string="Crush Start Time"/>
+                        </group>
+                        <group>
+				<field name="wash_id"/>
+                            <field name="location_id" domain="[('usage','not in', ['supplier','production'])]"/>
+                            <field name="location_dest_id" domain="[('usage','not in', ['supplier','production'])]"/>
+                            <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+				 <field name="recycled_product_id" required="1"  context="{'default_recycled': True,'search_default_recycled':True ,'recycle':True ,'type': type_of_order}"/>
+				<field name="crush_qty" attrs="{}"/>
+                           <!-- <field name="washing_type" required="1" context="{'type': washing_type}"/>-->
+                            <!--<field name="pricelist_id" groups="product.group_sale_pricelist" context="{'product_id':product_id}" />-->
+                        </group>
+                    </group>
+                <notebook>
+	        <page string="History Lines">
+                        <field name="inventory_ids" readonly="1">
+                            <tree string="Moves" editable="bottom">
+                                       <field name="name"/>
+					 <field name="date"/>
+				  <field name="state"/>
+                            </tree>
+                        </field>
+                    </page>
+                    
+		          <page string="Time Part">
+                        <field name="timesheet_ids" readonly="1">
+					<tree>
+					 	<field name="employee_id"/>
+						<field name="name"/>
+						<field name="time"/>
+					</tree>
+					</field>
+                </page>
+                    <page string="Notes">
+                        <field name="internal_notes" placeholder="Add internal notes..."/>
+                        <field name="quotation_notes" placeholder="Add quotation notes..."/>
+                    </page>
+                </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="view_wash_order_kanban" model="ir.ui.view">
+        <field name="name">wash.order.kanban</field>
+        <field name="model">wash.order</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile">
+                <field name="name" />
+                <field name="product_id" />
+                <field name="partner_id"/>
+                <field name="address_id"/>
+                <field name="guarantee_limit"/>
+                <field name="state"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                            <div class="row mb4">
+                                <div class="col-xs-6">
+                                    <strong><span><t t-esc="record.name.value"/></span></strong>
+                                </div>
+                                <div class="col-xs-6 text-right">
+                                    <span class="label label-default"><field name="state" widget="kanban_label_selection" /></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6 text-muted">
+                                    <span><t t-esc="record.product_id.value"/></span>
+                                </div>
+                                <div class="col-xs-6">
+                                    <span class="pull-right">
+                                        <field name="partner_id"/>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_wash_order_form_filter" model="ir.ui.view">
+          <field name="name">wash.order.select</field>
+          <field name="model">wash.order</field>
+          <field name="arch" type="xml">
+              <search string="Search Wash Orders">
+                  <field name="name" string="Repair Orders"/>
+                  <field name="state"/>
+		  <field name="lot_name"/>
+	         <field name="type_of_order"/>
+                  <filter string="Quotations" domain="[('state','=','draft')]"/>
+                  <filter string="Ready To Repair" domain="[('state','=','ready')]"/>
+                  <separator/>
+                  <filter string="Invoiced" domain="[('invoiced','=',True)]"/>
+                  <field name="product_id"/>
+                  <field name="partner_id" filter_domain="[('partner_id', 'child_of', self)]"/>
+                  <separator/>
+                  <filter string="My Activities" name="activities_my"
+                      domain="[('activity_ids.user_id', '=', uid)]"/>
+                  <separator/>
+                  <filter string="Late Activities" name="activities_overdue"
+                      domain="[('activity_ids.date_deadline', '&lt;', context_today().strftime('%Y-%m-%d'))]"
+                      help="Show all records which has next action date is before today"/>
+                  <filter string="Today Activities" name="activities_today"
+                      domain="[('activity_ids.date_deadline', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                  <filter string="Future Activities" name="activities_upcoming_all"
+                        domain="[('activity_ids.date_deadline', '&gt;', context_today().strftime('%Y-%m-%d'))
+                        ]"/>
+                  <group expand="0" string="Group By">
+                      <filter string="Partner" domain="[]" context="{'group_by':'partner_id'}"/>
+                      <filter string="Product" domain="[]" context="{'group_by':'product_id'}"/>
+                      <filter string="Status" domain="[]" context="{'group_by':'state'}"/>
+                      <filter string="Guarantee limit Month" domain="[]" context="{'group_by':'guarantee_limit'}" help="Guarantee limit by Month"/>
+                      <filter string="Company" domain="[]" context="{'group_by':'company_id'}" groups="base.group_multi_company"/>
+                  </group>
+              </search>
+          </field>
+    </record>
+
+
+
+         <record id="action_wash_order_tree_container" model="ir.actions.act_window">
+            <field name="name">Wash Containers</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">wash.order</field>
+            <field name="view_type">form</field>
+           <field name="context">{'default_type_of_order':'container','search_default_type_of_order':'container','container':True}</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="search_view_id" ref="view_wash_order_form_filter"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a Wash order.</p>
+            </field>
+        </record>
+		
+
+	 <record id="action_wash_order_tree_crush" model="ir.actions.act_window">
+            <field name="name">Crushing</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">wash.order</field>
+            <field name="view_type">form</field>
+             <field name="context">{'default_type_of_order':'crush','search_default_type_of_order':'crush','crush':True}</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="search_view_id" ref="view_wash_order_form_filter"/>
+	    <field name="view_id" ref="view_wash_order_crush_form"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a Crush order.</p>
+            </field>
+        </record>
+
+	<record id="action_wash_order_tree_compact" model="ir.actions.act_window">
+            <field name="name">Compression</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">wash.order</field>
+            <field name="view_type">form</field>
+             <field name="context">{'default_type_of_order':'compact','search_default_type_of_order':'compact', 'compact':True}</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="search_view_id" ref="view_wash_order_form_filter"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a Crush order.</p>
+            </field>
+        </record>
+ 
+	<record id="action_crush_tree" model="ir.actions.act_window.view">
+            <field name="sequence">1</field>
+            <field name="view_mode">tree</field>
+            <field name="act_window_id" ref="action_wash_order_tree_crush"/>
+        </record>
+
+        <record id="action_crush_form" model="ir.actions.act_window.view">
+            <field name="sequence">2</field>
+            <field name="view_mode">form</field>
+		<field name="view_id" ref="view_wash_order_crush_form"/>
+            <field name="act_window_id" ref="action_wash_order_tree_crush"/>
+        </record>
+
+	<record id="action_compact_tree" model="ir.actions.act_window.view">
+            <field name="sequence">1</field>
+            <field name="view_mode">tree</field>
+            <field name="act_window_id" ref="action_wash_order_tree_compact"/>
+        </record>
+
+        <record id="action_compact_form" model="ir.actions.act_window.view">
+            <field name="sequence">2</field>
+            <field name="view_mode">form</field>
+		<field name="view_id" ref="view_wash_order_crush_form"/>
+            <field name="act_window_id" ref="action_wash_order_tree_compact"/>
+        </record>
+
+	 <record id="action_wash_order_tree_drum" model="ir.actions.act_window">
+            <field name="name">Wash Drums</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">wash.order</field>
+            <field name="view_type">form</field>
+            <field name="context">{'default_type_of_order':'drum','search_default_type_of_order':'drum','drum':True}</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="search_view_id" ref="view_wash_order_form_filter"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a Wash order.</p>
+            </field>
+        </record>
+
+        <menuitem id="menu_main_wash_order"  name="Wash" sequence="26"
+            web_icon="ballester_wash,static/description/icon.png"/>
+	
+	<menuitem parent="menu_main_wash_order"   id="menu_wash_order_operation"  name="Operations" sequence="1"/>
+	<menuitem parent="menu_main_wash_order"   id="menu_wash_order_reporting"  name="Reporting" sequence="2"/>
+	<menuitem parent="menu_main_wash_order"   id="menu_wash_order_configure"  name="Configurations" sequence="13"/>
+	
+	<menuitem parent="menu_wash_order_operation"  action="action_wash_order_tree_container" id="action_wash_order_container"  name="Wash Containers" sequence="1"/>
+	<menuitem parent="menu_wash_order_operation"  action="action_wash_order_tree_drum" id="action_wash_order_drums"  name="Wash Drums" sequence="2"/>
+	<menuitem parent="menu_wash_order_operation"  action="action_wash_order_tree_crush" id="action_wash_order_crush"  name="Crushing" sequence="3"/>
+	<menuitem parent="menu_wash_order_operation"  action="action_wash_order_tree_compact" id="action_wash_order_compact"  name="Compression" sequence="4"/>
+
+    </data>
+</odoo>

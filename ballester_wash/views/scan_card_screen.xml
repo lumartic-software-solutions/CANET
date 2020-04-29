@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--     
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Washed Screen.
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). 
+-->
+<odoo>
+	<data>
+		<!-- Washed Operations  action -->
+		<record id="action_ballester_washed_container_screen" model="ir.actions.client">
+			<field name="name">Washed Container Operations</field>
+			<field name="tag">ballester_washed_container_screen_act</field>
+			<field name="context">{'wash_container':True}</field>
+			<field name="target">main</field>
+		</record>
+		
+		<record id="action_ballester_end_washed_container_screen" model="ir.actions.client">
+			<field name="name">End Washed Container Operations</field>
+			<field name="tag">ballester_end_washed_container_screen_act</field>
+			<field name="target">main</field>
+		</record>
+		<record id="action_ballester_container_drying_control_screen" model="ir.actions.client">
+			<field name="name">Container drying and Control Operations</field>
+			<field name="tag">ballester_washed_drying_screen_act</field>
+			<field name="target">main</field>
+		</record>
+		
+               <record id="action_ballester_drum_drying_control_screen" model="ir.actions.client">
+			<field name="name">Drum Drying And Control Operations</field>
+			<field name="tag">ballester_drum_control_screen_act</field>
+			<field name="target">main</field>
+		</record>
+               <record id="action_ballester_crush_compact_screen" model="ir.actions.client">
+			<field name="name">Crush and Compact Operations</field>
+			<field name="tag">ballester_crush_compact_screen_act</field>
+			<field name="target">main</field>
+		</record>
+		
+		<!-- main Washed Container Operations menu -->
+		<menuitem id="menu_washed_container_ballester_screen" name="Container Wash" sequence="25" action="member_barcode_scanner.member_action_kiosk_mode" />
+
+		<!-- main End  Washed Container Operations menu -->
+		<menuitem id="menu_end_washed_container_ballester_screen" name="Container End Wash" sequence="26" action="member_barcode_scanner.member_action_kiosk_mode" />
+
+		<!-- main Container drying and control Operations menu -->
+		<menuitem id="menu_container_drying_control_ballester_screen" name="Container Drying and quality control" sequence="27" action="member_barcode_scanner.member_action_kiosk_mode" />
+
+		<!-- main drum drying and control menu -->
+		<menuitem id="menu_washed_drum_drying_control_ballester_screen" name="Drum Drying and Quality Control" sequence="28" action="member_barcode_scanner.member_action_kiosk_mode" />
+
+		<!-- main crush and compact Operations menu -->
+		<menuitem id="menu_crush_compact_ballester_screen" name="Crush and Compact" sequence="29" action="member_barcode_scanner.member_action_kiosk_mode" />
+		
+	</data>
+</odoo>

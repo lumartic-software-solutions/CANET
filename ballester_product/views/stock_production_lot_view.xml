@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--      
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Product . 
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). 
+-->
+<odoo>
+	<data>
+		<!-- add new fields in serial lot-->
+		<record id="inherit_form_serial_production_lot" model="ir.ui.view">
+			<field name="name">stock.production.lot.form</field>
+			<field name="model">stock.production.lot</field>
+			<field name="inherit_id" ref="stock.view_production_lot_form" />
+			<field name="arch" type="xml">
+				<data>
+					<xpath expr="//form/sheet" position="inside">
+						<notebook>
+							<page name="general_information" string="General Information" >
+								<group>
+									<field name="uncode"/>
+									<field name="lercode_id"/>
+									<field name="danger_char_ids" widget="many2many_tags"/>
+									<field name="treatement_operation_ids" widget="many2many_tags"/>
+									<field name="admission_parameters" />
+								</group>
+							</page>
+							<page name="tables" string="Tables" >
+								<field name="attribute_line_ids" widget="one2many_list" context="{'show_attribute':
+									False,'product_id': product_id}" >
+									<tree string="Variants" editable="bottom">
+										<field name="attribute_id"/>
+										<field name="value_ids" widget="many2many_tags" options="{'no_create_edit': True}"
+											domain="[('attribute_id', '=', attribute_id)]" context="{'default_attribute_id':
+											attribute_id}"/>
+									</tree>
+								</field>
+							</page>
+						</notebook>
+					</xpath>
+				</data>
+			</field>
+		</record>
+	</data>
+</odoo>

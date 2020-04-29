@@ -1,0 +1,32 @@
+<odoo>
+    <data>
+	<record id="repair_wizard_wash_view" model="ir.ui.view">
+            <field name="name">repair.wizard.form</field>
+            <field name="model">repair.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Repair">
+			 <group>
+                        <label string="Are sure You want to create Repair Order?"/>
+			</group>
+                    <footer>
+                        <button string="Yes" name="create_repair" type="object"  class="btn-primary" context="{'ok': True}"/>
+                        <button string="No" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+	
+	 <record id="action_repair_wizard_wash" model="ir.actions.act_window">
+            <field name="name">Repair</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">repair.wizard</field>
+            <field name="view_type">form</field>
+             <field name="context">{}</field>
+            <field name="view_mode">form</field>
+	    <field name="target">new</field>
+        </record>
+
+     </data>
+
+</odoo>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--     
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Screen. 
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). 
+-->
+<odoo>
+	<data>
+		<!-- template of barcode report -->
+		<template id="report_barcode">
+			<div class="header"> 
+			</div>
+			<t t-call="web.external_layout">
+				<div class="page">
+					<div class="oe_structure"/>
+					<t t-if="data['barcode_type'] == 'single'">
+						<div class="row">
+							<div class="col-xs-12">
+								<img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s'% ('Code128',data['prod_lot_id'], 600, 100)"  style="width: 100%;height:55px; margin-top:10px;"/>
+									 <center><span t-esc="data['prod_lot_id']" style=" width: 1000px; height:50px; font-size:15px;margin-top: 15px;"/> </center>
+							</div>
+						</div>
+						<div class="row">
+					  
+					  <div class="col-xs-12">
+					    <center><img src="/ballester_purchase/static/src/img/Ballester R negro2.png" style="margin-top: 2px; height:30px;width:50%;"/></center>
+					  </div>
+					</div>
+					</t>
+					<t t-if="data['barcode_type'] == 'multi'">
+						<t t-foreach="data['record_list']" t-as="d">
+							<div class="row">
+								<div class="col-xs-12">
+									<center><img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s'% ('Code128', d['barcode'], 600, 100)" style="width: 100%;height:55px; margin-top:10px;"/></center>
+									 <center><span t-esc="d['barcode']" style=" width: 1000px; height:50px; font-size:15px;margin-top: 15px;"/> </center>
+								</div>
+							</div>
+							<div class="row">
+					  
+					  <div class="col-xs-12">
+					    <center><img src="/ballester_purchase/static/src/img/Ballester R negro2.png" style="margin-top: 2px; height:30px;width:50%;"/></center>
+					  </div>
+					</div>
+						</t>
+					</t>
+					
+				</div>
+			</t>
+		</template>
+	</data>
+</odoo>
+

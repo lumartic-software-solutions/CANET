@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Screen.
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+-->
+<template xml:space="preserve">
+	<!-- ================ Internal Transfer Button  ================-->
+	<t t-name="ContainerDryingDisplay">
+		<html>
+			<head>
+
+			<script>
+			$('#barcode_number').focus();
+			$(".transfred_location").select2();
+			 </script>
+
+			</head>
+		</html>
+		<div class="row">
+            <div class="col-md-8">
+				<ol class="breadcrumb o_portal_submenu" style="font-size: 20px;">
+					<li>
+						<a href="" class="main">
+							<i class="fa fa-home">
+							</i>
+						</a>
+					</li>
+				</ol>
+			</div>
+         <t t-call='LoginUser' />
+		</div>
+		<br/>
+
+		<!-- barcode design -->
+		<div class="row" style="margin-left: 30px;">
+			<t t-if="widget.repair_button != true and widget.continue_button != true">
+				<div class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 10px;margin-left:-100px" >
+					<span style="margin-left:150px">Select Lot /Series Number:</span>
+				</div>
+				<div class="col-md-6" style="width:350px;margin-top: 20px;">
+
+				<input type="text" class="barcode"  autofocus="autofocus" id="barcode_number" name="barcode_wash" style="height:45px;color:00bfff" maxlength="13"/>
+				</div>
+			</t>
+
+			
+
+		</div>
+
+		<div class="row" style="margin-left: 30px;">
+			<t t-if="widget.repair_button != true ">
+				<div id="image_div"  class="col-md-4" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-100px" >
+				    <img id="image_container"  style="display:none;" height='200'  width='200'>  </img>			
+
+		               </div>
+	
+			       <div class="col-md-8" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:10px" >
+
+				<table class="table_detail" id="table_detail" style="display:none;">
+
+				</table>
+				
+			</div>
+			</t>
+			<t t-if="widget.continue_button" >
+				<div id="image_div"  class="col-md-4" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-100px" >
+				    <img id="image_container"  height='200'  width='200' t-attf-src="data:image/png;base64,#{widget.img_url}">  </img>			
+
+		               </div>
+	
+			       <div class="col-md-8" style="text-align: right; font-size: 20px; margin-top: 20px;margin-left:10px" >
+
+				<table class="table_detail" id="table_detail" >
+					<tr> 
+						<td  style='color:blue'>Barcode: </td>
+						 <td style='color:blue'>
+							<span t-esc="widget.barcode">  </span>
+							</td>
+
+								</tr>
+							<tr> 
+						<td width="30%"  style='color:blue'>No of washing order: </td>
+						 <td style='color:blue'>
+
+								<span t-esc="widget.order_number"/> 	
+							</td>
+
+								</tr>
+						
+							<tr>
+				    <td style='color:blue'>  Type Of Order:</td>
+					<td style='color:blue'>
+						<span t-esc="widget.order_type"/> 
+					</td>
+		                             </tr>
+							<tr> 
+				        <td style='color:blue'> Dangerous characteristics: </td>
+					<td style='color:blue'>
+							<span t-esc="widget.dangerous_char"/>
+						</td>
+
+					</tr>
+							<tr>
+					<td style='color:blue'>  Variants:</td>
+					<td style='color:blue'>
+
+						<span t-esc="widget.variants"/></td>
+					 </tr>
+						
+							<tr> 
+				      <td style='color:blue; font-size:25px'><b> State: </b></td>
+					<td style='color:blue; font-size:25px'>
+						<span t-esc="widget.state"/>
+							</td>
+				             </tr>
+		 					<tr> 
+				        <td style='color:blue'> LER: </td>
+					<td style='color:blue'>
+							<span t-esc="widget.ler"/>
+							</td>
+				        </tr>
+							<tr>
+				         <td style='color:blue'> UN code: </td>
+					<td style='color:blue'>
+						<span t-esc="widget.un_code"/>
+							</td>
+				            </tr>
+
+						<tr>
+				         <td style='color:blue'> Recycled Product: </td>
+					<td style='color:blue'>
+						<span t-esc="widget.recycled_product_name"/>
+							</td>
+				            </tr>
+					 <t t-if="widget.transfer_button">
+					<tr >
+					 <td style='width: 250px;font-size:20px; color:blue'> Transfered Location: </td>
+							<td style='font-size:20px; color:blue'>
+							 <select class="transfred_location"  id="transfred_location" style="height: 40px;font-size: 22px;margin-top: 20px;margin-left: 20px;" >
+							<t t-foreach="widget.transfred_location" t-as="i">
+											<option t-attf-value="#{i['name']}"  t-attf-ids="#{i['id']}"  ><span t-esc=" i['name']" style=" width: 25%;"/></option>
+									</t>
+								
+								</select> 
+								
+								</td>
+							    </tr>
+						</t>
+
+						</table>
+				
+			       </div>
+			
+                       </t>
+
+			<t t-if="widget.repair_button">
+				<div id="image_div"  class="col-md-4" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-100px" >
+				    <img id="image_container"  height='200'  width='200' t-attf-src="data:image/png;base64,#{widget.img_url}">  </img>			
+
+		               </div>
+	
+			       <div class="col-md-8" style="text-align: right; font-size: 20px; margin-top: 20px;margin-left:10px" >
+
+				<table class="table_detail" id="table_detail" >
+					<tr> 
+						<td style='color:blue'>Barcode: </td>
+						 <td style='color:blue'>
+							<span t-esc="widget.barcode">  </span>
+							</td>
+
+								</tr>
+							<tr> 
+						<td width="30%" style='color:blue'>No of washing order: </td>
+						 <td style='color:blue'>
+
+								<span t-esc="widget.order_number"/> 	
+							</td>
+
+								</tr>
+						
+							<tr>
+				    <td  style='color:blue'>  Type Of Order:</td>
+					<td style='color:blue'>
+						<span t-esc="widget.order_type"/> 
+					</td>
+		                             </tr>
+							<tr> 
+				        <td  style='color:blue'> Dangerous characteristics: </td>
+					<td style='color:blue'>
+							<span t-esc="widget.dangerous_char"/>
+						</td>
+
+					</tr>
+							<tr>
+					<td  style='color:blue'>  Variants:</td>
+					<td style='color:blue'>
+
+						<span t-esc="widget.variants"/></td>
+					 </tr>
+						
+							<tr> 
+				      <td  style='color:blue; font-size:25px' ><b> State: </b></td>
+					<td style='color:blue; font-size:25px'>
+						<b><span t-esc="widget.state"/></b>
+							</td>
+				             </tr>
+		 					<tr> 
+				        <td  style='color:blue'> LER: </td>
+					<td style='color:blue'>
+							<span t-esc="widget.ler"/>
+							</td>
+				        </tr>
+							<tr>
+				         <td  style='color:blue'> UN code: </td>
+					<td style='color:blue'>
+						<span t-esc="widget.un_code"/>
+							</td>
+				            </tr>
+
+						<tr>
+						 <td  style='color:blue'> Recycled Product: </td>
+						<td style='color:blue'>
+							<span t-esc="widget.recycled_product_name"/>
+								</td>
+				            </tr>
+					<t t-if="widget.transfer_button">
+					<tr >
+					 <td style='width: 250px;font-size:20px; color:blue'> Transfered Location: </td>
+							<td style='font-size:20px; color:blue'>
+							 <select class="transfred_location"  id="transfred_location" style="height: 40px;font-size: 22px;margin-top: 20px;margin-left: 20px;" >
+							<t t-foreach="widget.transfred_location" t-as="i">
+											<option t-attf-value="#{i['name']}"  t-attf-ids="#{i['id']}"  ><span t-esc=" i['name']" style=" width: 25%;"/></option>
+									</t>
+								
+								</select> 
+								
+								</td>
+					</tr>
+						</t>
+
+						</table>
+				
+			       </div>
+			
+                       </t>
+		</div>
+
+	     <!--buttons -->
+		<div class="row" style="margin-left: 30px;" >
+
+			 		<t  t-call='dryingtemplate'/>
+
+		                  <t t-if="widget.stop_drying and widget.continue_button " >
+					   <t  t-call='dryingstoptemplate1'/>
+				   </t>
+
+				  <t t-if="widget.stop_drying and widget.continue_button" >
+				      <t  t-call='destructiontemplate1'/>
+						
+				         </t>
+
+					 <t  t-call='dryingstoptemplate'/>
+			
+						  <t t-call='destructiontemplate'/>
+						
+				<t t-if="widget.repair_button and widget.transfer_button != true">
+						  <t t-call='RepairButton'/>
+				
+						
+				</t>
+						 <t t-call='RepairButton1'/>
+						
+				<t t-if="widget.check_compliance and widget.repair_button != true">
+						  <t  t-call='Backtowashtemplate1'/>
+				
+						
+				</t>
+					  <t  t-call='Backtowashtemplate'/>
+			
+					
+
+			
+					 <button  style="display:none; margin-top: 25px;margin-left: -45px;
+" class="btn btn-primary common_button  view_repair_order_button" id="view_repair_order" 
+						 type="button">View Repair Order</button>
+				
+						
+				<t t-if="widget.check_compliance and widget.repair_button != true">
+					 <button  style="margin-top: 25px;margin-left: 100px;
+" class="btn btn-primary common_button
+						compliance_wash_order" id="compliance_wash_order" 
+						 type="button">Check Compliance</button>
+					
+				</t>
+					 <button  style="display:none;margin-top: 25px;margin-left: 100px;
+" class="btn btn-primary common_button
+						compliance_wash_order" id="compliance_wash_order" 
+						 type="button">Check Compliance</button>
+					
+                               <t t-if="widget.transfer_button">	
+						  <t  t-call='ContainerTransferButton'/>
+						
+				</t>
+				
+			            <t t-call='ExitPopup1' /></div>
+
+
+	</t>
+</template>

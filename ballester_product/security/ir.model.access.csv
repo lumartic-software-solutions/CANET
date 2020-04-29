@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_lot_attribute,name_lot_attribute,model_lot_attribute,,1,1,1,1
+access_lot_attribute_line,name_lot_attribute_line,model_lot_attribute_line,,1,1,1,1
+access_lot_attribute_value,name_lot_attribute_value,model_lot_attribute_value,,1,1,1,1
+access_treatement_operation,name_treatement_operation,model_treatement_operation,,1,1,1,1
+access_ler_code,name_ler_code,model_ler_code,,1,1,1,1
+access_danger_characteristic,name_danger_characteristic,model_danger_characteristic,,1,1,1,1

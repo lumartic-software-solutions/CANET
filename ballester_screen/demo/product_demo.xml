@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		  <record id="sample_product_id" model="product.product">
+            <field name="name">Sample Product</field>
+            <field name="default_code">sample pro</field>
+            <field name="type">product</field>
+            <field name="categ_id" ref="product.product_category_all"/>
+            <field name="sale_ok" eval="True"/>
+            <field name="purchase_ok" eval="True"/>
+            <field name="list_price">10.0</field>
+        </record>
+		
+	</data>
+</odoo>

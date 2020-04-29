@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Screen.
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+-->
+<template xml:space="preserve">
+	<!-- ================ Internal Transfer Button  ================-->
+	<t t-name="RepairOrderDisplay">
+		<html>
+			<head>
+
+			<script>
+			 </script>
+
+			</head>
+		</html>
+		<div class="row">
+            <div class="col-md-8">
+				<ol class="breadcrumb o_portal_submenu" style="font-size: 20px;">
+					<li>
+						<a href="" class="main">
+							<i class="fa fa-home">
+							</i>
+						</a>
+					</li>
+				</ol>
+			</div>
+         <t t-call='LoginUser' />
+		</div>
+		<br/>
+
+		<div class="row" style="margin-left: 30px;">
+
+	        <div id="image_div"  class="col-md-4" style="text-align: right; font-size: 15px; margin-top: 20px;margin-left:-100px" >
+			<img id="image_container"   height='200'  width='200' t-attf-src="data:image/png;base64,#{widget.img_url}">  </img>			
+
+</div>
+			<div class="col-md-8" style="text-align: right; font-size: 18px; margin-top: 20px;margin-left:10px" >
+
+				<table class="table_detail" id="table_detail" >
+					<tr> 
+						<td>Barcode: </td>
+						 <td width="60%" style='color:blue'>
+							<span t-esc="widget.barcode">  </span>
+							</td>
+
+								</tr>
+							<tr> 
+						<td>No of washing order: </td>
+						 <td style='color:blue'>
+
+								<span t-esc="widget.order_number"/> 	
+							</td>
+
+								</tr>
+						
+							<tr>
+						<td>No of Repair order: </td>
+						 <td style='color:blue'>
+
+								<span t-esc="widget.repair_order"/> 	
+							</td>
+
+								</tr>
+						
+							<tr>
+				    <td>  Type Of Order:</td>
+					<td style='color:blue'>
+						<span t-esc="widget.order_type"/> 
+					</td>
+		                             </tr>
+							<tr> 
+				        <td> Dangerous characteristics: </td>
+					<td style='color:blue'>
+							<span t-esc="widget.dangerous_char"/>
+						</td>
+
+					</tr>
+							<tr>
+					<td>  Variants:</td>
+					<td style='color:blue'>
+
+						<span t-esc="widget.variants"/></td>
+					 </tr>
+						
+							<tr> 
+				      <td  style='color:blue; font-size:25px'><b> State:</b> </td>
+					<td style='color:blue; font-size:25px'>
+						<b><span t-esc="widget.repair_state"/></b>
+							</td>
+				             </tr>
+		 					<tr> 
+				        <td> LER: </td>
+					<td style='color:blue'>
+							<span t-esc="widget.ler"/>
+							</td>
+				        </tr>
+							<tr>
+				         <td> UN code: </td>
+					<td style='color:blue'>
+						<span t-esc="widget.un_code"/>
+							</td>
+				            </tr>
+
+						<tr>
+				         <td> Recycled Product: </td>
+					<td style='color:blue'>
+						<span t-esc="widget.recycled_product_name"/>
+							</td>
+				            </tr>
+
+				</table>
+				
+			</div>
+			
+
+		</div>
+
+	     <!--buttons -->
+		<div class="row" style="margin-left: 300px;">
+                    <t t-if="widget.add_repair  and widget.end_button != true">
+			              <button  style="margin-top: 25px;" class="btn btn-primary common_button
+						add_part_button" id="add_part_button" 
+						 type="button">Add Repair Parts</button>
+		    </t>
+		     <t t-if="widget.add_repair and widget.end_button != true">
+			               <t  t-call='StartRepairButton'/>
+		    </t>
+			
+                         <t t-if="widget.start_button and widget.end_button != true and widget.compliance_button!= true">
+			              <t  t-call='StartRepairButton'/>
+			</t>	
+				
+			<t t-if="widget.end_button  and widget.compliance_button !=true ">
+			             <t  t-call='StopRepairButton'/>	
+			</t>
+			<t t-if="widget.compliance_button">
+					 <button  style="margin-top: 25px;margin-left:400px" class="btn btn-primary common_button
+						repair_compliance_button" id="repair_compliance_button" 
+						 type="button">Check Compliance</button>
+			</t>
+				
+			            <t t-call='ExitPopup1'     />
+			</div>
+
+
+	</t>
+</template>

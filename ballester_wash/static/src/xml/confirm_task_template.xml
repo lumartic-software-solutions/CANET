@@ -1,0 +1,878 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--     
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Screen. 
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). 
+-->
+<template xml:space="preserve">
+	<!-- ================emptying  ================ -->
+	<t t-name="ConfirmEmptying">
+		<button type="button" style="display:none;margin-left: 14px;margin-top: 25px;" class="btn btn-primary common_button create_emptying_wash_order" id ="create_emptying_wash_order" data-toggle="modal" data-target="#ConfirmModel">Start Emptying</button>
+		<div class="modal fade" id="ConfirmModel" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&#38;times;</button>
+						<h4 class="modal-title">Confirmation Dialog</h4>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure you want to Emptying?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary confirm_emptying"  data-dismiss="modal">Yes</button>
+						<button type="button" class="btn btn-secondary "   data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+<!-- ================pre wash  ================ -->
+	<t t-name="Confirmprewash">
+		<button type="button" style="display:none; margin-left: 35px;margin-top: 25px;" class="btn btn-primary common_button prewash_wash_order" id ="prewash_wash_order" data-toggle="modal" data-target="#ConfirmprewashModel">Start Pre-Wash</button>
+		<div class="modal fade" id="ConfirmprewashModel" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&#38;times;</button>
+						<h4 class="modal-title">Confirmation Dialog</h4>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure you want to Start Pre-Wash?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary confirm_prewash"  data-dismiss="modal">Yes</button>
+						<button type="button" class="btn btn-secondary "   data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+	<t t-name="Confirmprewash1">
+		<button type="button" style="margin-left: 35px;margin-top: 25px;" class="btn btn-primary common_button prewash_wash_order" id ="prewash_wash_order" data-toggle="modal" data-target="#ConfirmprewashModel">Start Pre-Wash</button>
+		<div class="modal fade" id="ConfirmprewashModel" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&#38;times;</button>
+						<h4 class="modal-title">Confirmation Dialog</h4>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure you want to Start Pre-Wash?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary confirm_prewash"  data-dismiss="modal">Yes</button>
+						<button type="button" class="btn btn-secondary "   data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+<!-- ================start wash  ================ -->
+	<t t-name="Confirmstartwash">
+		<button type="button" style="display:none; margin-left: 55px;margin-top: 25px;" class="btn btn-primary common_button start_wash_order" id ="start_wash_order" data-toggle="modal" data-target="#ConfirmstartwashModel">Start Wash</button>
+		<div class="modal fade" id="ConfirmstartwashModel" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&#38;times;</button>
+						<h4 class="modal-title">Confirmation Dialog</h4>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure you want to Start Wash?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary confirm_startwash"  data-dismiss="modal">Yes</button>
+						<button type="button" class="btn btn-secondary "   data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+
+	<t t-name="Confirmstartwash1">
+		<button type="button" style="margin-left: 55px;margin-top: 25px;" class="btn btn-primary common_button start_wash_order" id ="start_wash_order" data-toggle="modal" data-target="#ConfirmstartwashModel">Start Wash</button>
+		<div class="modal fade" id="ConfirmstartwashModel" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&#38;times;</button>
+						<h4 class="modal-title">Confirmation Dialog</h4>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure you want to Start Wash?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary confirm_startwash"  data-dismiss="modal">Yes</button>
+						<button type="button" class="btn btn-secondary "   data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+
+
+<!-- ================end wash  ================ -->
+	<t t-name="EndWashTemplte">
+		<button type="button" style="display:none; margin-left: 55px;margin-top: 25px;" class="btn btn-primary common_button end_wash_order" id ="end_wash_order" data-toggle="modal" data-target="#EndWashModel">Stop Wash</button>
+		<div class="modal fade" id="EndWashModel" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&#38;times;</button>
+						<h4 class="modal-title">Confirmation Dialog</h4>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure you want to Stop Wash?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary endwash_button"  data-dismiss="modal">Yes</button>
+						<button type="button" class="btn btn-secondary "   data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+
+
+<!-- ================end emptying wash  ================ -->
+	<t t-name="EndWashemptyingTemplte">
+		<button type="button" style="display:none;margin-top: 25px;" class="btn btn-primary common_button end_emptying_wash_order" id ="end_emptying_wash_order" data-toggle="modal" data-target="#EndEmptyingWashModel">Stop Emptying</button>
+		<div class="modal fade" id="EndEmptyingWashModel" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&#38;times;</button>
+						<h4 class="modal-title">Confirmation Dialog</h4>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure you want to Stop Emptying Wash?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary endemptyingwash_button"  data-dismiss="modal">Yes</button>
+						<button type="button" class="btn btn-secondary "   data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+	<t t-name="EndWashemptyingTemplte1">
+		<button type="button" style="margin-top: 25px;" class="btn btn-primary common_button end_emptying_wash_order" id ="end_emptying_wash_order" data-toggle="modal" data-target="#EndEmptyingWashModel">Stop Emptying</button>
+		<div class="modal fade" id="EndEmptyingWashModel" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&#38;times;</button>
+						<h4 class="modal-title">Confirmation Dialog</h4>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure you want to Stop Emptying Wash?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary endemptyingwash_button"  data-dismiss="modal">Yes</button>
+						<button type="button" class="btn btn-secondary "   data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+
+
+<!-- ================end pre wash  ================ -->
+	<t t-name="EndPreWashTemplte">
+		<button type="button" style="display:none;margin-top: 25px;" class="btn btn-primary common_button end_pre_wash_order" id ="end_pre_wash_order" data-toggle="modal" data-target="#EndPreWashModel">Stop Pre-Wash</button>
+		<div class="modal fade" id="EndPreWashModel" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&#38;times;</button>
+						<h4 class="modal-title">Confirmation Dialog</h4>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure you want to Stop Pre-Wash?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary endprewash_button"  data-dismiss="modal">Yes</button>
+						<button type="button" class="btn btn-secondary "   data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+	<t t-name="EndPreWashTemplte1">
+		<button type="button" style="margin-top: 25px;" class="btn btn-primary common_button end_pre_wash_order" id ="end_pre_wash_order" data-toggle="modal" data-target="#EndPreWashModel">Stop Pre-Wash</button>
+		<div class="modal fade" id="EndPreWashModel" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&#38;times;</button>
+						<h4 class="modal-title">Confirmation Dialog</h4>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure you want to Stop Pre-Wash?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary endprewash_button"  data-dismiss="modal">Yes</button>
+						<button type="button" class="btn btn-secondary "   data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+
+<!-- ================ Back to  wash  ================ -->
+	<t t-name="Backtowashtemplate">
+		<button type="button" style="display:none;margin-top: 25px;" class="btn btn-primary common_button backto_wash_order" id ="backto_wash_order" data-toggle="modal" data-target="#BacktowashModel">Back to Wash</button>
+		<div class="modal fade" id="BacktowashModel" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&#38;times;</button>
+						<h4 class="modal-title">Confirmation Dialog</h4>
+					</div>
+					<div class="modal-body">
+						<textarea rows="5" cols="60" class="backorder_reason" id="backorder_reason" placeholder="Write reason here....">
+
+</textarea>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary backto_wash_button"  data-dismiss="modal">Yes</button>
+						<button type="button" class="btn btn-secondary "   data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+
+	<t t-name="Backtowashtemplate1">
+		<button type="button" style="margin-top: 25px;" class="btn btn-primary common_button backto_wash_order" id ="backto_wash_order" data-toggle="modal" data-target="#BacktowashModel">Back to Wash</button>
+		<div class="modal fade" id="BacktowashModel" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&#38;times;</button>
+						<h4 class="modal-title">Confirmation Dialog</h4>
+					</div>
+					<div class="modal-body">
+						<textarea rows="5" cols="60" class="backorder_reason" id="backorder_reason" placeholder="Write reason here....">
+
+</textarea>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary backto_wash_button"  data-dismiss="modal">Yes</button>
+						<button type="button" class="btn btn-secondary "   data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+
+<!-- ================destruction ================ -->
+	<t t-name="destructiontemplate">
+		<button type="button" style="display:none; margin-top: 25px;" class="btn btn-primary common_button destruction_wash_order" id ="destruction_wash_order" data-toggle="modal" data-target="#DestructionwashModel">Destruction</button>
+		<div class="modal fade" id="DestructionwashModel" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&#38;times;</button>
+						<h4 class="modal-title">Confirmation Dialog</h4>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure you want to Destruct this product?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary destructionwash_button"  data-dismiss="modal">Yes</button>
+						<button type="button" class="btn btn-secondary "   data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+	<t t-name="destructiontemplate1">
+		<button type="button" style="margin-top: 25px;" class="btn btn-primary common_button destruction_wash_order" id ="destruction_wash_order" data-toggle="modal" data-target="#DestructionwashModel">Destruction</button>
+		<div class="modal fade" id="DestructionwashModel" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&#38;times;</button>
+						<h4 class="modal-title">Confirmation Dialog</h4>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure you want to Destruct this product?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary destructionwash_button"  data-dismiss="modal">Yes</button>
+						<button type="button" class="btn btn-secondary "   data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+
+<!-- ================Drying ================ -->
+	<t t-name="dryingtemplate">
+		<button type="button" style="display:none;margin-left: 55px;margin-top: 25px;" class="btn btn-primary common_button drying_wash_order" id ="drying_wash_order" data-toggle="modal" data-target="#DryingnwashModel">Start Drying</button>
+		<div class="modal fade" id="DryingnwashModel" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&#38;times;</button>
+						<h4 class="modal-title">Confirmation Dialog</h4>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure you want to Start Drying?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary dryingwash_button"  data-dismiss="modal">Yes</button>
+						<button type="button" class="btn btn-secondary "   data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+
+
+<!-- ================stop drying ================ -->
+	<t t-name="dryingstoptemplate">
+		<button type="button" style="margin-left: 5px;margin-top: 25px;" class="btn btn-primary common_button drying_end_wash_order" id ="drying_end_wash_order" data-toggle="modal" data-target="#DryingendwashModel">Stop Drying</button>
+		<div class="modal fade" id="DryingendwashModel" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&#38;times;</button>
+						<h4 class="modal-title">Confirmation Dialog</h4>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure you want to Stop Drying?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary dryingendwash_button"  data-dismiss="modal">Yes</button>
+						<button type="button" class="btn btn-secondary "   data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+
+	<t t-name="dryingstoptemplate">
+		<button type="button" style="display:none; margin-left: 5px;margin-top: 25px;" class="btn btn-primary common_button drying_end_wash_order" id ="drying_end_wash_order" data-toggle="modal" data-target="#DryingendwashModel">Stop Drying</button>
+		<div class="modal fade" id="DryingendwashModel" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&#38;times;</button>
+						<h4 class="modal-title">Confirmation Dialog</h4>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure you want to Stop Drying?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary dryingendwash_button"  data-dismiss="modal">Yes</button>
+						<button type="button" class="btn btn-secondary "   data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+
+	<t t-name="dryingstoptemplate1">
+		<button type="button" style=" margin-left: 5px;margin-top: 25px;" class="btn btn-primary common_button drying_end_wash_order" id ="drying_end_wash_order" data-toggle="modal" data-target="#DryingendwashModel">Stop Drying</button>
+		<div class="modal fade" id="DryingendwashModel" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&#38;times;</button>
+						<h4 class="modal-title">Confirmation Dialog</h4>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure you want to Stop Drying?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary dryingendwash_button"  data-dismiss="modal">Yes</button>
+						<button type="button" class="btn btn-secondary "   data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+
+
+	
+<!-- ================start wash & dry drum================ -->
+	<t t-name="ConfirmstartwashDrum">
+		<button type="button" style="display:none;margin-top: 25px;" class="btn btn-primary common_button start_drum_wash_order" id ="start_drum_wash_order" data-toggle="modal" data-target="#ConfirmstartwashModel">Start Wash and  Drying</button>
+		<div class="modal fade" id="ConfirmstartwashModel" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&#38;times;</button>
+						<h4 class="modal-title">Confirmation Dialog</h4>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure you want to Start Wash?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary confirm_startwashdrum"  data-dismiss="modal">Yes</button>
+						<button type="button" class="btn btn-secondary "   data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+
+
+<!-- ================end wash  drum================ -->
+	<t t-name="EndWashDrumTemplte">
+		<button type="button" style="margin-top: 25px;margin-left:55px" class="btn btn-primary common_button end_drum_wash_order" id ="end_drum_wash_order" data-toggle="modal" data-target="#EndWashModel">Stop Wash</button>
+		<div class="modal fade" id="EndWashModel" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&#38;times;</button>
+						<h4 class="modal-title">Confirmation Dialog</h4>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure you want to Stop Wash?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary endwash_drumbutton"  data-dismiss="modal">Yes</button>
+						<button type="button" class="btn btn-secondary "   data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+
+	<t t-name="EndWashDrumTemplte1">
+		<button type="button" style="display:none;margin-top: 25px;margin-left:55px" class="btn btn-primary common_button end_drum_wash_order" id ="end_drum_wash_order" data-toggle="modal" data-target="#EndWashModel">Stop Wash</button>
+		<div class="modal fade" id="EndWashModel" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&#38;times;</button>
+						<h4 class="modal-title">Confirmation Dialog</h4>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure you want to Stop Wash?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary endwash_drumbutton"  data-dismiss="modal">Yes</button>
+						<button type="button" class="btn btn-secondary "   data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+<!-- ================destruction drum================ -->
+	<t t-name="destructionDrumtemplate">
+		<button type="button" style="margin-top: 25px;" class="btn btn-primary common_button destruction_wash_order" id ="destruction_wash_order" data-toggle="modal" data-target="#DestructionwashModel">Destruction</button>
+		<div class="modal fade" id="DestructionwashModel" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&#38;times;</button>
+						<h4 class="modal-title">Confirmation Dialog</h4>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure you want to Destruct this product?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary destructionwash_button"  data-dismiss="modal">Yes</button>
+						<button type="button" class="btn btn-secondary "   data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+	<t t-name="destructionDrumtemplate1">
+		<button type="button" style="display:none;margin-top: 25px;" class="btn btn-primary common_button destruction_wash_order" id ="destruction_wash_order" data-toggle="modal" data-target="#DestructionwashModel">Destruction</button>
+		<div class="modal fade" id="DestructionwashModel" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&#38;times;</button>
+						<h4 class="modal-title">Confirmation Dialog</h4>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure you want to Destruct this product?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary destructionwash_button"  data-dismiss="modal">Yes</button>
+						<button type="button" class="btn btn-secondary "   data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+
+<!-- ================ Back to  wash  drum================ -->
+	<t t-name="Backtowashdrumtemplate">
+		<button type="button" style="margin-top: 25px;" class="btn btn-primary common_button backto_wash_order" id ="backto_wash_order" data-toggle="modal" data-target="#BacktowashModel">Back to Wash</button>
+		<div class="modal fade" id="BacktowashModel" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&#38;times;</button>
+						<h4 class="modal-title">Confirmation Dialog</h4>
+					</div>
+					<div class="modal-body">
+						<textarea rows="5" cols="60" class="backorder_reason" id="backorder_reason" placeholder="Write reason here....">
+
+</textarea>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary backto_wash_button"  data-dismiss="modal">Yes</button>
+						<button type="button" class="btn btn-secondary "   data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+	<t t-name="Backtowashdrumtemplate1">
+		<button type="button" style="display:none;margin-top: 25px;" class="btn btn-primary common_button backto_wash_order" id ="backto_wash_order" data-toggle="modal" data-target="#BacktowashModel">Back to Wash</button>
+		<div class="modal fade" id="BacktowashModel" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&#38;times;</button>
+						<h4 class="modal-title">Confirmation Dialog</h4>
+					</div>
+					<div class="modal-body">
+						<textarea rows="5" cols="60" class="backorder_reason" id="backorder_reason" placeholder="Write reason here....">
+
+</textarea>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary backto_wash_button"  data-dismiss="modal">Yes</button>
+						<button type="button" class="btn btn-secondary "   data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+
+<!-- ================start crush button=============== -->
+	<t t-name="StratCrushButton">
+		<button type="button" style="margin-left: 14px;margin-top: 25px;" class="btn btn-primary common_button start_crush_button" id ="start_crush_button" data-toggle="modal" data-target="#StartCrushModel">Start Crush</button>
+		<div class="modal fade" id="StartCrushModel" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&#38;times;</button>
+						<h4 class="modal-title">Confirmation Dialog</h4>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure you want to Start Crush order?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary startcrush_button"  data-dismiss="modal">Yes</button>
+						<button type="button" class="btn btn-secondary "   data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+
+<!-- ==============stop crush button============= -->
+	<t t-name="StopCrushButton">
+		<button type="button" style="margin-left: 35px;margin-top: 25px;" class="btn btn-primary common_button stop_crush_button" id ="stop_crush_button" data-toggle="modal" data-target="#StopCrushModel">End Crush</button>
+		<div class="modal fade" id="StopCrushModel" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&#38;times;</button>
+						<h4 class="modal-title">Confirmation Dialog</h4>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure you want to Stop Crush Order?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary stopcrush_button"  data-dismiss="modal">Yes</button>
+						<button type="button" class="btn btn-secondary"   data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+
+<!-- ==============Transfer crush button============= -->
+	<t t-name="TransfertoCrushButton">
+		<button type="button" style="margin-left: -115px;margin-top: 25px;" class="btn btn-primary common_button transfer_crush_button" id ="transfer_crush_button" data-toggle="modal" data-target="#TransferCrushModel">Transfer To Store</button>
+		<div class="modal fade" id="TransferCrushModel" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&#38;times;</button>
+						<h4 class="modal-title">Confirmation Dialog</h4>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure you want to Transfer Product?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary transferto_store"  data-dismiss="modal">Yes</button>
+						<button type="button" class="btn btn-secondary"   data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+
+
+
+<!-- ================start compact button=============== -->
+	<t t-name="StratCompactButton">
+		<button type="button" style="margin-left: 14px;margin-top: 25px;" class="btn btn-primary common_button start_compact_button" id ="start_compact_button" data-toggle="modal" data-target="#StartCompactModel">Start Compact</button>
+		<div class="modal fade" id="StartCompactModel" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&#38;times;</button>
+						<h4 class="modal-title">Confirmation Dialog</h4>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure you want to Start Compact order?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary startcompact_button"  data-dismiss="modal">Yes</button>
+						<button type="button" class="btn btn-secondary "   data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+
+<!-- ==============stop compact button============= -->
+	<t t-name="StopCompactButton">
+		<button type="button" style="margin-left: 35px;margin-top: 25px;" class="btn btn-primary common_button stop_compact_button" id ="stop_compact_button" data-toggle="modal" data-target="#StopCompactModel">End Compact</button>
+		<div class="modal fade" id="StopCompactModel" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&#38;times;</button>
+						<h4 class="modal-title">Confirmation Dialog</h4>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure you want to Stop Compact Order?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary stopcompact_button"  data-dismiss="modal">Yes</button>
+						<button type="button" class="btn btn-secondary"   data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+
+<!-- ==============Transfer compact button============= -->
+	<t t-name="TransfertoCompactButton">
+		<button type="button" style="margin-left: -45px;margin-top: 25px;" class="btn btn-primary common_button transfer_compact_button" id ="transfer_compact_button" data-toggle="modal" data-target="#TransferCompactModel">Transfer To Store</button>
+		<div class="modal fade" id="TransferCompactModel" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&#38;times;</button>
+						<h4 class="modal-title">Confirmation Dialog</h4>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure you want to Transfer Product?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary transfertocompact_store"  data-dismiss="modal">Yes</button>
+						<button type="button" class="btn btn-secondary"   data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+
+<!-- ==============Create Repair button============= -->
+	<t t-name="RepairButton">
+		<button type="button" style="margin-left: 100px;margin-top: 25px;" class="btn btn-primary common_button repair_button" id ="repair_button" data-toggle="modal" data-target="#RepairModel">Create Repair Order</button>
+		<div class="modal fade" id="RepairModel" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&#38;times;</button>
+						<h4 class="modal-title">Confirmation Dialog</h4>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure you want to Create Repair Order?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary repairorder_button"  data-dismiss="modal">Yes</button>
+						<button type="button" class="btn btn-secondary"   data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+
+<!-- ==============Create Repair button============= -->
+	<t t-name="RepairButton1">
+		<button type="button" style="display:none;margin-left: 100px;margin-top: 25px;" class="btn btn-primary common_button quality_control" id ="quality_control" data-toggle="modal" data-target="#RepairModel">Create Repair Order</button>
+		<div class="modal fade" id="RepairModel" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&#38;times;</button>
+						<h4 class="modal-title">Confirmation Dialog</h4>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure you want to Create Repair Order?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary repairorder_button_screen"  data-dismiss="modal">Yes</button>
+						<button type="button" class="btn btn-secondary"   data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+<!-- ==============Start Repair button============= -->
+	<t t-name="StartRepairButton">
+		<button type="button" style="margin-left: 35px;margin-top: 25px;" class="btn btn-primary common_button start_repair_button" id ="start_repair_button" data-toggle="modal" data-target="#StartRepairModel">Start Repair Order</button>
+		<div class="modal fade" id="StartRepairModel" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&#38;times;</button>
+						<h4 class="modal-title">Confirmation Dialog</h4>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure you want to Start Repair Order?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary startrepairorder_button"  data-dismiss="modal">Yes</button>
+						<button type="button" class="btn btn-secondary"   data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+
+
+<!-- ==============Stop Repair button============= -->
+	<t t-name="StopRepairButton">
+		<button type="button" style="margin-left:35px;margin-top: 25px;" class="btn btn-primary common_button stop_repair_button" id ="stop_repair_button" data-toggle="modal" data-target="#StopRepairModel">Stop Repair Order</button>
+		<div class="modal fade" id="StopRepairModel" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&#38;times;</button>
+						<h4 class="modal-title">Confirmation Dialog</h4>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure you want to Stop Repair Order?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary stoprepairorder_button"  data-dismiss="modal">Yes</button>
+						<button type="button" class="btn btn-secondary"   data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+
+<!-- =============container Transfer Store=========== -->
+	<t t-name="ContainerTransferButton">
+		<button type="button" style="margin-top: 25px;" class="btn btn-primary common_button container_transfer_button" id ="container_transfer_button" data-toggle="modal" data-target="#tainerTransferConModel">Transfer To Store</button>
+		<div class="modal fade" id="tainerTransferConModel" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&#38;times;</button>
+						<h4 class="modal-title">Confirmation Dialog</h4>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure you want to Transfer To Store?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary containertransfer_button"  data-dismiss="modal">Yes</button>
+						<button type="button" class="btn btn-secondary"   data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+
+<!-- =============container Transfer Store===========
+	<t t-name="ContainerTransferButton">
+		<button type="button" style="margin-left:-100px;margin-top: 25px;" class="btn btn-primary common_button container_transfer_button" id ="container_transfer_button" data-toggle="modal" data-target="#tainerTransferConModel">Transfer To Store</button>
+		<div class="modal fade" id="tainerTransferConModel" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&#38;times;</button>
+						<h4 class="modal-title">Confirmation Dialog</h4>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure you want to Transfer To Store?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary containertransfer_button"  data-dismiss="modal">Yes</button>
+						<button type="button" class="btn btn-secondary"   data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</t> -->
+
+<!-- =============Drum Transfer Store=========== -->
+	<t t-name="DrumTransferButton">
+		<button type="button" style="margin-top: 25px;" class="btn btn-primary common_button drum_transfer_button" id ="drum_transfer_button" data-toggle="modal" data-target="#drumTransferConModel">Transfer To Store</button>
+		<div class="modal fade" id="drumTransferConModel" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&#38;times;</button>
+						<h4 class="modal-title">Confirmation Dialog</h4>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure you want to Transfer To Store?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary drumtransfer_button"  data-dismiss="modal">Yes</button>
+						<button type="button" class="btn btn-secondary"   data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+
+</template>

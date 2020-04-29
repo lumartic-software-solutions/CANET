@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--     
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Product .
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). 
+-->
+<odoo>
+	<!-- register common.css file -->
+	<template id="assets_backend_inherit" name="assets" inherit_id="web.assets_backend">
+		<xpath expr="." position="inside">
+			<link rel="stylesheet" href="/ballester_product/static/src/css/common.css" />
+		</xpath>
+	</template>
+</odoo>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--     
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Member Barcode Scanner.
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+-->
+<template   xml:space="preserve">
+	<t t-name="PresenceIndicator">
+		<div class="oe_hr_attendance_status fa fa-user">
+		</div>
+	</t>
+
+
+
+	<t t-name="CrushandCompact">
+		<html>
+			<head>
+
+			<script>
+			$('#crush_and_compact').focus();
+			 </script>
+
+			</head>
+		</html>
+		<div class="o_hr_attendance_kiosk_mode_container">
+			<div class="o_hr_attendance_kiosk_mode">
+				<h1>
+					Welcome to
+					<t t-esc="widget.company_name"/>
+				</h1>
+				<img t-attf-src="{{widget.company_image_url}}" alt="Company Logo"/>
+				<h2>Scan your badge</h2>
+				<h4>or</h4>
+			<h2>Enter Barcode..</h2>
+				<input class="mt32" type="text" autofocus="autofocus" id="crush_and_compact" placeholder="Waiting for barcode scan..." size="40"/>
+			</div>
+			<div class="o_hr_attendance_clock">
+			</div>
+		</div>
+	</t>
+
+	<t t-name="CrushandCompactWelcome">
+		<div class="o_hr_attendance_kiosk_mode_container">
+			<div class="o_hr_attendance_kiosk_mode">
+				<h1>
+					Welcome to
+					<span t-esc="widget.employee"/>
+				</h1>
+				<center>
+					<img class="media-object dp img-circle" style="width: 100px!important;" t-att-src="'data:image/png;base64,'+widget.employee_image_url"
+						alt="Logo"/>
+				</center>
+				<br/>
+				<br/>
+				<br/>
+				<!--<t t-if='widget.attendance_state == "checked_in"'>
+					<a href="javascript:;" class="oe_highlight common_button continue_crush_compact_button">Continue</a>
+				</t>-->
+				<center><h2>espera 2 segundos</h2></center>
+				<t t-if='widget.attendance_state == "checked_out"'>
+					<h3 style="color:red;">First you need to go for attendance !</h3>
+				</t>
+			</div>
+			<div class="o_hr_attendance_clock">
+			</div>
+		</div>
+	</t>
+
+	<t t-name="wash_barcode_success">
+		<div class="o_notification o_event_success" t-translation="off">
+			<a t-if="widget.sticky" class="fa fa-times o_close" href="#"/>
+			<div class="o_notification_title">
+				<span class="o_icon fa fa-3x fa-thumbs-up"/>
+				<t t-raw="widget.title"/>
+			</div>
+		</div>
+	</t>
+
+
+	 <t t-name="HrAttendanceKioskConfirm">
+        <div class="o_hr_attendance_kiosk_mode_container o_app_switcher_background">
+            <div class="o_hr_attendance_kiosk_mode">
+                <t t-if="widget.employee_id">
+                    <h1>Welcome <t t-esc="widget.employee_name"/></h1>
+                    <t t-if="!widget.use_pin">
+                        <t t-if="widget.employee_state=='checked_in'">
+                            <h2>Check out</h2>
+                            <a class="fa btn-primary o_hr_attendance_sign_in_out_icon fa-sign-out fa-sign-in"/>
+                        </t>
+                        <t t-if="widget.employee_state=='checked_out'">
+                            <h2>Check in</h2>
+                            <a class="fa btn-primary o_hr_attendance_sign_in_out_icon fa-sign-out fa-sign-out"/>
+                        </t>
+                    </t>
+                    <t t-if="widget.use_pin">
+                        <t t-if="widget.employee_state=='checked_in'">
+                            <h2>Please enter your PIN to check out</h2>
+                        </t>
+                        <t t-if="widget.employee_state=='checked_out'">
+                            <h2>Please enter your PIN to check in</h2>
+                        </t>
+                        <div class="row">
+                            <div class="col-sm-8 col-sm-offset-2">
+                                <div class="row" >
+                                    <div class="col-xs-4 col-xs-offset-4"><input class="o_hr_attendance_PINbox" type="password" disabled="true"/></div>
+                                </div>
+                                <div class="row o_hr_attendance_pin_pad">
+                                    <t t-foreach="['1', '2', '3', '4', '5', '6', '7', '8', '9', 'C', '0', 'ok']" t-as="btn_name">
+                                        <div class="col-xs-4 o_hr_attendance_pin_pad_border">
+                                            <a t-attf-class="btn btn-primary btn-block btn-lg o_hr_attendance_btn-round-corners {{ 'o_hr_attendance_pin_pad_button_' + btn_name }}"><t t-esc="btn_name"/></a>
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                    </t>
+                </t>
+                <t t-if="!widget.employee_id">
+                    Error: could not find corresponding employee.<br/>Please return to the main menu.
+                </t>
+                <div class="oe_attendance_sign_in_out">
+                </div>
+                <div class="o_hr_attendance_back_button btn btn-danger fa fa-times"/>
+            </div>
+            <div class="o_hr_attendance_clock"></div>
+
+        </div>
+    </t>
+
+</template>

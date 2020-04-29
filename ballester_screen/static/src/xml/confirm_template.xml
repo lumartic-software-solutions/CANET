@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--     
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Screen. 
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). 
+-->
+<template xml:space="preserve">
+	<!-- ================  main menu  ================ -->
+	<t t-name="Confirm">
+		<div class="row">
+			<div class="col-md-8">
+				<ol class="breadcrumb o_portal_submenu" style="font-size: 20px;">
+					<li>
+						<a href="" class="main">
+							<i class="fa fa-home">
+							</i>
+						</a>
+					</li>
+				</ol>
+			</div>
+			<t t-call='LoginUser' />
+		</div>
+		<br/>
+		<div class="row">
+				<div class="o_hr_attendance_kiosk_mode_container o_app_switcher_background">
+					<div class="o_hr_attendance_kiosk_mode">
+						<h2>Successfully Created</h2>
+					</div>
+				<center><button  class="btn
+						btn-primary main_button" id="mainmenu_button"
+						type="button">Back to Main Menu</button> </center>
+		    	</div>
+			
+			
+			</div>
+	</t>
+</template>

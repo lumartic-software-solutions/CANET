@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo >
+	
+<data noupdate="0">
+	<record model="ir.module.category" id="module_screen_category">
+            <field name="name">Screen Operation</field>
+            <field name="sequence">21</field>
+        </record>
+
+	<record id="group_operation_screen_user" model="res.groups">
+        <field name="name">Screen Operation User</field>
+        <field name="category_id" ref="ballester_screen.module_screen_category"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+</data>
+
+</odoo>

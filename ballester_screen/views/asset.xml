@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--     
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Screen.
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). 
+-->
+<odoo>
+	<template id="assets_backend" name="assets" inherit_id="web.assets_backend">
+		<xpath expr="." position="inside">
+			<link rel="stylesheet" href="/ballester_screen/static/src/css/screen.css" />
+			<link rel="stylesheet" href="/ballester_screen/static/src/css/jquery-editable-select.css"
+				/>
+			<link rel="stylesheet" href="/ballester_screen/static/src/css/select2.min.css" />
+			<script type="text/javascript" src="/ballester_screen/static/src/js/select2.min.js"
+				/>
+			<script type="text/javascript" src="/ballester_screen/static/lib/js/JsBarcode.all.js"/>
+			<script type="text/javascript" src="/ballester_screen/static/src/js/jquery-editable-select.js"
+				/>
+			<script type="text/javascript" src="/ballester_screen/static/src/js/screen.js"/>
+			<!--<link rel="stylesheet" href="/ballester_screen/static/src/css/bootstrap.min.css" type="text/css"/>
+<script type="text/javascript" src="/ballester_screen/static/src/js/jquery.min.js"></script>
+<script type="text/javascript" src="/ballester_screen/static/src/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/ballester_screen/static/src/js/bootstrap-multiselect.js"></script>
+ 
+<link rel="stylesheet" href="/ballester_screen/static/src/css/bootstrap-multiselect.css" type="text/css"/>-->
+		</xpath>
+	</template>
+</odoo>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--  -*- coding: utf-8 -*-
+      Odoo, Open Source Ballester Screen.
+      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+-->
+<odoo>
+    <data noupdate="1">
+        <!-- Sequences for Inventory Adjustments  -->
+        <record id="seq_inventory_adjustments" model="ir.sequence">
+            <field name="name">Inventory Adjustments Sequence</field>
+            <field name="code">stock.inventory</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field name="prefix">Adjust</field>
+            <field name="padding">5</field>
+        </record>
+    </data>
+</odoo>

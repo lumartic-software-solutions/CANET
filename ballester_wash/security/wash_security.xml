@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data noupdate="0">
+
+     <record model="ir.module.category" id="module_wash_category">
+            <field name="name">Wash Screen</field>
+            <field name="sequence">20</field>
+        </record>
+    <record id="group_screen_user" model="res.groups">
+        <field name="name">Screen User</field>
+        <field name="category_id" ref="ballester_wash.module_wash_category"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+	
+</data>
+
+
+</odoo>

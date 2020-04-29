@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="product_param_1_id" model="ir.config_parameter">
+            <field name="key">SDDR</field>
+	    <field name="value">0</field>
+        </record>
+       <record id="product_param_2_id" model="ir.config_parameter">
+            <field name="key">Contenedores</field>
+	    <field name="value">0</field>
+        </record>
+       <record id="product_param_3_id" model="ir.config_parameter">
+            <field name="key">Residuos</field>
+	    <field name="value">0</field>
+        </record>
+        <record id="product_param_4_id" model="ir.config_parameter">
+            <field name="key">Bidones Reciclados</field>
+	    <field name="value">0</field>
+        </record>
+	 <record id="product_param_5_id" model="ir.config_parameter">
+            <field name="key">Container Parts</field>
+	    <field name="value">0</field>
+        </record>
+	 <record id="product_param_6_id" model="ir.config_parameter">
+            <field name="key">Drum Parts</field>
+	    <field name="value">0</field>
+        </record>
+	 <record id="product_param_7_id" model="ir.config_parameter">
+            <field name="key">Recycle Product crush</field>
+	    <field name="value">0</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--     
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Screen.
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). 
+-->
+<odoo>
+	<data>
+		<!-- Operations  action -->
+		<record id="action_ballester_screen" model="ir.actions.client">
+			<field name="name">Operations</field>
+			<field name="tag">ballester_screen_act</field>
+			<field name="target">main</field>
+		</record>
+		
+		<!-- main Operations menu -->
+		<menuitem id="menu_ballester_screen" name="Operation" sequence="35" action="member_barcode_scanner.member_action_kiosk_mode"
+		web_icon="ballester_screen,static/description/icon.png" groups="ballester_wash.group_screen_user,ballester_screen.group_operation_screen_user" />
+	</data>
+</odoo>

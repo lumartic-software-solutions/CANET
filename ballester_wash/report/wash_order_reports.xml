@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report 
+            string="Wash Order" 
+            id="action_report_wash_order" 
+            model="wash.order" 
+            name="ballester_wash.report_washorder2"
+            file="ballester_wash.report_washorder" 
+            report_type="qweb-pdf"
+            print_report_name="(
+                object.state == 'draft' and 'Wash Order - %s' % (object.name) or
+                'Wash Order - %s' % (object.name))"
+        />
+    </data>
+</odoo>

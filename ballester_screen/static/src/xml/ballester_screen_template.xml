@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--     
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Screen. 
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). 
+-->
+
+<template xml:space="preserve">
+	
+	<!-- ================ current login user =============== -->
+	<t t-name="LoginUser">
+		<div class="col-md-4 pull-right">
+			<div class="media">
+				<a class="pull-left my_profile">
+					<t t-if="widget.operation_data.image != 'undefined'" >
+						<img class="media-object dp img-circle" t-att-src="'data:image/png;base64,'+widget.operation_data.image"
+							style="width: 100px;height:100px;"/>
+					</t>
+				</a>
+				<div class="media-body" style="margin-top:15px;">
+					<h4 class="media-heading">
+						<span t-esc="widget.operation_data.name"/>
+					</h4>
+					<hr style="margin:8px auto"/>
+					<h5>
+						Email :
+						<span t-esc="widget.operation_data.email"/>
+					</h5>
+				</div>
+			</div>
+		</div>
+	</t>
+	
+	<!-- ================  main menu  ================ -->
+	<t t-name="MainMenu">
+		<div class="row">
+			<div class="col-md-8">
+				<ol class="breadcrumb o_portal_submenu" style="font-size: 20px;">
+					<li>
+						<a href="" class="main">
+							<i class="fa fa-home">
+							</i>
+						</a>
+					</li>
+				</ol>
+			</div>
+			<t t-call='LoginUser' />
+		</div>
+		<br/>
+		<div class="row">
+			<!--<div class="col-md-4">
+				<a href="javascript:;" class="oe_highlight dashborad_button entry_of_products">Entry of products</a>
+			</div>
+			<div class="col-md-4">
+				<a href="javascript:;" class="oe_highlight dashborad_button output_of_products">Output of products</a>
+			</div>-->
+			<div >
+				<a href="javascript:;" class="oe_highlight dashborad_button warehouse" >Warehouse</a>
+			</div>
+		</div>
+	</t>
+	
+	
+	<!-- ================  Main 2 Button ================-->
+	<!-- ================  Output Of Products Button  ================-->
+	<t t-name="OutputOfProductsButton">
+		<div class="row">
+			<div class="col-md-8">
+				<ol class="breadcrumb o_portal_submenu" style="font-size: 20px;">
+					<li>
+						<a href="" class="main">
+							<i class="fa fa-home">
+							</i>
+						</a>
+					</li>
+					<li>
+						<a href="" class="warehouse">Output Of Products</a>
+					</li>
+				</ol>
+			</div>
+			<t t-call='LoginUser' />
+		</div>
+		<br/>
+		<div class="row">
+			<div class="col-md-6">
+				<a href="javascript:;" class="oe_highlight dashborad_button exit_of_containers">Exit of Containers</a>
+			</div>
+			<div class="col-md-6">
+				<a href="javascript:;" class="oe_highlight dashborad_button exit_management_by">Exit Management by
+3rd</a>
+			</div>
+		</div>
+	</t>
+	
+	<!-- ================  Main 3 Button ================-->
+	<!-- ================  warehouse Button  ================-->
+	<t t-name="WarehouseButton">
+		<div class="row">
+			<div class="col-md-8">
+				<ol class="breadcrumb o_portal_submenu" style="font-size: 20px;">
+					<li>
+						<a href="" class="main">
+							<i class="fa fa-home">
+							</i>
+						</a>
+					</li>
+					<li>
+						<a href="" class="warehouse">Warehouse</a>
+					</li>
+				</ol>
+			</div>
+			<t t-call='LoginUser' />
+		</div>
+		<br/>
+		<div class="row">
+			<div class="col-md-6">
+				<a href="javascript:;" class="oe_highlight dashborad_button inventory_adjustments">Inventory Adjustments</a>
+			</div>
+			<div class="col-md-6">
+				<a href="javascript:;" class="oe_highlight dashborad_button internal_transfers">Internal transfers</a>
+			</div>
+		</div>
+	</t>
+	<!-- ================ Inventory Adjustments Button  ================-->
+	<!--<t t-name="InventoryAdjustmentsButton">
+		<div class="row">
+			<div class="col-md-8">
+				<ol class="breadcrumb o_portal_submenu" style="font-size: 20px;">
+					<li>
+						<a href="" class="main">
+							<i class="fa fa-home">
+							</i>
+						</a>
+					</li>
+					<li>
+						<a href="" class="warehouse">Warehouse</a>
+					</li>
+					<li>
+						<a href="" class="inventory_adjustments">Inventory Adjustments</a>
+					</li>
+				</ol>
+			</div>
+			<t t-call='LoginUser' />
+		</div>
+		<br/>
+		<div class="row">
+			<div class="col-md-12">
+				<h2>Inventory Adjustments</h2>
+				<button style="margin-left: 17px;" class="btn btn-primary btn-sm inventory_adjustments_create"
+					type="button">Create</button>
+				<br/>
+				<br />
+				<div class="table-responsive">
+					<table class="o_list_view table table-condensed table-striped o_list_view_ungrouped">
+						<thead>
+							<tr>
+								<th>Inventory Reference</th>
+								<th>Inventory Date</th>
+								<th>Status</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr t-foreach="widget.operation_data.inventory_adjustment_table" t-as="i">
+								<td>
+									<span t-esc="i['name']"/>
+								</td>
+								<td>
+									<span t-esc="i['date']"/>
+								</td>
+								<td>
+									<span t-esc="i['status']"/>
+								</td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<tr>
+								<td>
+								</td>
+								<td>
+								</td>
+								<td>
+								</td>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+			</div>
+		</div>
+	</t>-->
+	
+	<!-- ================ Inventory Adjustments  create form  ================= -->
+	<!--<t t-name="InventoryAdjustmentsCreate">
+		<div class="row">
+			<div class="col-md-12">
+				<ol class="breadcrumb o_portal_submenu" style="font-size: 20px;">
+					<li>
+						<a href="" class="main">
+							<i class="fa fa-home">
+							</i>
+						</a>
+					</li>
+					<li>
+						<a href="" class="warehouse">Warehouse</a>
+					</li>
+					<li>
+						<a href="" class="inventory_adjustments">Inventory Adjustments</a>
+					</li>
+				</ol>
+			</div>
+		</div>
+		<br/>
+		<div class="row">
+			<div class="col-md-12">
+				<h2>Inventory Adjustments</h2>
+				<br/>
+				<br />
+				<form action="/create_client_db_submit_page" method="POST" class="form-horizontal
+						mt32">
+						<input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+						<input type="hidden" name="record" t-att-value="record" />
+						<div t-attf-class="form-group #{error and 'name' in error and 'has-error' or ''}">
+							<label class="col-md-3 col-sm-4 control-label" for="name"> Name</label>
+							<div class="col-md-7 col-sm-8">
+								<input  id="popupCreatedbname" type="text" class="form-control" name="name" required="True"
+									t-attf-value="#{name or ''}"   />
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-md-offset-3 col-sm-offset-4 col-sm-8 col-md-7">
+								<center>
+									<button    type="submit"  class="btn btn-success btn-md" >Submit</button>
+									<button     type="cancel"  class="btn btn-success btn-md">Cancel</button>
+								</center>
+							</div>
+						</div>
+					</form>
+					
+			</div>
+		</div>
+	</t>-->
+	
+</template>

@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_wash_order_user,Wash Order user,model_wash_order,,1,1,1,1
+access_wash_order__line_user,Wash Order Line User,model_wash_order_line,,1,1,1,1
+access_dangerous_prodduct_user,Dangerous Product,model_dangerous_product,,1,1,1,1
+access_survey_question,question,survey.model_survey_question,,1,1,1,1

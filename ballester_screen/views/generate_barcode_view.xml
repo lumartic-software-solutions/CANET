@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--      
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Screen .
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). 
+-->
+<odoo>
+	<data>
+		<!-- generate barcode tree view  -->
+		<record id="view_generate_barcode_tree" model="ir.ui.view">
+			<field name="name">generate.barcode.tree</field>
+			<field name="model">generate.barcode</field>
+			<field name="arch" type="xml">
+				<tree string="Barcode" >
+					<field name="barcode" />
+					<field name="status" />
+<!--					<field name="lot_id" /-->
+				</tree>
+			</field>
+		</record>
+		
+		<!-- generate barcode form view  -->
+		<record id="view_generate_barcode_form" model="ir.ui.view">
+			<field name="name">generate.barcode.form</field>
+			<field name="model">generate.barcode</field>
+			<field name="arch" type="xml">
+				<form string="Barcode">
+					<sheet>
+						<group>
+							<group>
+								<field name="barcode" />
+							</group>
+							<group>
+								<field name="status"  />
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+		
+		
+		<!--  generate barcode action -->
+		<record id="action_generate_barcode" model="ir.actions.act_window">
+			<field name="name">Barcode</field>
+			<field name="res_model">generate.barcode</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+		
+		<!-- Menu Generate Barcode -->
+		<menuitem id="menu_generate_barcode" name="Generate Barcode" action="action_generate_barcode"  parent="stock.menu_stock_warehouse_mgmt"
+			/>
+	</data>
+</odoo>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+	 
+	<!-- product product inherit form view -->
+        <record id="inherit_form_hr_timesheet" model="ir.ui.view">
+            <field name="name">account.analytic.line.form</field>
+            <field name="model">account.analytic.line</field>
+            <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_form" />
+            <field name="arch" type="xml">
+		<field name="project_id" position="replace">
+			<field name="project_id" />
+		</field>
+		<field name="name" position="after">
+			<field name="wash_id" />
+			<field name="time" />
+		</field>
+	      </field>
+        </record>
+
+    </data>
+</odoo>

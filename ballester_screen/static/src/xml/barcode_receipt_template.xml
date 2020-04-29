@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--     
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Screen. 
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). 
+-->
+<template id="template">
+	<t t-name="Barcodeticketreceipt">
+		<receipt  width="192" height="22" value-thousands-separator="" >
+<!--			<div  align="center" font="b" ><h2>Barcode Report</h2></div-->
+<!--			<br/-->
+			<t t-if="data['barcode_type'] == 'single'" >
+				<t t-if="data['product_name']"><div align="center" font="b"> Product : <span t-esc="data['product_name']"/>  </div></t>
+				<t t-if="data['prod_lot_id']"><div align="center" font="b"> Lot/Serial Number : <span t-esc="data['prod_lot_id']"/>  </div>
+				<br/>
+				<br/>
+				<div  align="center" font="b"><span style="text-align:left; margin-left:50px;" t-esc="d['prod_lot_id']" /></div>
+				</t>
+			</t>
+			<t t-if="data['barcode_type'] == 'multi'" >
+				<img id="barcode" />
+<!--			   <t t-foreach="data['record_list']" t-as="d"-->
+<!--				<t t-if="d['barcode']"-->
+<!--					<div align="center" font="b" >Barcode : <span t-esc="d['barcode']"/></div-->
+<!--					<img id="barcode" /-->
+<!--				</t-->
+<!--			   </t>-->
+		</t>
+		</receipt>
+	</t>
+</template>

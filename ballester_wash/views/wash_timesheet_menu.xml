@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data> 
+<record id="wash_timesheet_line_form" model="ir.ui.view">
+            <field name="name">account.analytic.line.form</field>
+            <field name="model">account.analytic.line</field>
+            <field name="priority">1</field>
+            <field name="inherit_id" eval="False"/>
+            <field name="arch" type="xml">
+                <form string="Analytic Entry">
+                    <sheet string="Analytic Entry">
+                        <group>
+                               <field name="date"/>
+			    <field name="name"/>
+			    <field name="employee_id"/>
+			     <field name="wash_id"/>
+			    <field name="time"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+<record id="wash_timesheet_line_tree" model="ir.ui.view">
+            <field name="name">account.analytic.line.tree.hr_timesheet</field>
+            <field name="model">account.analytic.line</field>
+            <field name="arch" type="xml">
+                <tree editable="top" string="Timesheet Activities" import="false">
+                    <field name="date"/>
+                    <field name="name"/>
+		    <field name="employee_id"/>
+		     <field name="wash_id"/>
+                    <field name="time"/>
+                </tree>
+            </field>
+        </record>
+
+<record id="wash_timesheet_action_all" model="ir.actions.act_window">
+            <field name="name">Wash Timesheets</field>
+	     <field name="view_mode">tree,form</field>
+            <field name="res_model">account.analytic.line</field>
+            <field name="search_view_id" ref="hr_timesheet.hr_timesheet_line_search"/>
+            <field name="context">{
+		 'search_default_employee_id': [active_id],
+            'default_employee_id': active_id,
+            }</field>
+        </record>
+
+        <record id="wash_timesheet_action_view_all_tree" model="ir.actions.act_window.view">
+            <field name="sequence" eval="4"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="wash_timesheet_line_tree"/>
+            <field name="act_window_id" ref="wash_timesheet_action_all"/>
+        </record>
+	  <record id="wash_timesheet_action_view_all_form" model="ir.actions.act_window.view">
+            <field name="sequence" eval="5"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="wash_timesheet_line_form"/>
+            <field name="act_window_id" ref="wash_timesheet_action_all"/>
+        </record>
+
+    <record id="hr_timesheet.hr_employee_view_form_inherit_timesheet" model="ir.ui.view">
+        <field name="name">hr.employee.form.timesheet</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='active_group']" position="before">
+                <!-- Empty invisible group to be filled by timesheet_grid and sale_timesheet -->
+                <group string="Timesheets" name="timesheet" invisible="1" groups="hr_timesheet.group_timesheet_manager">
+                </group>
+            </xpath>
+            <xpath expr="//button[@name='toggle_active']" position="before">
+                <button class="oe_stat_button" type="action" name="%(wash_timesheet_action_all)d" icon="fa-calendar">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Timesheets</span>
+                    </div>
+                </button>
+            </xpath>
+        </field>
+    </record>
+<menuitem id="wash_timesheet_menu"
+            name="Wash Timesheets"
+            parent="hr_timesheet.menu_hr_time_tracking"
+            action="wash_timesheet_action_all"/>
+
+</data>
+</odoo>

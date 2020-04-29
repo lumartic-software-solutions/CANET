@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Screen.
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+-->
+<template xml:space="preserve">
+	<!-- ================ Internal Transfer Button  ================-->
+	<t t-name="ComplianceDisplay">
+		<html>
+			<head>
+
+			<script>
+			 </script>
+
+			</head>
+		</html>
+		<div class="row">
+         <t t-call='LoginUser' />
+		</div>
+
+		<!-- barcode design -->
+		<div class="row" style="margin-left: 10px;">
+
+			<div  style="text-align: right; font-size: 22px; margin-top: 10px;margin-left:-100px;color:blue" >
+				<center><h2>Compliance</h2></center>
+			</div>
+
+		</div>
+		<h2 style="margin-left: 50px;">Questions</h2>
+		<t t-foreach="widget.question_set" t-as="i">
+			<div class="row" style="margin-left: 25px;">
+                      
+			    <div class="col-md-6" style="width:900px;margin-top: 10px;font-size:25px">
+					
+				 <span t-esc="i['question']" style=" width: 25%;"/>
+
+				</div>
+			
+			</div>
+
+		<div class="row" style="margin-left: 25px;">
+			<div class="col-md-3" style="width:350px;margin-top: 20px;">
+				<t t-foreach="i['choice']" t-as="j">
+					
+					<input  class="answer_class" id="answer_class" t-attf-value="#{j['answer']}"  t-att-name="i['question_id']" t-attf-ids="#{j['answer_id']}" style="margin-left:50px"  type="radio"><span t-esc="j['answer']"/>
+		
+	</input>
+					
+		    		 </t>
+			</div>
+
+		</div>
+		</t>
+		<br/>
+
+	     <!--buttons -->
+		<div class="row" style="margin-left: 10px;">
+				<div class="col-md-6" >
+					 <button  style="margin-top: 25px;margin-left: 100px;
+" class="btn btn-primary common_button
+						compliance_submit" id="compliance_submit" 
+						 type="button">Submit Answer</button>
+					
+				</div>
+
+				<div class="col-md-2" >
+			            <t t-call='ExitPopup'     style="margin-left:100px;"/></div>
+			</div>
+
+
+	</t>
+</template>

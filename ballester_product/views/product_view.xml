@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- -*- coding: utf-8 -*- Odoo, Open Source Ballester Product. License AGPL-3.0 
+    or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <data>
+        <!-- product template inherit form view -->
+        <record id="inherit_form_product_template" model="ir.ui.view">
+            <field name="name">product.template.form</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view" />
+            <field name="arch" type="xml">
+                <data>
+                    <field name="default_code" position="replace">
+                        <field name="default_code"/>
+                    </field>
+                    <xpath expr="//page[@name='variants']" position="after">
+                        <page name="lot_variants" string="Tables"
+                            groups="product.group_product_variant">
+                            <field name="lot_attribute_line_ids" widget="one2many_list"
+                                context="{'show_attribute':False}">
+                                <tree string="Lot Variants" editable="bottom">
+                                    <field name="attribute_id" />
+                                    <field name="value_ids" widget="many2many_tags" options="{'no_create_edit': True}"
+                                        domain="[('attribute_id', '=', attribute_id)]" context="{'default_attribute_id':
+                                        attribute_id}" />
+                                </tree>
+                            </field>
+                            <p class="oe_grey">
+                                <strong>Warning</strong>
+                                : adding or deleting attributes will delete and recreate
+                                existing variants and lead
+                                to the loss of their possible
+                                customizations.
+                            </p>
+                        </page>
+                    </xpath>
+                    <field name="barcode" position="after">
+                        <field name="uncode" />
+                        <field name="lercode_id" />
+                        <field name="danger_char_ids" widget="many2many_tags" />
+                        <field name="treatement_operation_ids" widget="many2many_tags" />
+                        <field name="admission_parameters" />
+                    </field>
+                    <field name="tracking" position="after">
+                        <group name="weight">
+                                <group name="weight" string="Weights" attrs="{'invisible':[('type', 'not in', ['product', 'consu'])]}">
+                                    <label for="volume"/>
+                                    <div class="o_row">
+                                        <field name="volume"/>
+                                        <span>m³</span>
+                                    </div>
+                                    <label for="weight"/>
+                                    <div class="o_row">
+                                        <field name="weight"/>
+                                        <span>kg</span>
+                                    </div>
+                                </group>
+                            </group>
+                    </field>
+                </data>
+            </field>
+        </record>
+
+        <!-- product product inherit form view -->
+        <record id="inherit_form_product_product" model="ir.ui.view">
+            <field name="name">product.product.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view" />
+            <field name="arch" type="xml">
+                <data>
+                    <field name="barcode" position="after">
+                        <field name="uncode" />
+                        <field name="lercode_id" />
+                        <field name="danger_char_ids" widget="many2many_tags" />
+                        <field name="treatement_operation_ids" widget="many2many_tags" />
+                        <field name="admission_parameters" />
+                    </field>
+                    <xpath expr="//page[1]" position="after">
+                        <page name="lot_variants" string="Tables"
+                            groups="product.group_product_variant">
+                            <field name="lot_attribute_line_ids" widget="one2many_list"
+                                context="{'show_attribute':False}">
+                                <tree string="Lot Variants" editable="bottom">
+                                    <field name="attribute_id" />
+                                    <field name="value_ids" widget="many2many_tags" options="{'no_create_edit': True}"
+                                        domain="[('attribute_id', '=', attribute_id)]" context="{'default_attribute_id':attribute_id}" />
+                                </tree>
+                            </field>
+                            <p class="oe_grey">
+                                <strong>Warning</strong>
+                                : adding or deleting attributes will delete and recreate
+                                existing variants and lead
+                                to the loss of their possible
+                                customizations.
+                            </p>
+                        </page>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+
+        <!-- remove hs_code form product view -->
+        <record id="inherit_form_delivery_product_product" model="ir.ui.view">
+            <field name="name">product.template.form</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="delivery.product_template_hs_code" />
+            <field name="arch" type="xml">
+                <data>
+                    <field name="hs_code" position="replace">
+                    </field>
+                </data>
+            </field>
+        </record>
+
+        <!-- ler code tree views -->
+        <record id="view_ler_code_tree" model="ir.ui.view">
+            <field name="name">ler.code.tree</field>
+            <field name="model">ler.code</field>
+            <field name="priority">2</field>
+            <field name="arch" type="xml">
+                <tree string="Ler Code">
+                    <field name="name" />
+                    <field name="description" />
+                    <field name="dangerous" />
+                </tree>
+            </field>
+        </record>
+
+        <!-- ler code form views -->
+        <record id="view_ler_code_form" model="ir.ui.view">
+            <field name="name">ler.code.form</field>
+            <field name="model">ler.code</field>
+            <field name="priority">2</field>
+            <field name="arch" type="xml">
+                <form string="Ler Code">
+                    <sheet>
+                        <group>
+                            <field name="name" />
+                            <field name="description" />
+                            <field name="dangerous" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- action for ler code -->
+        <record id="action_ler_code" model="ir.actions.act_window">
+            <field name="name">Ler Code</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">ler.code</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+        </record>
+
+        <!-- treatment operation tree view -->
+        <record id="view_treatment_operation_tree" model="ir.ui.view">
+            <field name="name">treatement.operation.tree</field>
+            <field name="model">treatement.operation</field>
+            <field name="priority">2</field>
+            <field name="arch" type="xml">
+                <tree string="Treatment Operation">
+                    <field name="name" />
+                    <field name="description" />
+                </tree>
+            </field>
+        </record>
+
+        <!-- treatment operation form view -->
+        <record id="view_treatment_operation_form" model="ir.ui.view">
+            <field name="name">treatement.operation.form</field>
+            <field name="model">treatement.operation</field>
+            <field name="priority">2</field>
+            <field name="arch" type="xml">
+                <form string="Treatment Operation">
+                    <sheet>
+                        <group>
+                            <field name="name" />
+                            <field name="description" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- action for treatment operation -->
+        <record id="action_treatment_operation" model="ir.actions.act_window">
+            <field name="name">Treatment Operation</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">treatement.operation</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+        </record>
+
+        <!-- Danger characteristics tree view -->
+        <record id="view_danger_characteristics_tree" model="ir.ui.view">
+            <field name="name">danger.characteristic.tree</field>
+            <field name="model">danger.characteristic</field>
+            <field name="priority">2</field>
+            <field name="arch" type="xml">
+                <tree string="Danger Characteristics">
+                    <field name="name" />
+                    <field name="description" />
+                </tree>
+            </field>
+        </record>
+
+        <!-- Danger characteristics form view -->
+        <record id="view_danger_characteristics_form" model="ir.ui.view">
+            <field name="name">danger.characteristic.form</field>
+            <field name="model">danger.characteristic</field>
+            <field name="priority">2</field>
+            <field name="arch" type="xml">
+                <form string="Danger Characteristics">
+                    <sheet>
+                        <group>
+                            <field name="name" />
+                            <field name="description" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- action for Danger characteristics -->
+        <record id="action_danger_characteristics" model="ir.actions.act_window">
+            <field name="name">Danger Characteristics</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">danger.characteristic</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+        </record>
+
+        <!-- Menu for Ler Code -->
+        <menuitem id="product_ler_code" name="Ler Code" action="action_ler_code"
+            parent="sale.prod_config_main" sequence="4"
+            groups="sales_team.group_sale_salesman" />
+        <!-- Menu for Danger characteristics -->
+        <menuitem id="product_danger_characteristics" name="Danger Characteristics"
+            action="action_danger_characteristics" parent="sale.prod_config_main"
+            sequence="7" groups="sales_team.group_sale_salesman" />
+        <!-- Menu for Treatment Operation -->
+        <menuitem id="product_treatment_operation" name="Treatment Operation"
+            action="action_treatment_operation" parent="sale.prod_config_main"
+            sequence="6" groups="sales_team.group_sale_salesman" />
+    </data>
+</odoo>

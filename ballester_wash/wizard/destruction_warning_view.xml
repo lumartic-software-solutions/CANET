@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--     
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Screen.
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). 
+-->
+<odoo>
+	<data>
+		<!-- form view of destruction waring wizard -->
+		<record model="ir.ui.view" id="dustruction_warning_wizard_form_view">
+			<field name="name">dustruction.warning</field>
+			<field name="model">dustruction.warning</field>
+			<field name="arch" type="xml">
+				<form >
+					<!--<group>
+					<field name="name" readonly="1" nolabel="1"/>
+				</group>-->
+					<group>
+					<p> Are you sure You want to destruct this product? </p>
+					</group>
+					<footer>
+						<!--<button  name="action_plastic" string="Plastic" type="object" class="btn-primary" />
+						<button name="action_metal" string="Metal" />-->
+						<button  name="action_destruction" string="Yes" type="object" class="btn-primary" />
+						<button special="cancel" string="No" />
+					</footer>
+				</form>
+			</field>
+		</record>
+		
+		<!-- action of Destruction Warning wizard -->
+		<record id="destriction_warning_wizard_action" model="ir.actions.act_window">
+			<field name="name">Destructuion Warning</field>
+			<field name="res_model">dustruction.warning</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="target">new</field>
+		</record>
+		
+	</data>
+</odoo>

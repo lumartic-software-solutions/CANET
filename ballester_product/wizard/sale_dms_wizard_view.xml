@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--      
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Product . 
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). 
+-->
+<odoo>
+	<record id="inherit_action_dms_file" model="ir.actions.act_window">
+		<field name="name">Files</field>
+		<field name="res_model">muk_dms.file</field>
+		<field name="view_mode">form</field>
+		<field name="context">{'search_default_visible': True, 'mail_create_nolog': True}</field>
+		  <field name="target">new</field>
+		<field name="help" type="html">
+		    <p class="oe_view_nocontent_create">
+		      	Click to add a new file.
+		    </p>
+		    <p>
+				Files are used to save content directly in Odoo.
+		    </p>
+	    </field>
+	</record>
+</odoo>
