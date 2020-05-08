@@ -1,5 +1,8 @@
-from odoo import models, fields, api, _
+from odoo import models, fields, api, tools, _
 import datetime
+
+from odoo.tools import float_compare, pycompat
+
 
 class AnalyticLine(models.Model):
     _inherit = 'account.analytic.line'
@@ -131,3 +134,56 @@ class MaintenanaceRequestLine(models.Model):
         taxes = self.tax_id.compute_all(self.price_unit, self.env.user.currency_id, self.product_uom_qty,
                                         self.product_id, self.env.user.partner_id)
         self.price_subtotal = taxes['total_excluded']
+
+
+
+class MaintenanceEquipment(models.Model):
+    _inherit = 'maintenance.equipment'
+
+    image_variant = fields.Binary(
+        "Variant Image", attachment=True,
+       )
+    image = fields.Binary(
+        "Big-sized image", compute='_compute_images', inverse='_set_image',
+        )
+    image_small = fields.Binary(
+        "Small-sized image", compute='_compute_images', inverse='_set_image_small',
+       )
+    image_medium = fields.Binary(
+        "Medium-sized image", compute='_compute_images', inverse='_set_image_medium',
+       )
+    default_code =fields.Char('Internal Reference')
+
+    barcode = fields.Char('Barcode')
+
+
+    @api.one
+    def _compute_images(self):
+        if self._context.get('bin_size'):
+            self.image_medium = self.image_variant
+            self.image_small = self.image_variant
+            self.image = self.image_variant
+        else:
+            resized_images = tools.image_get_resized_images(self.image_variant, return_big=True, avoid_resize_medium=True)
+            self.image_medium = resized_images['image_medium']
+            self.image_small = resized_images['image_small']
+            self.image = resized_images['image']
+
+    @api.one
+    def _set_image(self):
+        self._set_image_value(self.image)
+
+    @api.one
+    def _set_image_medium(self):
+        self._set_image_value(self.image_medium)
+
+    @api.one
+    def _set_image_small(self):
+        self._set_image_value(self.image_small)
+
+    @api.one
+    def _set_image_value(self, value):
+        if isinstance(value, pycompat.text_type):
+            value = value.encode('ascii')
+        image = tools.image_resize_image_big(value)
+        self.image_variant = image

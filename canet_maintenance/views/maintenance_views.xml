@@ -137,6 +137,39 @@
             </field>
          </record>
 
+		<record id="view_canet_maintenance_equipment_form" model="ir.ui.view">
+            <field name="name">maintenance_equipment</field>
+            <field name="model">maintenance.equipment</field>
+            <field name="inherit_id" ref="maintenance.hr_equipment_view_form"/>
+            <field name="arch" type="xml">
+                  <xpath expr="//sheet/div" position="after">
+                    <field name="image_medium"  widget="image" class="oe_avatar"/>
+                </xpath>
+				<field name="warranty" position="after">
+                        <field name="default_code"/>
+						<field name="barcode"/>
+                    </field>
+            </field>
+         </record>
+		
+
+        <record id="view_canet_maintenance_equipment_kanban" model="ir.ui.view">
+            <field name="name">maintenance_equipment</field>
+            <field name="model">maintenance.equipment</field>
+            <field name="inherit_id" ref="maintenance.hr_equipment_view_kanban"/>
+            <field name="arch" type="xml">
+				  <field name="color" position="after">
+                        <field name="id"/>
+                    </field>
+                  <xpath expr="//div[@class='oe_kanban_content']/div" position="before">
+                    <div class="o_kanban_image">
+                                <img t-att-src="kanban_image('maintenance.equipment', 'image_small', record.id.raw_value)"/>
+                     </div>
+                </xpath>
+				
+            </field>
+         </record>
+
          <record id="view_canet_maintenance_request_kanban" model="ir.ui.view">
             <field name="name">maintenance_request</field>
             <field name="model">maintenance.request</field>

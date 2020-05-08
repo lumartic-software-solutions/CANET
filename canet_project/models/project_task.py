@@ -1,12 +1,14 @@
 from odoo import models, fields, api, _
 import datetime
 
+
 class ProjectTask(models.Model):
     _inherit = 'project.task'
     start_date = fields.Date(string="Start Date")
     start_time = fields.Datetime("Start Time")
     con_time = fields.Datetime("Continue Time")
     end_time = fields.Datetime("End Time")
+    number = fields.Char('Number')
     restart_time = fields.Datetime("Restart Time")
     operations = fields.One2many(
         'maintenance.request.line', 'task_id', 'Parts',
@@ -41,6 +43,13 @@ class ProjectTask(models.Model):
     @api.depends('amount_untaxed', 'amount_tax')
     def _amount_total(self):
         self.amount_total = (self.amount_untaxed + self.amount_tax)
+
+
+    @api.model
+    def create(self, vals):
+        vals['number'] = self.env['ir.sequence'].next_by_code('project.task') or _('New')
+        result = super(ProjectTask, self).create(vals)
+        return result
 
 
     @api.multi

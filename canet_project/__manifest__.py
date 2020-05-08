@@ -16,6 +16,7 @@
 """,
     'depends': ['base','account','project','hr_timesheet','canet_maintenance'],
     'data': [
+		'data/ir_sequence_data.xml',
         'views/project_task_view.xml'
 
     ],
