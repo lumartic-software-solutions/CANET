@@ -54,7 +54,7 @@ class OperationDashboard(models.Model):
                                  'id': str(data.id) or '',
                                  'default_code': data.default_code or '',
                                  'ler_code': "[%s] %s" % (
-                                     data.lercode_id.name, data.lercode_id.description) if data.lercode_id else 'None',
+                                     data.name, data.description) if data else 'None',
                                  })
 
         if product_list:
@@ -225,8 +225,8 @@ class OperationDashboard(models.Model):
                                          'id': str(pro.id) or '',
                                          'default_code': pro.default_code or '',
                                          'ler_code': "[%s] %s" % (
-                                             pro.lercode_id.name,
-                                             pro.lercode_id.description) if pro.lercode_id else 'None',
+                                             pro.name,
+                                             pro.description) if pro else 'None',
                                          })
             product_selection = ''
             if len(product_list) > 0:
@@ -978,8 +978,8 @@ class OperationDashboard(models.Model):
                         'id': line.id or False,
                         'lot_id': line.prod_lot_id.id or False,
                         'life_date': life_date or '',
-                        'ler_code': "[%s] %s" % (line.product_id.lercode_id.name,
-                                                 line.product_id.lercode_id.description) if line.product_id.lercode_id else 'None',
+                        'ler_code': "[%s] %s" % (line.product_id.name,
+                                                 line.product_id.description) if line.product_id else 'None',
                     })
                 return {'success': "Successfully Created The Inventory Adjustments!",
                         'inventory_adjustment_table': inventory_adjustment_table, 'id': inventory_id.id}
@@ -1027,8 +1027,8 @@ class OperationDashboard(models.Model):
                     'id': line.id or False,
                     'lot_id': line.prod_lot_id.id or False,
                     'life_date': life_date or '',
-                    'ler_code': "[%s] %s" % (line.product_id.lercode_id.name,
-                                             line.product_id.lercode_id.description) if line.product_id.lercode_id else 'None',
+                    'ler_code': "[%s] %s" % (line.product_id.name,
+                                             line.product_id.description) if line.product_id else 'None',
                 })
             return {'success': 'Successfully Updated The Inventory Adjustments!',
                     'inventory_adjustment_table': inventory_adjustment_table, 'id': inventory_id.id}
