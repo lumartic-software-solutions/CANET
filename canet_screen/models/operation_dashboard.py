@@ -304,17 +304,17 @@ class OperationDashboard(models.Model):
         product_obj = self.env['product.product']
         location_list = []
         unsed_barcode_list = []
-        self._cr.execute('''select * from wash_order''')
-        wash_result = self._cr.dictfetchall()
-        wash_barcode_ids = tuple([wash.get('lot_id') for wash in wash_result])
-        params = {'wash_barcode_ids': wash_barcode_ids}
-        if wash_barcode_ids:
-            self._cr.execute('''select * from stock_production_lot where id not in %(wash_barcode_ids)s''', params)
-            unsed_barcode_list_ids = self._cr.dictfetchall()
-            for data in unsed_barcode_list_ids:
-                unsed_barcode_list.append({'barcode': data.get('name') or '',
-                                                'id': str(data.get('id')) or '',
-                                                })
+        # self._cr.execute('''select * from wash_order''')
+        # wash_result = self._cr.dictfetchall()
+        # wash_barcode_ids = tuple([wash.get('lot_id') for wash in wash_result])
+        # params = {'wash_barcode_ids': wash_barcode_ids}
+        # if wash_barcode_ids:
+        #     self._cr.execute('''select * from stock_production_lot where id not in %(wash_barcode_ids)s''', params)
+        #     unsed_barcode_list_ids = self._cr.dictfetchall()
+        #     for data in unsed_barcode_list_ids:
+        #         unsed_barcode_list.append({'barcode': data.get('name') or '',
+        #                                         'id': str(data.get('id')) or '',
+        #                                         })
 
         location_ids = location_obj.search([('usage', 'in', ['internal'])])
         for location in location_ids:
@@ -330,7 +330,7 @@ class OperationDashboard(models.Model):
                                   })
         data = {
             #  'product_list': product_list,
-            'barcode_list': unsed_barcode_list,
+            'barcode_list': [],
             'location_list': location_list,
             'type_of_order': [{'order': 'Internal Transfer'}, {'order': 'Project'}, {'order': 'Maintenance'}],
             'washing_type': [{'washing': 'dangerous'}, {'washing': 'non_dangerous'}],
