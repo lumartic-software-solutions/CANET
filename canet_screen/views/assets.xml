@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Screen.
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+-->
+<odoo>
+	<template id="assets_backend" name="assets" inherit_id="web.assets_backend">
+		<xpath expr="." position="inside">
+			<link rel="stylesheet" href="/canet_screen/static/src/css/screen.css" />
+			<link rel="stylesheet" href="/canet_screen/static/src/css/jquery-editable-select.css"
+				/>
+			<link rel="stylesheet" href="/canet_screen/static/src/css/select2.min.css" />
+
+			<script type="text/javascript" src="/canet_screen/static/lib/js/JsBarcode.all.js"/>
+			<script type="text/javascript" src="/canet_screen/static/src/js/jquery-editable-select.js"/>
+
+			<script type="text/javascript" src="/canet_screen/static/src/js/canet_screen.js"/>
+
+		</xpath>
+	</template>
+</odoo>

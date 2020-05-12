@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--     
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Screen.
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). 
+-->
+<odoo>
+	<data>
+		<!-- Operations  action -->
+		<record id="action_canet_screen" model="ir.actions.client">
+			<field name="name">Operations</field>
+			<field name="tag">canet_screen_act</field>
+			<field name="target">fullscreen</field>
+		</record>
+		
+		<!-- main Operations menu -->
+		<menuitem id="menu_canet_screen" name="Operation" sequence="30" action="canet_screen.action_canet_screen"
+		web_icon="canet_screen,static/description/icon.png"  />
+	</data>
+</odoo>
