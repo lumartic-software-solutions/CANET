@@ -81,8 +81,7 @@ class OperationDashboard(models.Model):
                                       'id': str(data.id) or '',
                                       })
 
-        search_wash_order = self.env['wash.order'].search([])
-        unsed_wash_barcode_list_ids = lot_obj.search([('id', 'not in', [wash.lot_id.id for wash in search_wash_order])])
+        unsed_wash_barcode_list_ids = lot_obj.search([])
         for data in unsed_wash_barcode_list_ids:
             unsed_wash_barcode_list.append({'barcode': data.name or '',
                                             'id': str(data.id) or '',
@@ -173,39 +172,40 @@ class OperationDashboard(models.Model):
     def location_data(self, location1, location2, length):
         location_obj = self.env['stock.location']
         location_search = False
-        if location1 or location2:
-            if length >= 3:
-                parent_location_search = location_obj.search([('name', '=', str(location1))])
-                prent_of_parent_search = location_obj.search([('location_id', '=', parent_location_search[0].id)])
-                location_search = location_obj.search(
-                    [('name', '=', str(location2)), ('location_id', '=', prent_of_parent_search[0].id)])
-            else:
-                parent_location_search = location_obj.search([('name', '=', str(location1))])
-                location_search = location_obj.search(
-                    [('name', '=', str(location2)), ('location_id', '=', parent_location_search[0].id)])
-            lot_list = []
-            wash_list = []
-            wash_ids = self.env['wash.order'].search(
-                ['|', ('location_id', '=', location_search[0].id), ('location_dest_id', '=', location_search[0].id)])
-            if wash_ids:
-                for wash in wash_ids:
-                    wash_list.append(wash.lot_id.id)
-            if location_search:
-                if wash_list:
-                    quant_search_ids = self.env['stock.quant'].search(
-                        [('location_id', '=', location_search[0].id), ('lot_id', 'not in', wash_list)])
-                else:
-                    quant_search_ids = self.env['stock.quant'].search([('location_id', '=', location_search[0].id)])
-                if quant_search_ids:
-                    for quant in quant_search_ids:
-                        lot_list.append({
-                            'name': quant.lot_id.name,
-                            'id': quant.lot_id.id,
-                        })
-
-                return {'lot_list': lot_list}
-        else:
-            return {}
+        return {}
+        # if location1 or location2:
+        #     if length >= 3:
+        #         parent_location_search = location_obj.search([('name', '=', str(location1))])
+        #         prent_of_parent_search = location_obj.search([('location_id', '=', parent_location_search[0].id)])
+        #         location_search = location_obj.search(
+        #             [('name', '=', str(location2)), ('location_id', '=', prent_of_parent_search[0].id)])
+        #     else:
+        #         parent_location_search = location_obj.search([('name', '=', str(location1))])
+        #         location_search = location_obj.search(
+        #             [('name', '=', str(location2)), ('location_id', '=', parent_location_search[0].id)])
+        #     lot_list = []
+        #     wash_list = []
+        #     wash_ids = self.env['wash.order'].search(
+        #         ['|', ('location_id', '=', location_search[0].id), ('location_dest_id', '=', location_search[0].id)])
+        #     if wash_ids:
+        #         for wash in wash_ids:
+        #             wash_list.append(wash.lot_id.id)
+        #     if location_search:
+        #         if wash_list:
+        #             quant_search_ids = self.env['stock.quant'].search(
+        #                 [('location_id', '=', location_search[0].id), ('lot_id', 'not in', wash_list)])
+        #         else:
+        #             quant_search_ids = self.env['stock.quant'].search([('location_id', '=', location_search[0].id)])
+        #         if quant_search_ids:
+        #             for quant in quant_search_ids:
+        #                 lot_list.append({
+        #                     'name': quant.lot_id.name,
+        #                     'id': quant.lot_id.id,
+        #                 })
+        #
+        #         return {'lot_list': lot_list}
+        # else:
+        #     return {}
 
     @api.model
     def categ_data(self, name):
@@ -316,7 +316,6 @@ class OperationDashboard(models.Model):
                                                 'id': str(data.get('id')) or '',
                                                 })
 
-        search_wash_order = self.env['wash.order'].search([])
         location_ids = location_obj.search([('usage', 'in', ['internal'])])
         for location in location_ids:
             orig_location = location
@@ -504,24 +503,25 @@ class OperationDashboard(models.Model):
                     type_of_order = 'drum'
                     name = self.env['ir.sequence'].next_by_code('wash.order.drum') or _('New')
                 lot_brw = self.env['stock.production.lot'].browse(int(barcode))
-                wash_data = {
-                    'name': name,
-                    'type_of_order': type_of_order,
-                    'product_id': lot_brw[0].product_id.id,
-                    'recycled_product_id': lot_brw[0].product_id.recycled_product_id.id,
-                    'location_id': location_search,
-                    'location_dest_id': location_dest_search,
-                    'product_qty': 1.0,
-                    'product_uom': lot_brw[0].product_id.uom_id.id,
-                    'state': 'draft',
-                    'wash_date': date,
-                    'washing_type': data.get('washing_type'),
-                    'operations': operation_data,
-                    'lot_id': int(barcode),
-                }
-                create_wash_order = self.env['wash.order'].create(wash_data)
-            if create_wash_order:
-                return {'success': "Successfully Created Wash Order!"}
+            return {'success': "true"}
+            #     wash_data = {
+            #         'name': name,
+            #         'type_of_order': type_of_order,
+            #         'product_id': lot_brw[0].product_id.id,
+            #         'recycled_product_id': lot_brw[0].product_id.recycled_product_id.id,
+            #         'location_id': location_search,
+            #         'location_dest_id': location_dest_search,
+            #         'product_qty': 1.0,
+            #         'product_uom': lot_brw[0].product_id.uom_id.id,
+            #         'state': 'draft',
+            #         'wash_date': date,
+            #         'washing_type': data.get('washing_type'),
+            #         'operations': operation_data,
+            #         'lot_id': int(barcode),
+            #     }
+            #     create_wash_order = self.env['wash.order'].create(wash_data)
+            # if create_wash_order:
+            #     return {'success': "Successfully Created Wash Order!"}
 
     @api.multi
     def create_internal_transfer_method(self, record_data):
@@ -616,7 +616,6 @@ class OperationDashboard(models.Model):
         user = self.env.uid
         type_of_order = False
         location_dest_search = False
-        wash_obj = self.env['wash.order']
         brw_usr = self.env['res.users'].search([('id', '=', user)])
         type_of_order = False
         location_dest_search = False
@@ -797,43 +796,43 @@ class OperationDashboard(models.Model):
                     create_compact = wash_obj.create(compact_container_vals)
                 if data.get('type_of_order') == 'drum':
                     type_of_order = 'drum'
-                    if product_search_ids[0].type_of_drum == 'plastic':
-                        create_drum_crush = {
-                            'name': self.env['ir.sequence'].next_by_code('wash.order.crush'),
-                            'product_id': lot_brw[0].product_id.id,
-                            'type_of_order': 'crush',
-                            'product_uom': lot_brw[0].product_id.uom_id.id,
-                            'lot_id': int(barcode),
-                            'product_qty': 0,
-                            'location_id': location_search,
-                            'location_dest_id': location_dest_search,
-                            #  'washing_type': type_of_order,
-                            'washing_type': data.get('washing_type'),
-                            'operations': operation_data,
-                        }
+                    # if product_search_ids[0].type_of_drum == 'plastic':
+                    #     create_drum_crush = {
+                    #         'name': self.env['ir.sequence'].next_by_code('wash.order.crush'),
+                    #         'product_id': lot_brw[0].product_id.id,
+                    #         'type_of_order': 'crush',
+                    #         'product_uom': lot_brw[0].product_id.uom_id.id,
+                    #         'lot_id': int(barcode),
+                    #         'product_qty': 0,
+                    #         'location_id': location_search,
+                    #         'location_dest_id': location_dest_search,
+                    #         #  'washing_type': type_of_order,
+                    #         'washing_type': data.get('washing_type'),
+                    #         'operations': operation_data,
+                    #     }
+                    #
+                    #     create_drum_crush = wash_obj.create(crush_container_vals)
+                    # if product_search_ids[0].type_of_drum == 'metal':
+                    #     compact_container_vals = {
+                    #         'name': self.env['ir.sequence'].next_by_code('wash.order.compact'),
+                    #         'product_id': lot_brw[0].product_id.id,
+                    #         'type_of_order': 'compact',
+                    #         'product_uom': lot_brw[0].product_id.uom_id.id,
+                    #         'lot_id': int(barcode),
+                    #         'product_qty': 0,
+                    #         'location_id': location_search,
+                    #         'location_dest_id': location_dest_search,
+                    #         'operations': operation_data,
+                    #         # 'washing_type': type_of_order,
+                    #     }
+                    #     create_drum_compact = wash_obj.create(compact_container_vals)
 
-                        create_drum_crush = wash_obj.create(crush_container_vals)
-                    if product_search_ids[0].type_of_drum == 'metal':
-                        compact_container_vals = {
-                            'name': self.env['ir.sequence'].next_by_code('wash.order.compact'),
-                            'product_id': lot_brw[0].product_id.id,
-                            'type_of_order': 'compact',
-                            'product_uom': lot_brw[0].product_id.uom_id.id,
-                            'lot_id': int(barcode),
-                            'product_qty': 0,
-                            'location_id': location_search,
-                            'location_dest_id': location_dest_search,
-                            'operations': operation_data,
-                            # 'washing_type': type_of_order,
-                        }
-                        create_drum_compact = wash_obj.create(compact_container_vals)
-
-            if create_crush and create_compact:
-                return {'success': "Successfully Created Wash Order!"}
-            if create_drum_crush:
-                return {'success': "Successfully Created Wash Order!"}
-            if create_drum_compact:
-                return {'success': "Successfully Created Wash Order!"}
+            # if create_crush and create_compact:
+            #     return {'success': "Successfully Created Wash Order!"}
+            # # if create_drum_crush:
+            # #     return {'success': "Successfully Created Wash Order!"}
+            # if create_drum_compact:
+            #     return {'success': "Successfully Created Wash Order!"}
 
     @api.multi
     def set_product_name(self, product):
@@ -905,11 +904,11 @@ class OperationDashboard(models.Model):
                             second_split = first_split[1].split("]")
                             product_search_ids = product_obj.search([('default_code', '=', second_split[0])])
                             for lot in lot_ids:
-                                search_wash_ids = self.env['wash.order'].search([('lot_id', '=', lot.id)])
-                                if search_wash_ids:
-                                    for wash in search_wash_ids:
-                                        raise UserError(
-                                            _('wash order alreday created for this Barcode %s ') % (lot.name))
+                                # search_wash_ids = self.env['wash.order'].search([('lot_id', '=', lot.id)])
+                                # if search_wash_ids:
+                                #     for wash in search_wash_ids:
+                                #         raise UserError(
+                                #             _('wash order alreday created for this Barcode %s ') % (lot.name))
                                 if product_search_ids:
                                     if lot.product_id.id != product_search_ids[0].id:
                                         raise UserError(
