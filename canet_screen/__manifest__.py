@@ -14,11 +14,14 @@
 
 ================================================================================
 """,
-    'depends': ['base', 'sale','stock','hr'],
+    'depends': ['base', 'sale','stock','hr','member_barcode_scanner'],
     'data': [
             'data/adjustments_sequence_data.xml',
             'data/product_demo.xml',
+            'report/template_barcode_report.xml',
+            'views/custom_report.xml',
             'views/assets.xml',
+            'views/stock_inventory_view.xml',
             'views/canet_screen_view.xml',
 
     ],
@@ -31,7 +34,8 @@
         "static/src/xml/inventory_adjustments_view.xml",
         "static/src/xml/internal_transfer_view.xml",
         "static/src/xml/internal_destruction_template.xml",
-    ],
+        "static/src/xml/barcode_receipt_template.xml"
+        ],
     'application': True,
     'auto_install': False,
     'installable': True,

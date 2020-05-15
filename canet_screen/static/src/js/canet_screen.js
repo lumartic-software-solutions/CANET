@@ -103,7 +103,6 @@ var CanetScreen = Widget.extend({
         var self = this;
         event.stopPropagation();
         event.preventDefault();
-        console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<",self)
         return self.$el.html(QWeb.render("MainMenu", {widget: self}));
     },
     confirm_exit_popup: function (event) {
@@ -514,8 +513,8 @@ TypeOrderOnChangeEvent: function (event)
 	        	        	var action = {
 			                        type: 'ir.actions.report',
 			                        report_type: 'qweb-pdf',
-			                        report_name: "ballester_screen.report_barcode",
-			                        report_file: "ballester_screen.report_barcode",
+			                        report_name: "canet_screen.report_barcode",
+			                        report_file: "canet_screen.report_barcode",
 			                        data: result.data,
 			                    };
 				            return self.do_action(action);
@@ -559,8 +558,8 @@ TypeOrderOnChangeEvent: function (event)
 	        	        	var action = {
 			                        type: 'ir.actions.report',
 			                        report_type: 'qweb-pdf',
-			                        report_name: "ballester_screen.report_barcode",
-			                        report_file: "ballester_screen.report_barcode",
+			                        report_name: "canet_screen.report_barcode",
+			                        report_file: "canet_screen.report_barcode",
 			                        data: result.data,
 			                    };
 				            return self.do_action(action);
@@ -592,8 +591,8 @@ TypeOrderOnChangeEvent: function (event)
 	        	        	var action = {
 			                        type: 'ir.actions.report',
 			                        report_type: 'qweb-pdf',
-			                        report_name: "ballester_screen.report_barcode",
-			                        report_file: "ballester_screen.report_barcode",
+			                        report_name: "canet_screen.report_barcode",
+			                        report_file: "canet_screen.report_barcode",
 			                        data: result.data,
 			                    };
 				            return self.do_action(action);
@@ -614,52 +613,59 @@ add_an_item: function(event){
               console.log(">>>>>>>>>>>>>>@@>>>>>>.",location)
 	       if (location != undefined){
 		       var table_row = document.getElementById("inventory_adjustments_table").rows;
+		       console.log("*******table_row*********",table_row)
 		       if (table_row.length > 2){
 		    	   $( "#inventory_adjustments_table tr:nth-last-child(2)").after("<tr class='active'>"+
-		    			   "<td style='width: 25%;' >"+self.product_list+"</td>"+
-		    			   "<td style='width: 15%; '> <input type='text' name='ler_code_txt' id='ler_code_id' readonly='readonly' /></td>"+
-		    			   "<td style='width: 20%;' id='barcode'>"+self.barcode_list+"</td>"+
-		    			   "<td style='width: 20%; '> <input type='text' name='life_date' class='life_datetimepicker' /></td>"+
-		    			   "<td style='width: 5%;'> <input type='hidden' name='line_id'  value='none' /> </td>"+
+		    			   "<td style='width: 27%;' >"+self.product_list+"</td>"+
+		    			   "<td style='width: 17%; '> <input type='text' name='product_unit' id='product_unit'/></td>"+
+		    			   "<td style='width: 22%;' id='barcode'>"+self.barcode_list+"</td>"+
+		    			   "<td style='width: 22%; '> <input type='text' name='life_date' class='life_datetimepicker' /></td>"+
+		    			   "<td style='width: 7%;'> <input type='hidden' name='line_id'  value='none' /> </td>"+
 		    			   "<td style='width: 5%;'><button class='fa fa-trash-o btndelete' name='delete' aria-hidden='true'/></td>"+
-		    			   "<td style='width: 5%; display:none;'></td>"+
-		    			   "<td style='width: 5%;' class='set_lot_details_ids'><button id='lot_details_id' class='fa fa-bars lot_details_wizard'  aria-hidden='true'></button></td>"+
+//		    			   "<td style='width: 5%; display:none;'></td>"+
+//		    			   "<td style='width: 5%;' class='set_lot_details_ids'><button id='lot_details_id' class='fa fa-bars lot_details_wizard'  aria-hidden='true'></button></td>"+
 		    			   "</tr>");
 		       }else{
 		    	   $('#inventory_adjustments_table').prepend("<tr class='active'>"+
-		    			   "<td style='width: 25%;'>"+self.product_list+"</td>" +
-		    			   "<td style='width: 15%; '> <input type='text' name='ler_code_txt' id='ler_code_id'  readonly='readonly'/></td>"+
-		    			   "<td style='width: 20%;' id='barcode'>"+self.barcode_list+"</td>"+
-		    			   "<td style='width: 20%; '> <input type='text' name='life_date' class='life_datetimepicker' /></td>"+
-		    			   "<td style='width: 5%;'> <input type='hidden' name='line_id' value='none' /></td>"+
+		    			   "<td style='width: 27%;'>"+self.product_list+"</td>" +
+		    			   "<td style='width: 17%; '> <input type='text' name='product_unit' id='product_unit' /></td>"+
+		    			   "<td style='width: 22%;' id='barcode'>"+self.barcode_list+"</td>"+
+		    			   "<td style='width: 22%; '> <input type='text' name='life_date' class='life_datetimepicker' /></td>"+
+		    			   "<td style='width: 7%;'> <input type='hidden' name='line_id' value='none' /></td>"+
 		    			   "<td style='width: 5%;'><button class='fa fa-trash-o btndelete' name='delete' aria-hidden='true'/></td>"+
-		    			   "<td style='width: 5%; display:none;'></td>"+
-		    			   "<td style='width: 5%;' class='set_lot_details_ids'><button id='lot_details_id' class='fa fa-bars lot_details_wizard'  aria-hidden='true'></button></td>"+
+//		    			   "<td style='width: 5%; display:none;'></td>"+
+//		    			   "<td style='width: 5%;' class='set_lot_details_ids'><button id='lot_details_id' class='fa fa-bars lot_details_wizard'  aria-hidden='true'></button></td>"+
 		    			   "</tr>");
 		       }
 		       $(".barcodes").editableSelect();
-		       $('.products')
-		       .editableSelect()
-		       .on('select.editable-select', function (e, li) {
-		           var ler_code = li.attr('product_ler_code');
-                           console.log("&**************ler_code*****",ler_code )
-		           var product_id = li.text();
-                           console.log("*66666666product_id66666",product_id)
-		           var row_ids = $('.products').closest('tr')
-		           row_ids.each(function(i){
-		           var current_product_id = $(this).find('.products').val();
-				console.log("=current_product_id=============",current_product_id )
-			           if(current_product_id === product_id){
-			        	   $(this).find('td #ler_code_id').val(ler_code)
-			           }
-		           })
-		       });
+		       $('#product_unit').editableSelect();
+		       $('.products').editableSelect();
+//		       .on('select.editable-select', function (e, li) {
+//		           var ler_code = li.attr('product_ler_code');
+//                           console.log("&**************ler_code*****",ler_code )
+//		           var product_id = li.text();
+//                           console.log("*66666666product_id66666",product_id)
+//		           var row_ids = $('.products').closest('tr')
+//		           row_ids.each(function(i){
+//		           var current_product_id = $(this).find('.products').val();
+//				console.log("=current_product_id=============",current_product_id )
+//			           if(current_product_id === product_id){
+//			        	   $(this).find('td #ler_code_id').val(ler_code)
+//			           }
+//		           })
+//		       });
 		        var today = new Date();
 		        var deafult_date = new Date(today.getFullYear() + 1,  today.getMonth(),today.getDate(),today.getHours(),today.getMinutes(),today.getSeconds())
 		       $('.life_datetimepicker').datetimepicker({format: 'MM/DD/YYYY hh:mm:ss',
 		    	   locale:  moment.locale('es'),
 		    	   defaultDate: deafult_date,
-		    	   widgetPositioning:{ horizontal: 'auto',vertical: 'bottom' },
+		    	   icons: {
+                    time: "fa fa-clock-o",
+                    date: "fa fa-calendar",
+                    up: "fa fa-arrow-up",
+                    down: "fa fa-arrow-down"
+                                },
+		    	   widgetPositioning:{ horizontal: 'left',vertical: 'bottom' },
 		    	   });
 	       }else{
 	    	   self.do_warn(_("Warning"),_("Please Select Inventoried Location First!"));

@@ -32,7 +32,7 @@ class OperationDashboard(models.Model):
         location_obj = self.env['stock.location']
         product_obj = self.env['product.product']
         user_id = self.env['res.users'].sudo().search_read([('id', '=', uid)], limit=1)
-        print ("---------------------",user_id[0])
+        print("---------------------", user_id[0])
         product_list = []
         # internal_product_list = []
         location_list = []
@@ -137,7 +137,7 @@ class OperationDashboard(models.Model):
                 'unsed_wash_barcode_list': unsed_wash_barcode_list,
                 'unused_barcode_list': unused_barcode_list,
                 'set_unused_barcode_list': set_unused_barcode_list,
-                'user_name' : user_id[0].get('name'),
+                'user_name': user_id[0].get('name'),
                 'user_image_url': user_id[0].get('image'),
                 'type_of_order': [{'order': 'Container'}, {'order': 'Drum'}],
                 'washing_type': [{'washing': 'dangerous'}, {'washing': 'non_dangerous'}],
@@ -863,7 +863,7 @@ class OperationDashboard(models.Model):
                 'attribute_id')
             variant = product_obj.attribute_value_ids._variant_name(variable_attributes)
             set_product = variant and "[%s] %s (%s)" % (
-            product.get('default_code'), product_temp_obj.name, variant) or product_temp_obj.name
+                product.get('default_code'), product_temp_obj.name, variant) or product_temp_obj.name
         else:
             if product.get('default_code'):
                 set_product = "[%s] %s" % (product.get('default_code'), product_temp_obj.name)
@@ -1014,7 +1014,8 @@ class OperationDashboard(models.Model):
                             if rec.get('barcode') != line.prod_lot_id.name:
                                 prev_lot_id = lot_obj.search([('id', '=', line.prod_lot_id.id)])
                                 prev_lot_id.write({'life_date': '',
-                                                   'product_id': self.env.ref('canet_screen.sample_product_canet_id').id})
+                                                   'product_id': self.env.ref(
+                                                       'canet_screen.sample_product_canet_id').id})
                                 generate_barcode_id = lot_obj.search([('name', '=', rec.get('barcode'))])
                                 generate_barcode_id.write({'product_id': product_id.id, 'life_date': new_life_date})
                                 line.prod_lot_id = generate_barcode_id.id
@@ -1086,6 +1087,7 @@ class OperationDashboard(models.Model):
             data = {}
             record_list = []
             lot_ids = self.env['stock.production.lot'].search([('id', 'in', barcode_list)])
+            print("*******lot_ids********", lot_ids)
             count = 0
             for rec in lot_ids:
                 count += 1
