@@ -18,6 +18,7 @@
     'data': [
             'data/adjustments_sequence_data.xml',
             'data/product_demo.xml',
+            'data/serial_sequence_data.xml',
             'report/template_barcode_report.xml',
             'views/custom_report.xml',
             'views/assets.xml',
@@ -33,7 +34,8 @@
         "static/src/xml/generate_barcode_view.xml",
         "static/src/xml/inventory_adjustments_view.xml",
         "static/src/xml/internal_transfer_view.xml",
-        "static/src/xml/internal_destruction_template.xml",
+        "static/src/xml/equipment_delivery_return_template.xml",
+        # "static/src/xml/internal_destruction_template.xml",
         "static/src/xml/barcode_receipt_template.xml"
         ],
     'application': True,

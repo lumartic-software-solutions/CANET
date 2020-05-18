@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--     
+<!--
  -*- coding: utf-8 -*-
  Odoo, Open Source canet Screen.
- License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). 
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 -->
 <template xml:space="preserve">
-	<!-- ================ Internal Transfer Button  ================-->
-    <t t-name="InternaltransferButton">
+	<!-- ================ Equipment Delivery & Return Button  ================-->
+    <t t-name="EquipmentDeliveryandReturnButton">
 		<html>
 			<head>
 				<script>$(".locations").editableSelect();
@@ -29,7 +29,7 @@
 						<a href="" class="warehouse">Almacén</a>
 					</li>
                     <li>
-						<a href="" class="internal_transfers">Transferencias internas</a>
+						<a href="" class="internal_transfers">Equipment Delivery and return</a>
 					</li>
 				</ol>
 			</div>
@@ -48,7 +48,7 @@
                      <t t-foreach="widget.type_of_order" t-as="i">
 					<option t-attf-value="#{i['order']}"><span t-esc="i['order']" /></option>
 								</t>
-				</select> 
+				</select>
 			</div>
             <div id="task_div" class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-60px">
                        <span>Task Number:</span>
@@ -74,7 +74,7 @@
                      <t t-foreach="widget.location_list" t-as="i">
 						<option t-attf-value="#{i['name']}" t-attf-ids="#{i['id']}"><span t-esc="i['name']" /></option>
 					</t>
-				</select> 
+				</select>
 			</div>
             <div class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-60px">
 				<span>Destination Location:</span>
@@ -85,7 +85,30 @@
                      <t t-foreach="widget.location_list" t-as="i">
 						<option t-attf-value="#{i['name']}" t-attf-ids="#{i['id']}"><span t-esc="i['name']" /></option>
 					</t>
-				</select> 
+				</select>
+			</div>
+		</div>
+
+
+        <!-- quantity design -->
+        <div class="row" style="margin-left: 30px;">
+			<div class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-100px">
+				<span>Quantity:</span>
+			</div>
+            <div class="col-md-3" style="width:350px;height: 35px;font-size: 22px;margin-top: 20px;">
+				 <input type="number" id="quantity" name="quantity" min="1" max="100"
+					/>
+			</div>
+            <div class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-60px">
+				<span>Operation Type:</span>
+			</div>
+            <div class="col-md-3" style="width:350px">
+				 <select id="operation_type" style="height: 35px;font-size: 22px;margin-top: 20px;">
+				<option> -- select an option -- </option>
+                     <t t-foreach="widget.operation_type" t-as="i">
+							<option t-attf-value="#{i['type']}"><span t-esc="i['type']" /></option>
+								</t>
+				</select>
 			</div>
 		</div>
         <!-- barcode design-->
@@ -97,7 +120,7 @@
             <div class="col-md-9" style="width:920px; ">
 				 <select class="select2 barcode_wash" id="barcode_wash" multiple="multiple" style="height:35px;width:300px;font-size: 22px;margin-top: 20px;  overflow: hidden !important;
     height: auto !important;">
-				</select> 
+				</select>
 			</div>
 		</div>
         <!-- product design  -->
@@ -109,7 +132,7 @@
             <div class="col-md-8" style="width:850px">
 				 <select id="my-wash-product" multiple="multiple"
                          style="height: 35px;font-size: 22px;margin-top: 20px;">
-				</select>  
+				</select>
 			</div>
 		</div>
 
@@ -131,7 +154,7 @@
 					<button style="display:none; margin-left: -385px;margin-top: 25px;" class="btn
 						btn-primary common_button edit_wash_order" id="edit_wash_order_button"
                             type="button">Edit</button>
-					
+
 				</div>
             <div class="col-md-2">
 					<button style="display:none;margin-left: -180px;margin-top: 25px;" class="btn btn-primary common_button

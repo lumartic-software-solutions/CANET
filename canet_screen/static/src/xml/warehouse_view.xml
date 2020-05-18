@@ -33,7 +33,7 @@
 				<a href="javascript:;" class="oe_highlight dashborad_button internal_transfers">Internal transfers</a>
 			</div>
 			<div class="col-md-4"  style="margin-top:-50px">
-				<a href="javascript:;" class="oe_highlight dashborad_button internal_transfers">Equipment Delivery and return</a>
+				<a href="javascript:;" class="oe_highlight dashborad_button equipment_delivery">Equipment Delivery and return</a>
 			</div>
 		</div>
 		<div class="row" style="margin-top:50px;">

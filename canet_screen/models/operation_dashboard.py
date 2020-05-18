@@ -173,39 +173,29 @@ class OperationDashboard(models.Model):
         location_obj = self.env['stock.location']
         location_search = False
         return {}
-        # if location1 or location2:
-        #     if length >= 3:
-        #         parent_location_search = location_obj.search([('name', '=', str(location1))])
-        #         prent_of_parent_search = location_obj.search([('location_id', '=', parent_location_search[0].id)])
-        #         location_search = location_obj.search(
-        #             [('name', '=', str(location2)), ('location_id', '=', prent_of_parent_search[0].id)])
-        #     else:
-        #         parent_location_search = location_obj.search([('name', '=', str(location1))])
-        #         location_search = location_obj.search(
-        #             [('name', '=', str(location2)), ('location_id', '=', parent_location_search[0].id)])
-        #     lot_list = []
-        #     wash_list = []
-        #     wash_ids = self.env['wash.order'].search(
-        #         ['|', ('location_id', '=', location_search[0].id), ('location_dest_id', '=', location_search[0].id)])
-        #     if wash_ids:
-        #         for wash in wash_ids:
-        #             wash_list.append(wash.lot_id.id)
-        #     if location_search:
-        #         if wash_list:
-        #             quant_search_ids = self.env['stock.quant'].search(
-        #                 [('location_id', '=', location_search[0].id), ('lot_id', 'not in', wash_list)])
-        #         else:
-        #             quant_search_ids = self.env['stock.quant'].search([('location_id', '=', location_search[0].id)])
-        #         if quant_search_ids:
-        #             for quant in quant_search_ids:
-        #                 lot_list.append({
-        #                     'name': quant.lot_id.name,
-        #                     'id': quant.lot_id.id,
-        #                 })
-        #
-        #         return {'lot_list': lot_list}
-        # else:
-        #     return {}
+        if location1 or location2:
+            if length >= 3:
+                parent_location_search = location_obj.search([('name', '=', str(location1))])
+                prent_of_parent_search = location_obj.search([('location_id', '=', parent_location_search[0].id)])
+                location_search = location_obj.search(
+                    [('name', '=', str(location2)), ('location_id', '=', prent_of_parent_search[0].id)])
+            else:
+                parent_location_search = location_obj.search([('name', '=', str(location1))])
+                location_search = location_obj.search(
+                    [('name', '=', str(location2)), ('location_id', '=', parent_location_search[0].id)])
+            lot_list = []
+            if location_search:
+                quant_search_ids = self.env['stock.quant'].search([('location_id', '=', location_search[0].id)])
+                if quant_search_ids:
+                    for quant in quant_search_ids:
+                        lot_list.append({
+                            'name': quant.lot_id.name,
+                            'id': quant.lot_id.id,
+                        })
+
+                return {'lot_list': lot_list}
+        else:
+            return {}
 
     @api.model
     def categ_data(self, name):
@@ -302,7 +292,9 @@ class OperationDashboard(models.Model):
         lot_obj = self.env['stock.production.lot']
         location_obj = self.env['stock.location']
         product_obj = self.env['product.product']
+        task_obj = self.env['project.task']
         location_list = []
+        task_list = []
         unsed_barcode_list = []
         # self._cr.execute('''select * from wash_order''')
         # wash_result = self._cr.dictfetchall()
@@ -315,8 +307,17 @@ class OperationDashboard(models.Model):
         #         unsed_barcode_list.append({'barcode': data.get('name') or '',
         #                                         'id': str(data.get('id')) or '',
         #                                         })
-
+        task_ids = task_obj.search([])
         location_ids = location_obj.search([('usage', 'in', ['internal'])])
+
+        if task_ids:
+            for task in task_ids:
+                name = task.number
+                task_list.append({
+                    'name' : name or '',
+                    'id' : str(task.id) or '',
+                })
+
         for location in location_ids:
             orig_location = location
             name = location.name
@@ -333,8 +334,65 @@ class OperationDashboard(models.Model):
             'barcode_list': [],
             'location_list': location_list,
             'type_of_order': [{'order': 'Internal Transfer'}, {'order': 'Project'}, {'order': 'Maintenance'}],
-            'washing_type': [{'washing': 'dangerous'}, {'washing': 'non_dangerous'}],
+            'task_list': task_list,
         }
+        print ("__________________",data)
+        return {'data': data}
+
+    @api.model
+    def get_equipment_delivery_return_info(self):
+        uid = request.session.uid
+        ctx = dict(self._context)
+        lot_obj = self.env['stock.production.lot']
+        location_obj = self.env['stock.location']
+        product_obj = self.env['product.product']
+        task_obj = self.env['project.task']
+        location_list = []
+
+        task_list = []
+        unsed_barcode_list = []
+        # self._cr.execute('''select * from wash_order''')
+        # wash_result = self._cr.dictfetchall()
+        # wash_barcode_ids = tuple([wash.get('lot_id') for wash in wash_result])
+        # params = {'wash_barcode_ids': wash_barcode_ids}
+        # if wash_barcode_ids:
+        #     self._cr.execute('''select * from stock_production_lot where id not in %(wash_barcode_ids)s''', params)
+        #     unsed_barcode_list_ids = self._cr.dictfetchall()
+        #     for data in unsed_barcode_list_ids:
+        #         unsed_barcode_list.append({'barcode': data.get('name') or '',
+        #                                         'id': str(data.get('id')) or '',
+        #                                         })
+        task_ids = task_obj.search([])
+        location_ids = location_obj.search([('usage', 'in', ['internal'])])
+
+        if task_ids:
+            for task in task_ids:
+                name = task.number
+                task_list.append({
+                    'name': name or '',
+                    'id': str(task.id) or '',
+                })
+
+        for location in location_ids:
+            orig_location = location
+            name = location.name
+            while location.location_id and location.usage != 'view':
+                location = location.location_id
+                if not name:
+                    raise UserError(_('You have to set a name for this location.'))
+                name = location.name + "/" + name
+            location_list.append({'name': name or '',
+                                  'id': str(orig_location.id) or '',
+                                  })
+        data = {
+            #  'product_list': product_list,
+            'barcode_list': [],
+            'location_list': location_list,
+            'type_of_order': [{'order': 'Internal Transfer'}, {'order': 'Project'}, {'order': 'Maintenance'}],
+            'task_list': task_list,
+            'operation_type' :  [{'type': 'Delivery'}, {'type': 'return'}]
+        }
+        print("__________________", data)
         return {'data': data}
 
     # create barcode
@@ -349,7 +407,7 @@ class OperationDashboard(models.Model):
             count = 0
             for rec in range(number):
                 count += 1
-                barcode_sequence = self.env['ir.sequence'].next_by_code('ballester.stock.production.lot') or _('New')
+                barcode_sequence = self.env['ir.sequence'].next_by_code('canet.stock.production.lot') or _('New')
                 vals = {'barcode': barcode_sequence}
                 product_id = self.env.ref('canet_screen.sample_product_canet_id').id
                 lot_vals = {'product_id': product_id or False,
@@ -364,164 +422,6 @@ class OperationDashboard(models.Model):
         else:
             return {'warning': 'Please Enter Valid Number !'}
 
-    # creating Wash Order
-    @api.multi
-    def create_wash_order_method(self, record_data):
-        inventory_obj = self.env['stock.inventory']
-        lot_obj = self.env['stock.production.lot']
-        location_obj = self.env['stock.location']
-        product_obj = self.env['product.product']
-        inventory_adjustment_table = []
-        ctx = dict(self._context)
-        name = False
-        user = self.env.uid
-        brw_usr = self.env['res.users'].search([('id', '=', user)])
-        type_of_order = False
-        location_dest_search = False
-        location_search = False
-        dangerous_obj = self.env['dangerous.product']
-        args = brw_usr.company_id and [('company_id', '=', brw_usr.company_id.id)] or []
-        warehouse = self.env['stock.warehouse'].search(args, limit=1)
-        drum_wash_line = []
-        container_wash_line = []
-        create_wash_order = False
-        user_tz = self.env.user.tz
-        local = pytz.timezone(user_tz)
-        date = datetime.now(local)
-        for data in record_data:
-            if data.get('washing_type'):
-                if data.get('washing_type') == 'dangerous':
-                    self.dangerous = True
-                    self.non_dangerous = False
-
-                    dangerous_product_con_ids = dangerous_obj.search(
-                        [('type_product', '=', 'container'), ('dangerous', '=', True)])
-                    dangerous_product_drum_ids = dangerous_obj.search(
-                        [('type_product', '=', 'drum'), ('dangerous', '=', True)])
-                    if dangerous_product_con_ids:
-                        if data.get('type_of_order') == 'Container':
-                            container_wash_line = []
-                            for product in dangerous_product_con_ids:
-                                vals = {
-                                    'product_id': product.product_id.product_variant_id.id,
-                                    'type': 'add',
-                                    'name': product.product_id.display_name,
-                                    'product_uom_qty': product.qty,
-                                    'product_uom': product.product_id.uom_id.id,
-                                    'location_dest_id': self.env['stock.location'].search(
-                                        [('usage', '=', 'production')], limit=1).id,
-                                    'location_id': warehouse.lot_stock_id.id,
-                                    'price_unit': 0.0
-                                }
-                                container_wash_line.append((0, 0, vals))
-                    if dangerous_product_drum_ids:
-                        if data.get('type_of_order') == 'Drum':
-                            drum_wash_line = []
-                            for product in dangerous_product_drum_ids:
-                                vals = {
-                                    'product_id': product.product_id.product_variant_id.id,
-                                    'type': 'add',
-                                    'name': product.product_id.display_name,
-                                    'product_uom_qty': product.qty,
-                                    'product_uom': product.product_id.uom_id.id,
-                                    'location_dest_id': self.env['stock.location'].search(
-                                        [('usage', '=', 'production')], limit=1).id,
-                                    'location_id': warehouse.lot_stock_id.id,
-                                    'price_unit': 0.0
-                                }
-                                drum_wash_line.append((0, 0, vals))
-                if data.get('washing_type') == 'non_dangerous':
-                    self.non_dangerous = True
-                    self.dangerous = False
-                    nondangerous_product_con_ids = dangerous_obj.search(
-                        [('type_product', '=', 'container'), ('non_dangerous', '=', True)])
-                    nondangerous_product_drum_ids = dangerous_obj.search(
-                        [('type_product', '=', 'drum'), ('non_dangerous', '=', True)])
-                    if nondangerous_product_con_ids:
-                        if data.get('type_of_order') == 'Container':
-                            container_wash_line = []
-                            for product in nondangerous_product_con_ids:
-                                vals = {
-                                    'product_id': product.product_id.product_variant_id.id,
-                                    'type': 'add',
-                                    'name': product.product_id.display_name,
-                                    'product_uom_qty': product.qty,
-                                    'product_uom': product.product_id.uom_id.id,
-                                    'location_dest_id': self.env['stock.location'].search(
-                                        [('usage', '=', 'production')], limit=1).id,
-                                    'location_id': warehouse.lot_stock_id.id,
-                                    'price_unit': 0.0
-                                }
-                                container_wash_line.append((0, 0, vals))
-                    if nondangerous_product_drum_ids:
-                        if data.get('type_of_order') == 'Drum':
-                            drum_wash_line = []
-                            for product in nondangerous_product_drum_ids:
-                                vals = {
-                                    'product_id': product.product_id.product_variant_id.id,
-                                    'type': 'add',
-                                    'name': product.product_id.display_name,
-                                    'product_uom_qty': product.qty,
-                                    'product_uom': product.product_id.uom_id.id,
-                                    'location_dest_id': self.env['stock.location'].search(
-                                        [('usage', '=', 'production')], limit=1).id,
-                                    'location_id': warehouse.lot_stock_id.id,
-                                    'price_unit': 0.0}
-                                drum_wash_line.append((0, 0, vals))
-            if data.get('location'):
-                name_location = data.get('location')
-                name = name_location.split('/')[-1]
-                spilt_name = name_location.split('/')
-                name = spilt_name[-1]
-                parent_name = spilt_name[0]
-                parent_loc_id = location_obj.search([('name', '=', parent_name)])
-                location_search = location_obj.search(
-                    [('name', '=', name), ('location_id', '=', parent_loc_id[0].id or False)])
-                if location_search:
-                    location_search = location_search[0].id
-            if data.get('dest_location_id'):
-                name_dest_location = data.get('dest_location_id')
-                spilt_name = name_dest_location.split('/')
-                name = spilt_name[-1]
-                parent_name = spilt_name[0]
-                parent_loc_id = location_obj.search([('name', '=', parent_name)])
-                location_dest_search = location_obj.search(
-                    [('name', '=', name), ('location_id', '=', parent_loc_id[0].id or False)])
-                if location_dest_search:
-                    location_dest_search = location_dest_search[0].id
-            operation_data = []
-            if drum_wash_line:
-                operation_data = drum_wash_line
-            if container_wash_line:
-                operation_data = container_wash_line
-            for barcode in data.get('barcode_ids'):
-
-                if data.get('type_of_order') == 'Container':
-                    type_of_order = 'container'
-                    name = self.env['ir.sequence'].next_by_code('wash.order.container') or _('New')
-                if data.get('type_of_order') == 'Drum':
-                    type_of_order = 'drum'
-                    name = self.env['ir.sequence'].next_by_code('wash.order.drum') or _('New')
-                lot_brw = self.env['stock.production.lot'].browse(int(barcode))
-            return {'success': "true"}
-            #     wash_data = {
-            #         'name': name,
-            #         'type_of_order': type_of_order,
-            #         'product_id': lot_brw[0].product_id.id,
-            #         'recycled_product_id': lot_brw[0].product_id.recycled_product_id.id,
-            #         'location_id': location_search,
-            #         'location_dest_id': location_dest_search,
-            #         'product_qty': 1.0,
-            #         'product_uom': lot_brw[0].product_id.uom_id.id,
-            #         'state': 'draft',
-            #         'wash_date': date,
-            #         'washing_type': data.get('washing_type'),
-            #         'operations': operation_data,
-            #         'lot_id': int(barcode),
-            #     }
-            #     create_wash_order = self.env['wash.order'].create(wash_data)
-            # if create_wash_order:
-            #     return {'success': "Successfully Created Wash Order!"}
 
     @api.multi
     def create_internal_transfer_method(self, record_data):
@@ -614,7 +514,6 @@ class OperationDashboard(models.Model):
         location_search = False
         name = False
         user = self.env.uid
-        type_of_order = False
         location_dest_search = False
         brw_usr = self.env['res.users'].search([('id', '=', user)])
         type_of_order = False
