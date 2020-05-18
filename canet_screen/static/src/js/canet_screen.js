@@ -580,9 +580,10 @@ add_an_item: function(event){
 		       var table_row = document.getElementById("inventory_adjustments_table").rows;
 		       console.log("*******table_row*********",table_row)
 		       if (table_row.length > 2){
+		           console.log("=@@@@@@@@@@@@@00000")
 		    	   $( "#inventory_adjustments_table tr:nth-last-child(2)").after("<tr class='active'>"+
 		    			   "<td style='width: 27%;' >"+self.product_list+"</td>"+
-		    			   "<td style='width: 17%; '> <input type='text' name='product_unit' id='product_unit'/></td>"+
+		    			   "<td style='width: 17%; '> <input type='text' name='product_unit' id='product_unit' style='height:40px'/></td>"+
 		    			   "<td style='width: 22%;' id='barcode'>"+self.barcode_list+"</td>"+
 		    			   "<td style='width: 22%; '> <input type='text' name='life_date' class='life_datetimepicker' /></td>"+
 		    			   "<td style='width: 7%;'> <input type='hidden' name='line_id'  value='none' /> </td>"+
@@ -591,9 +592,10 @@ add_an_item: function(event){
 //		    			   "<td style='width: 5%;' class='set_lot_details_ids'><button id='lot_details_id' class='fa fa-bars lot_details_wizard'  aria-hidden='true'></button></td>"+
 		    			   "</tr>");
 		       }else{
+		           console.log("===-0-00-0-000inventory_adjustments_table00000000000")
 		    	   $('#inventory_adjustments_table').prepend("<tr class='active'>"+
 		    			   "<td style='width: 27%;'>"+self.product_list+"</td>" +
-		    			   "<td style='width: 17%; '> <input type='text' name='product_unit' id='product_unit' /></td>"+
+		    			   "<td style='width: 17%; '> <input type='text' name='product_unit' id='product_unit' style='height:40px'/></td>"+
 		    			   "<td style='width: 22%;' id='barcode'>"+self.barcode_list+"</td>"+
 		    			   "<td style='width: 22%; '> <input type='text' name='life_date' class='life_datetimepicker' /></td>"+
 		    			   "<td style='width: 7%;'> <input type='hidden' name='line_id' value='none' /></td>"+
@@ -603,7 +605,6 @@ add_an_item: function(event){
 		    			   "</tr>");
 		       }
 		       $(".barcodes").editableSelect();
-		       $('#product_unit').editableSelect();
 		       $('.products').editableSelect();
 //		       .on('select.editable-select', function (e, li) {
 //		           var ler_code = li.attr('product_ler_code');

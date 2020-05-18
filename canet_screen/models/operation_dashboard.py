@@ -390,7 +390,7 @@ class OperationDashboard(models.Model):
             'location_list': location_list,
             'type_of_order': [{'order': 'Internal Transfer'}, {'order': 'Project'}, {'order': 'Maintenance'}],
             'task_list': task_list,
-            'operation_type' :  [{'type': 'Delivery'}, {'type': 'return'}]
+            'operation_type' :  [{'type': 'Delivery'}, {'type': 'Return'}]
         }
         print("__________________", data)
         return {'data': data}
