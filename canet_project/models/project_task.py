@@ -17,8 +17,10 @@ class ProjectTask(models.Model):
     amount_tax = fields.Float('Taxes', compute='_amount_tax', store=True)
     amount_total = fields.Float('Total', compute='_amount_total', store=True)
     state = fields.Selection(
-        [('draft', 'New'), ('start', 'Start'), ('continue', 'Continue'),  ('stop', 'Stop'),('end', 'End')],
+        [('draft', 'New'), ('start', 'Start'), ('continue', 'Continue'), ('stop', 'Stop'), ('end', 'End')],
         string='Status', default='draft')
+    # user_ids = fields.Many2many('res.users','task_id','user_id','task_user_rel','Employees')
+    equipment_ids = fields.One2many('maintenance.equipment.task', 'task_id', 'Equipments')
 
     @api.one
     @api.depends('operations.price_subtotal')
@@ -44,13 +46,11 @@ class ProjectTask(models.Model):
     def _amount_total(self):
         self.amount_total = (self.amount_untaxed + self.amount_tax)
 
-
     @api.model
     def create(self, vals):
         vals['number'] = self.env['ir.sequence'].next_by_code('project.task') or _('New')
         result = super(ProjectTask, self).create(vals)
         return result
-
 
     @api.multi
     def stop_task(self):
@@ -69,3 +69,21 @@ class MaintenanaceRequestLine(models.Model):
         index=True, ondelete='cascade')
 
 
+class MaintenanceEquipmentTask(models.Model):
+    _name = 'maintenance.equipment.task'
+
+    task_id = fields.Many2one('project.task','Task')
+    user_id = fields.Many2one('res.users','Employee')
+    description = fields.Char('Description')
+    equipment_id = fields.Many2one('maintenance.equipment','Equipments')
+    units = fields.Float('Units')
+    barcode = fields.Char('Barcode')
+    date_in = fields.Date('Date In')
+    date_out = fields.Date('Date Out')
+    state= fields.Selection([('delivery','Delivery'),('return','Return')], 'State')
+
+    @api.onchange('equipment_id')
+    def onchange_equipment_id(self):
+        if self.equipment_id:
+            self.description = self.equipment_id.note or ''
+            self.barcode =  self.equipment_id.barcode

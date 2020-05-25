@@ -14,14 +14,15 @@
 
 ================================================================================
 """,
-    'depends': ['base', 'maintenance','account','stock','hr_timesheet'],
+    'depends': ['base', 'maintenance', 'account', 'stock', 'hr_timesheet'],
     'data': [
         'data/ir_sequence_data.xml',
         'data/analytic_account.xml',
+        'security/ir.model.access.csv',
         'wizard/task_time_wizard_view.xml',
         'views/assets.xml',
         'views/maintenance_views.xml',
-         'views/maintenance_timesheet_menu.xml',
+        'views/maintenance_timesheet_menu.xml',
     ],
     'qweb': [],
     'application': True,

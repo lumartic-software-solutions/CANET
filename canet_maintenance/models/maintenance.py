@@ -1,6 +1,5 @@
 from odoo import models, fields, api, tools, _
 import datetime
-
 from odoo.tools import float_compare, pycompat
 
 
@@ -155,6 +154,26 @@ class MaintenanceEquipment(models.Model):
     default_code =fields.Char('Internal Reference')
 
     barcode = fields.Char('Barcode')
+    task_count = fields.Integer(string="Task", compute='_compute_task_count')
+
+    @api.multi
+    def _compute_task_count(self):
+        task_data = self.env['maintenance.equipment.task'].search([('equipment_id','=' ,self.id)])
+        count = 0
+        if task_data:
+            if task_data.task_id:
+                count +=1
+        if count :
+            self.task_count = count
+
+    def action_equipment_task(self):
+        action = self.env.ref('canet_maintenance.action_view_task_canet').read()[0]
+        task_ids =[]
+        task_data = self.env['maintenance.equipment.task'].search([('equipment_id', '=' ,self.id)])
+        if task_data:
+            task_ids.append(task_data.task_id.id)
+        action['res_ids'] = task_ids
+        return action
 
 
     @api.one

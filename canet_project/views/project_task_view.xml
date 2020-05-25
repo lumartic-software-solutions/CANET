@@ -2,123 +2,175 @@
 
 <odoo>
 
-<record id="project_task_form_view_inherit_canet" model="ir.ui.view">
-		<field name="name">project.task.inherit</field>
-		<field name="model">project.task</field>
-		<field name="inherit_id" ref="project.view_task_form2"/>
-		<field name="arch" type="xml">
-			<xpath expr="//field[@name='project_id']" position="after">
-				<field name="start_date" invisible="1"/>
-			</xpath>
-			<xpath  expr="//field[@name='stage_id']" position="replace">
-				<field name="stage_id" widget="statusbar" invisible="1"/>
-			</xpath>
+    <record id="project_task_form_view_inherit_canet" model="ir.ui.view">
+        <field name="name">project.task.inherit</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='project_id']" position="after">
+                <field name="start_date" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='stage_id']" position="replace">
+                <field name="stage_id" widget="statusbar" invisible="1"/>
+            </xpath>
+<!--            <xpath expr="//field[@name='user_id']" position="after">-->
+<!--                <field name="user_ids" widget="many2many_tags"/>-->
+<!--            </xpath>-->
 
-			<xpath expr="//sheet/div" position="before">
-				<div class="oe_title">
-		                    <h3>
-		                        <field name="number" readonly="1"/>
-		                    </h3>
-		        </div>
+            <xpath expr="//sheet/div" position="before">
+                <div class="oe_title">
+                    <h3>
+                        <field name="number" readonly="1"/>
+                    </h3>
+                </div>
             </xpath>
 
-			<xpath expr="header" position="inside">
-				<field name="state" widget="statusbar"/>
-				<button name="%(canet_maintenance.action_task_time_wizard_custom)d" string="Restart" type="action"
-					style="background-color: #C6CB2E;" context="{'restart_task' : True}" attrs="{'invisible':
-					[('state', 'in', ('draft', 'start','continue','end'))]}" />
-				<button name="%(canet_maintenance.action_task_time_wizard_custom)d" string="Start Task" type="action"
-					style="background-color: #4CAF50;" context="{'start_task' : True}" attrs="{'invisible':
+            <xpath expr="header" position="inside">
+                <field name="state" widget="statusbar"/>
+                <button name="%(canet_maintenance.action_task_time_wizard_custom)d" string="Restart" type="action"
+                        style="background-color: #C6CB2E;" context="{'restart_task' : True}" attrs="{'invisible':
+					[('state', 'in', ('draft', 'start','continue','end'))]}"/>
+                <button name="%(canet_maintenance.action_task_time_wizard_custom)d" string="Start Task" type="action"
+                        style="background-color: #4CAF50;" context="{'start_task' : True}" attrs="{'invisible':
 					[('state', 'in', ('start','continue','end','stop'))]}"/>
-				<button name="%(canet_maintenance.action_task_time_wizard_custom)d" string="Continue" type="action"
-					context="{'continue_task' : True}" style="background-color: #4CAF50;" attrs="{'invisible':
+                <button name="%(canet_maintenance.action_task_time_wizard_custom)d" string="Continue" type="action"
+                        context="{'continue_task' : True}" style="background-color: #4CAF50;" attrs="{'invisible':
 					[('state', 'in', ('draft','end','continue','start','stop'))]}"/>
-				<button name="%(canet_maintenance.action_task_time_wizard_custom)d" string="Stop Task" type="action"
-					context="{'stop_task' : True}" style="background-color: #f44336;" attrs="{'invisible':
+                <button name="%(canet_maintenance.action_task_time_wizard_custom)d" string="Stop Task" type="action"
+                        context="{'stop_task' : True}" style="background-color: #f44336;" attrs="{'invisible':
 					[('state', 'in', ('end','stop'))]}"/>
-				<button name="%(canet_maintenance.action_task_time_wizard_custom)d" string="End Task" type="action"
-					context="{'end_task' : True}" style="background-color: #FF9933;" attrs="{'invisible':
-					[('state', 'in', ('draft','end','stop'))]}" />
-			</xpath>
+                <button name="%(canet_maintenance.action_task_time_wizard_custom)d" string="End Task" type="action"
+                        context="{'end_task' : True}" style="background-color: #FF9933;" attrs="{'invisible':
+					[('state', 'in', ('draft','end','stop'))]}"/>
+            </xpath>
 
-			<xpath expr="//notebook/page" position="before">
-				<page string="Parts">
-					<field name="operations">
-						<form>
-						<notebook>
-							<page string="Task Lines">
-								<group>
-									<group>
-										<field name="product_id" />
-										<field name="name"/>
-										<label for="product_uom_qty"/>
-										<div class="o_row">
-											<field name="product_uom_qty"/>
-											<field name="product_uom" groups="product.group_uom"/>
-										</div>
-										<field name="price_unit"/>
-										<field name="tax_id" widget="many2many_tags" domain="[('type_tax_use','=','sale')]"/>
-										<field name="price_subtotal" widget="monetary" invisible="1"/>
-									</group>
-									<group groups="stock.group_stock_multi_locations">
-										<field name="location_id" domain="[('usage','not in', ['supplier','production'])]" context="{'location_id': location_id}"/>
+            <xpath expr="//notebook/page" position="before">
+                <page string="Parts">
+                    <field name="operations">
+                        <form>
+                            <notebook>
+                                <page string="Task Lines">
+                                    <group>
+                                        <group>
+                                            <field name="product_id"/>
+                                            <field name="name"/>
+                                            <label for="product_uom_qty"/>
+                                            <div class="o_row">
+                                                <field name="product_uom_qty"/>
+                                                <field name="product_uom" groups="product.group_uom"/>
+                                            </div>
+                                            <field name="price_unit"/>
+                                            <field name="tax_id" widget="many2many_tags"
+                                                   domain="[('type_tax_use','=','sale')]"/>
+                                            <field name="price_subtotal" widget="monetary" invisible="1"/>
+                                        </group>
+                                        <group groups="stock.group_stock_multi_locations">
+                                            <field name="location_id"
+                                                   domain="[('usage','not in', ['supplier','production'])]"
+                                                   context="{'location_id': location_id}"/>
 
-										<field name="location_dest_id" domain="[('usage','not in', ['supplier','production'])]"/>
-									</group>
-								</group>
-							</page>
+                                            <field name="location_dest_id"
+                                                   domain="[('usage','not in', ['supplier','production'])]"/>
+                                        </group>
+                                    </group>
+                                </page>
 
-						</notebook>
-					</form>
-					<tree string="Operations" editable="bottom">
-						<field name="product_id"/>
-						<field name='name'/>
+                            </notebook>
+                        </form>
+                        <tree string="Operations" editable="bottom">
+                            <field name="product_id"/>
+                            <field name='name'/>
 
-						<field name="lot_id" domain="[('product_id', '=', product_id)]" context="{'default_product_id': product_id}" groups="stock.group_production_lot"/>
-						<field name="location_id" groups="stock.group_stock_multi_locations" domain="[('usage','not in', ['supplier','production'])]"/>
-						<field name="location_dest_id" groups="stock.group_stock_multi_locations" domain="[('usage','not in', ['supplier','production'])]"/>
-						<field name="product_uom_qty" string="Quantity"/>
-						<field name="product_uom" string="Unit of Measure" groups="product.group_uom"/>
-						<field name="price_unit"/>
-						<field name="tax_id" widget="many2many_tags" domain="[('type_tax_use','=','sale')]"/>
-						<field name="price_subtotal" widget="monetary"/>
-					</tree>
-					</field>
-					<group class="oe_subtotal_footer oe_right">
-                                <field name="amount_untaxed" sum="Untaxed amount"/>
-                                <field name="amount_tax"/>
-                                <div class="oe_subtotal_footer_separator oe_inline">
-                                    <label for="amount_total" />
-                                    <button name="button_dummy"
-                                         string="(update)" type="object" class="oe_edit_only oe_link"/>
-                                </div>
-                                <field name="amount_total" nolabel="1" sum="Total amount" class="oe_subtotal_footer_separator"/>
-					</group>
-					<div class="oe_clear"/>
-				</page>
-			</xpath>
+                            <field name="lot_id" domain="[('product_id', '=', product_id)]"
+                                   context="{'default_product_id': product_id}" groups="stock.group_production_lot"/>
+                            <field name="location_id" groups="stock.group_stock_multi_locations"
+                                   domain="[('usage','not in', ['supplier','production'])]"/>
+                            <field name="location_dest_id" groups="stock.group_stock_multi_locations"
+                                   domain="[('usage','not in', ['supplier','production'])]"/>
+                            <field name="product_uom_qty" string="Quantity"/>
+                            <field name="product_uom" string="Unit of Measure" groups="product.group_uom"/>
+                            <field name="price_unit"/>
+                            <field name="tax_id" widget="many2many_tags" domain="[('type_tax_use','=','sale')]"/>
+                            <field name="price_subtotal" widget="monetary"/>
+                        </tree>
+                    </field>
+                    <group class="oe_subtotal_footer oe_right">
+                        <field name="amount_untaxed" sum="Untaxed amount"/>
+                        <field name="amount_tax"/>
+                        <div class="oe_subtotal_footer_separator oe_inline">
+                            <label for="amount_total"/>
+                            <button name="button_dummy"
+                                    string="(update)" type="object" class="oe_edit_only oe_link"/>
+                        </div>
+                        <field name="amount_total" nolabel="1" sum="Total amount" class="oe_subtotal_footer_separator"/>
+                    </group>
+                    <div class="oe_clear"/>
+                </page>
+				<page string="Assign To Employee">
+                    <field name="equipment_ids">
+                        <tree string="Equipment" editable="bottom">
+                            <field name="equipment_id"/>
+                            <field name="description"/>
+                            <field name='units'/>
+                            <field name="user_id"/>
+                            <field name='barcode'/>
+                            <field name="date_in"/>
+                            <field name='date_out'/>
+                            <field name='state'/>
+                        </tree>
+                    </field>
 
-		</field>
-	</record>
+                </page>
+            </xpath>
 
-	<record id="hr_timesheet_form_view_inherit_canet" model="ir.ui.view">
-		<field name="name">project.task.inherit</field>
-		<field name="model">project.task</field>
-		<field name="inherit_id" ref="hr_timesheet.view_task_form2_inherited"/>
-		<field name="arch" type="xml">
-			<xpath expr="//field[@name='timesheet_ids']" position="replace">
-				<field name="timesheet_ids" context="{'default_project_id': project_id}" readonly="1">
-					<tree editable="bottom" string="Timesheet Activities" default_order="date">
-						<field name="start_date" string="Start Date"/>
-						<field name="date" string="End Date"/>
-						<field name="user_id" required="1"/>
-						<field name="name"/>
-						<field name="time" string="Duration" />
-						<field name="project_id" invisible="1"/>
-					</tree>
-				</field>
-			</xpath>
-		</field>
-	</record>
+        </field>
+    </record>
+
+    <record id="inherit_project_task_search" model="ir.ui.view">
+        <field name="name">project.task.inherit</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_search_form"/>
+        <field name="arch" type="xml">
+            <field name="name" position="before">
+                <field name="number"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="inherit_project_task_kanban" model="ir.ui.view">
+        <field name="name">project.task.inherit</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_kanban"/>
+        <field name="arch" type="xml">
+            <field name="priority" position="before">
+                <field name="number"/>
+            </field>
+             <xpath expr="//div[@class='o_kanban_record_headings']" position="inside">
+                 <strong class="o_kanban_record_title"><field name="number"/></strong><br/>
+             </xpath>
+
+        </field>
+    </record>
+
+
+    <record id="hr_timesheet_form_view_inherit_canet" model="ir.ui.view">
+        <field name="name">project.task.inherit</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="hr_timesheet.view_task_form2_inherited"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='timesheet_ids']" position="replace">
+                <field name="timesheet_ids" context="{'default_project_id': project_id}" readonly="1">
+                    <tree editable="bottom" string="Timesheet Activities" default_order="date">
+                        <field name="start_date" string="Start Date"/>
+                        <field name="date" string="End Date"/>
+                        <field name="user_id" required="1"/>
+                        <field name="name"/>
+                        <field name="time" string="Duration"/>
+                        <field name="project_id" invisible="1"/>
+                    </tree>
+                </field>
+            </xpath>
+        </field>
+    </record>
 
 </odoo>
