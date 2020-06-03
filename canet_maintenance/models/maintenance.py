@@ -32,6 +32,7 @@ class Maintenanace(models.Model):
     state = fields.Selection(
         [('draft', 'New'), ('start', 'Start'), ('continue', 'Continue'), ('stop', 'Stop'), ('end', 'End')],
         string='Status', default='draft')
+    equipment_ids = fields.One2many('maintenance.equipment.task', 'maintenance_id', 'Equipments')
 
     @api.one
     @api.depends('operations.price_subtotal')
@@ -206,3 +207,23 @@ class MaintenanceEquipment(models.Model):
             value = value.encode('ascii')
         image = tools.image_resize_image_big(value)
         self.image_variant = image
+
+class MaintenanceEquipmentTask(models.Model):
+    _name = 'maintenance.equipment.task'
+
+    task_id = fields.Many2one('project.task','Task')
+    user_id = fields.Many2one('res.users','Employee')
+    description = fields.Char('Description')
+    equipment_id = fields.Many2one('maintenance.equipment','Equipments')
+    units = fields.Float('Units')
+    barcode = fields.Char('Barcode')
+    date_in = fields.Date('Date In')
+    date_out = fields.Date('Date Out')
+    state= fields.Selection([('delivery','Delivery'),('return','Return')], 'State')
+    maintenance_id = fields.Many2one('maintenance.request','Maintenance')
+
+    @api.onchange('equipment_id')
+    def onchange_equipment_id(self):
+        if self.equipment_id:
+            self.description = self.equipment_id.note or ''
+            self.barcode =  self.equipment_id.barcode

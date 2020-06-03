@@ -116,6 +116,20 @@
                                 </tree>
                                 </field>
                         </page>
+                        <page name="equipment_ids" string="Assign to Employee">
+                             <field name="equipment_ids">
+                                <tree string="Equipment" editable="bottom">
+                                    <field name="equipment_id"/>
+                                    <field name="description"/>
+                                    <field name='units'/>
+                                    <field name="user_id"/>
+                                    <field name='barcode'/>
+                                    <field name="date_in"/>
+                                    <field name='date_out'/>
+                                    <field name='state'/>
+                                </tree>
+                             </field>
+                        </page>
                         <page name="note" string="Note">
                             <field name="description"/>
                         </page>
