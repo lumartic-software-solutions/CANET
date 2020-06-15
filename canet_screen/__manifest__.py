@@ -14,7 +14,7 @@
 
 ================================================================================
 """,
-    'depends': ['base', 'sale','stock','hr','member_barcode_scanner'],
+    'depends': ['base', 'sale','stock','hr','member_barcode_scanner','product_expiry'],
     'data': [
             'data/adjustments_sequence_data.xml',
             'data/product_demo.xml',
@@ -30,6 +30,7 @@
         "static/src/xml/main_screen_template.xml",
         "static/src/xml/warehouse_view.xml",
         "static/src/xml/exit_popup_view.xml",
+        "static/src/xml/confirm_template.xml",
         "static/src/xml/current_login_user.xml",
         "static/src/xml/generate_barcode_view.xml",
         "static/src/xml/inventory_adjustments_view.xml",

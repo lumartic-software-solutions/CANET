@@ -116,7 +116,8 @@ class OperationDashboard(models.Model):
                     'barcode'] + '</option>'
             barcode_selection += '</select>'
         else:
-            barcode_selection = '<select class="barcodes" style="overflow-y: auto!important; font-size: 18px;"><option> No Data Found ! </option> </select>'
+            barcode_selection = '<select class="barcodes" style="overflow-y: auto!important; font-size: ' \
+                                '18px;height:40px"><option> No Data Found ! </option> </select> '
         set_unused_barcode_list = False
 
         if len(unused_barcode_list) > 0:
@@ -139,8 +140,8 @@ class OperationDashboard(models.Model):
                 'set_unused_barcode_list': set_unused_barcode_list,
                 'user_name': user_id[0].get('name'),
                 'user_image_url': user_id[0].get('image'),
-                'type_of_order': [{'order': 'Container'}, {'order': 'Drum'}],
-                'washing_type': [{'washing': 'dangerous'}, {'washing': 'non_dangerous'}],
+                # 'type_of_order': [{'order': 'Container'}, {'order': 'Drum'}],
+                # 'washing_type': [{'washing': 'dangerous'}, {'washing': 'non_dangerous'}],
             }
             user_id[0].update(data)
             return user_id
@@ -170,10 +171,11 @@ class OperationDashboard(models.Model):
 
     @api.model
     def location_data(self, location1, location2, length):
+        print(")_____________location1, location2, length__________", location1, location2, length)
         location_obj = self.env['stock.location']
         location_search = False
-        return {}
         if location1 or location2:
+            print("**************Vfvfd")
             if length >= 3:
                 parent_location_search = location_obj.search([('name', '=', str(location1))])
                 prent_of_parent_search = location_obj.search([('location_id', '=', parent_location_search[0].id)])
@@ -184,6 +186,7 @@ class OperationDashboard(models.Model):
                 location_search = location_obj.search(
                     [('name', '=', str(location2)), ('location_id', '=', parent_location_search[0].id)])
             lot_list = []
+            product_list = []
             if location_search:
                 quant_search_ids = self.env['stock.quant'].search([('location_id', '=', location_search[0].id)])
                 if quant_search_ids:
@@ -192,8 +195,20 @@ class OperationDashboard(models.Model):
                             'name': quant.lot_id.name,
                             'id': quant.lot_id.id,
                         })
-
-                return {'lot_list': lot_list}
+                        if product_list:
+                            for product in product_list:
+                                if product.get('name') != quant.product_id.name:
+                                    product_list.append({
+                                        'name': quant.product_id.name,
+                                        'id': quant.product_id.id,
+                                    })
+                        else:
+                            product_list.append({
+                                'name': quant.product_id.name,
+                                'id': quant.product_id.id,
+                            })
+                print ("+++++++++++++++++++lot_list+++++++++",lot_list)
+                return {'lot_list': lot_list, 'product_list': product_list}
         else:
             return {}
 
@@ -237,13 +252,12 @@ class OperationDashboard(models.Model):
 
     @api.model
     def lot_data(self, doamin):
-        location_search = False
         if doamin:
             lot_ids = self.env['stock.production.lot'].search(doamin)
             if lot_ids:
-                display_name = lot_ids.product_id.default_code
-                recycled_display_name = lot_ids.product_id.recycled_product_id.default_code
-                return {'product_name': display_name, 'recycled_product_name': recycled_display_name}
+                display_name = lot_ids.product_id.name
+                print("+++++++display_name+++++++++++++++++", display_name)
+                return {'product_name': display_name}
         else:
             return {}
 
@@ -293,29 +307,28 @@ class OperationDashboard(models.Model):
         location_obj = self.env['stock.location']
         product_obj = self.env['product.product']
         task_obj = self.env['project.task']
+        maintenance_obj = self.env['maintenance.request']
         location_list = []
         task_list = []
-        unsed_barcode_list = []
-        # self._cr.execute('''select * from wash_order''')
-        # wash_result = self._cr.dictfetchall()
-        # wash_barcode_ids = tuple([wash.get('lot_id') for wash in wash_result])
-        # params = {'wash_barcode_ids': wash_barcode_ids}
-        # if wash_barcode_ids:
-        #     self._cr.execute('''select * from stock_production_lot where id not in %(wash_barcode_ids)s''', params)
-        #     unsed_barcode_list_ids = self._cr.dictfetchall()
-        #     for data in unsed_barcode_list_ids:
-        #         unsed_barcode_list.append({'barcode': data.get('name') or '',
-        #                                         'id': str(data.get('id')) or '',
-        #                                         })
+        maintenance_list = []
+
         task_ids = task_obj.search([])
         location_ids = location_obj.search([('usage', 'in', ['internal'])])
+        maintenance_ids = maintenance_obj.search([('state', '!=', 'end')])
 
         if task_ids:
             for task in task_ids:
                 name = task.number
                 task_list.append({
-                    'name' : name or '',
-                    'id' : str(task.id) or '',
+                    'name': name or '',
+                    'id': str(task.id) or '',
+                })
+        if maintenance_ids:
+            for maintenance in maintenance_ids:
+                name = maintenance.reference
+                maintenance_list.append({
+                    'name': name or '',
+                    'id': str(maintenance.id) or '',
                 })
 
         for location in location_ids:
@@ -335,8 +348,9 @@ class OperationDashboard(models.Model):
             'location_list': location_list,
             'type_of_order': [{'order': 'Internal Transfer'}, {'order': 'Project'}, {'order': 'Maintenance'}],
             'task_list': task_list,
+            'maintenance_list': maintenance_list,
         }
-        print ("__________________",data)
+        print("__________________", data)
         return {'data': data}
 
     @api.model
@@ -347,21 +361,11 @@ class OperationDashboard(models.Model):
         location_obj = self.env['stock.location']
         product_obj = self.env['product.product']
         task_obj = self.env['project.task']
+        maintenance_obj = self.env['maintenance.request']
         location_list = []
-
+        maintenance_list = []
         task_list = []
-        unsed_barcode_list = []
-        # self._cr.execute('''select * from wash_order''')
-        # wash_result = self._cr.dictfetchall()
-        # wash_barcode_ids = tuple([wash.get('lot_id') for wash in wash_result])
-        # params = {'wash_barcode_ids': wash_barcode_ids}
-        # if wash_barcode_ids:
-        #     self._cr.execute('''select * from stock_production_lot where id not in %(wash_barcode_ids)s''', params)
-        #     unsed_barcode_list_ids = self._cr.dictfetchall()
-        #     for data in unsed_barcode_list_ids:
-        #         unsed_barcode_list.append({'barcode': data.get('name') or '',
-        #                                         'id': str(data.get('id')) or '',
-        #                                         })
+        maintenance_ids = maintenance_obj.search([('state', '!=', 'end')])
         task_ids = task_obj.search([])
         location_ids = location_obj.search([('usage', 'in', ['internal'])])
 
@@ -371,6 +375,13 @@ class OperationDashboard(models.Model):
                 task_list.append({
                     'name': name or '',
                     'id': str(task.id) or '',
+                })
+        if maintenance_ids:
+            for maintenance in maintenance_ids:
+                name = maintenance.reference
+                maintenance_list.append({
+                    'name': name or '',
+                    'id': str(maintenance.id) or '',
                 })
 
         for location in location_ids:
@@ -388,9 +399,10 @@ class OperationDashboard(models.Model):
             #  'product_list': product_list,
             'barcode_list': [],
             'location_list': location_list,
-            'type_of_order': [{'order': 'Internal Transfer'}, {'order': 'Project'}, {'order': 'Maintenance'}],
+            'type_of_order': [{'order': 'Assign to Employee'}, {'order': 'Project'}, {'order': 'Maintenance'}],
             'task_list': task_list,
-            'operation_type' :  [{'type': 'Delivery'}, {'type': 'Return'}]
+            'maintenance_list': maintenance_list,
+            'operation_type': [{'type': 'Delivery'}, {'type': 'Return'}]
         }
         print("__________________", data)
         return {'data': data}
@@ -422,30 +434,22 @@ class OperationDashboard(models.Model):
         else:
             return {'warning': 'Please Enter Valid Number !'}
 
-
     @api.multi
     def create_internal_transfer_method(self, record_data):
-        inventory_obj = self.env['stock.inventory']
         picking_type_obj = self.env['stock.picking.type']
         lot_obj = self.env['stock.production.lot']
         location_obj = self.env['stock.location']
         product_obj = self.env['product.product']
-        inventory_adjustment_table = []
         ctx = dict(self._context)
         name = False
-        user = self.env.uid
-        brw_usr = self.env['res.users'].search([('id', '=', user)])
-        type_of_order = False
         location_dest_search = False
         location_search = False
         create_internal_order = False
-        dangerous_obj = self.env['dangerous.product']
-        args = brw_usr.company_id and [('company_id', '=', brw_usr.company_id.id)] or []
         warehouse_id = False
         for data in record_data:
             if data.get('location'):
                 name_location = data.get('location')
-                name = name_location.split('/')[-1]
+                # name = name_location.split('/')[-1]
                 spilt_name = name_location.split('/')
                 name = spilt_name[-1]
                 parent_name = spilt_name[0]
@@ -495,243 +499,339 @@ class OperationDashboard(models.Model):
                 'picking_type_id': picking_type_ids[0].id,
                 'move_line_ids': move_line_data,
                 'name': picking_type_obj.browse(picking_type_ids[0].id).sequence_id.next_by_id()
-
             }
             create_internal_order = self.env['stock.picking'].with_context(create_move=True).create(internal_data)
             create_internal_order.button_validate()
         if create_internal_order:
-            return {'success': "Successfully Created Wash Order!"}
+            return {'success': "Successfully Created Internal Transfer!"}
 
     @api.multi
-    def create_destruction_method(self, record_data):
-        inventory_obj = self.env['stock.inventory']
-        location_obj = self.env['stock.location']
+    def update_task(self, record_data):
         lot_obj = self.env['stock.production.lot']
-        product_obj = self.env['product.product']
-        inventory_adjustment_table = []
-        print("xdd----------ddd")
-        ctx = dict(self._context)
-        location_search = False
+        location_obj = self.env['stock.location']
+        task_obj = self.env['project.task']
+        maintenance_obj = self.env['maintenance.request']
         name = False
-        user = self.env.uid
-        location_dest_search = False
-        brw_usr = self.env['res.users'].search([('id', '=', user)])
-        type_of_order = False
         location_dest_search = False
         location_search = False
-        dangerous_obj = self.env['dangerous.product']
-        args = brw_usr.company_id and [('company_id', '=', brw_usr.company_id.id)] or []
-        warehouse = self.env['stock.warehouse'].search(args, limit=1)
-        drum_wash_line = []
-        create_crush = False
-        create_compact = False
-        create_drum_compact = False
-        create_drum_crush = False
-        container_wash_line = []
+        operation_line_data = []
         for data in record_data:
-            if data.get('location'):
-                name_location = data.get('location')
-                name = name_location.split('/')[-1]
-                spilt_name = name_location.split('/')
-                name = spilt_name[-1]
-                parent_name = spilt_name[0]
-                parent_loc_id = location_obj.search([('name', '=', parent_name)])
-                location_search = location_obj.search(
-                    [('name', '=', name), ('location_id', '=', parent_loc_id[0].id or False)])
-                if location_search:
-                    location_search = location_search[0].id
-            if data.get('dest_location_id'):
-                name_dest_location = data.get('dest_location_id')
-                spilt_name = name_dest_location.split('/')
-                name = spilt_name[-1]
-                parent_name = spilt_name[0]
-                parent_loc_id = location_obj.search([('name', '=', parent_name)])
-                location_dest_search = location_obj.search(
-                    [('name', '=', name), ('location_id', '=', parent_loc_id[0].id or False)])
-                if location_dest_search:
-                    location_dest_search = location_dest_search[0].id
-            if data.get('washing_type'):
-                if data.get('washing_type') == 'dangerous':
-                    self.dangerous = True
-                    self.non_dangerous = False
+            if data.get('task_number'):
+                search_task_ids = task_obj.search([('number', '=', data.get('task_number'))])
+                if search_task_ids:
+                    if data.get('location'):
+                        name_location = data.get('location')
+                        spilt_name = name_location.split('/')
+                        name = spilt_name[-1]
+                        parent_name = spilt_name[0]
+                        parent_loc_id = location_obj.search([('name', '=', parent_name)])
+                        location_search = location_obj.search(
+                            [('name', '=', name), ('location_id', '=', parent_loc_id[0].id or False)])
+                        if location_search:
+                            location_search = location_search[0].id
+                    if data.get('dest_location_id'):
+                        name_dest_location = data.get('dest_location_id')
+                        spilt_name = name_dest_location.split('/')
+                        name = spilt_name[-1]
+                        parent_name = spilt_name[0]
+                        parent_loc_id = location_obj.search([('name', '=', parent_name)])
+                        location_dest_search = location_obj.search(
+                            [('name', '=', name), ('location_id', '=', parent_loc_id[0].id or False)])
+                        warehouse_id = location_dest_search.get_warehouse()
+                        if location_dest_search:
+                            location_dest_search = location_dest_search[0].id
+                    for barcode in data.get('barcode_ids'):
+                        lot_brw = lot_obj.browse(int(barcode))
+                        operation_line_vals = {
+                            'product_id': lot_brw[0].product_id.id,
+                            'name': lot_brw[0].product_id.name,
+                            'product_uom': lot_brw[0].product_id.uom_id.id,
+                            'lot_id': lot_brw.id,
+                            'price_unit': lot_brw[0].product_id.list_price,
+                            'product_uom_qty': 1.0,
+                            'tax_id': lot_brw[0].product_id.taxes_id,
+                            'location_id': location_search,
+                            'location_dest_id': location_dest_search,
 
-                    dangerous_product_con_ids = dangerous_obj.search(
-                        [('type_product', '=', 'container'), ('dangerous', '=', True)])
-                    dangerous_product_drum_ids = dangerous_obj.search(
-                        [('type_product', '=', 'drum'), ('dangerous', '=', True)])
-                    if dangerous_product_con_ids:
-                        if data.get('type_of_order') == 'Container':
-                            container_wash_line = []
-                            for product in dangerous_product_con_ids:
-                                vals = {
-                                    'product_id': product.product_id.product_variant_id.id,
-                                    'type': 'add',
-                                    'name': product.product_id.display_name,
-                                    'product_uom_qty': product.qty,
-                                    'product_uom': product.product_id.uom_id.id,
-                                    'location_dest_id': self.env['stock.location'].search(
-                                        [('usage', '=', 'production')], limit=1).id,
-                                    'location_id': warehouse.lot_stock_id.id,
-                                    'price_unit': 0.0
-                                }
-                                container_wash_line.append((0, 0, vals))
-                    if dangerous_product_drum_ids:
-                        if data.get('type_of_order') == 'Drum':
-                            drum_wash_line = []
-                            for product in dangerous_product_drum_ids:
-                                vals = {
-                                    'product_id': product.product_id.product_variant_id.id,
-                                    'type': 'add',
-                                    'name': product.product_id.display_name,
-                                    'product_uom_qty': product.qty,
-                                    'product_uom': product.product_id.uom_id.id,
-                                    'location_dest_id': self.env['stock.location'].search(
-                                        [('usage', '=', 'production')], limit=1).id,
-                                    'location_id': warehouse.lot_stock_id.id,
-                                    'price_unit': 0.0
-                                }
-                                drum_wash_line.append((0, 0, vals))
-                if data.get('washing_type') == 'non_dangerous':
-                    self.non_dangerous = True
-                    self.dangerous = False
-                    nondangerous_product_con_ids = dangerous_obj.search(
-                        [('type_product', '=', 'container'), ('non_dangerous', '=', True)])
-                    nondangerous_product_drum_ids = dangerous_obj.search(
-                        [('type_product', '=', 'drum'), ('non_dangerous', '=', True)])
-                    if nondangerous_product_con_ids:
-                        if data.get('type_of_order') == 'Container':
-                            container_wash_line = []
-                            for product in nondangerous_product_con_ids:
-                                vals = {
-                                    'product_id': product.product_id.product_variant_id.id,
-                                    'type': 'add',
-                                    'name': product.product_id.display_name,
-                                    'product_uom_qty': product.qty,
-                                    'product_uom': product.product_id.uom_id.id,
-                                    'location_dest_id': self.env['stock.location'].search(
-                                        [('usage', '=', 'production')], limit=1).id,
-                                    'location_id': warehouse.lot_stock_id.id,
-                                    'price_unit': 0.0
-                                }
-                                container_wash_line.append((0, 0, vals))
-                    if nondangerous_product_drum_ids:
-                        if data.get('type_of_order') == 'Drum':
-                            drum_wash_line = []
-                            for product in nondangerous_product_drum_ids:
-                                vals = {
-                                    'product_id': product.product_id.product_variant_id.id,
-                                    'type': 'add',
-                                    'name': product.product_id.display_name,
-                                    'product_uom_qty': product.qty,
-                                    'product_uom': product.product_id.uom_id.id,
-                                    'location_dest_id': self.env['stock.location'].search(
-                                        [('usage', '=', 'production')], limit=1).id,
-                                    'location_id': warehouse.lot_stock_id.id,
-                                    'price_unit': 0.0}
-                                drum_wash_line.append((0, 0, vals))
+                        }
 
-            operation_data = []
-            if drum_wash_line:
-                operation_data = drum_wash_line
-            if container_wash_line:
-                operation_data = container_wash_line
-            for barcode in data.get('barcode_ids'):
-                lot_brw = self.env['stock.production.lot'].browse(int(barcode))
-                '''product_record_data = data.get('product_id')
-                first_split = product_record_data.split("[")
-                second_split = first_split[1].split("]")
+                        operation_line_data.append((0, 0, operation_line_vals))
 
-                product_search_ids = product_obj.search([('default_code', '=', second_split[0])])'''
-                pro_line_values = {
-                    'product_id': lot_brw[0].product_id.id,
-                    'product_uom_id': lot_brw[0].product_id.uom_id.id,
-                    'prod_lot_id': int(barcode),
-                    'product_qty': 0,
-                    'location_id': location_search,
-                    'state': 'confirm'
-                }
-                pro_inventory_sequence = self.env['ir.sequence'].next_by_code('stock.inventory') or _('New')
-                pro_inv_vals = {'name': pro_inventory_sequence,
-                                'filter': 'product',
-                                'line_ids': [(0, 0, pro_line_values)],
-                                'location_id': location_search,
-                                'product_id': lot_brw[0].product_id.id,
-                                # 'wash_id': wash_obj.id
-                                }
-                pro_inv = inventory_obj.create(pro_inv_vals)
-                pro_inv.action_start()
-                pro_inv.action_done()
-                if data.get('type_of_order') == 'Container':
-                    type_of_order = 'container'
-                    crush_container_vals = {
-                        'name': self.env['ir.sequence'].next_by_code('wash.order.crush'),
-                        'product_id': lot_brw[0].product_id.id,
-                        'type_of_order': 'crush',
-                        'product_uom': lot_brw[0].product_id.uom_id.id,
-                        'lot_id': int(barcode),
-                        'product_qty': 0,
-                        'location_id': location_search,
-                        'location_dest_id': location_dest_search,
-                        'washing_type': data.get('washing_type'),
-                        'operations': operation_data,
+                    search_task_ids.update({'operations': operation_line_data})
+                    return {'success': "Successfully Created Internl Transfer!"}
+            if data.get('maintenance_number'):
+                search_maintenance_ids = maintenance_obj.search([('reference', '=', data.get('maintenance_number'))])
+                if search_maintenance_ids:
+                    if data.get('location'):
+                        name_location = data.get('location')
+                        spilt_name = name_location.split('/')
+                        name = spilt_name[-1]
+                        parent_name = spilt_name[0]
+                        parent_loc_id = location_obj.search([('name', '=', parent_name)])
+                        location_search = location_obj.search(
+                            [('name', '=', name), ('location_id', '=', parent_loc_id[0].id or False)])
+                        if location_search:
+                            location_search = location_search[0].id
+                    if data.get('dest_location_id'):
+                        name_dest_location = data.get('dest_location_id')
+                        spilt_name = name_dest_location.split('/')
+                        name = spilt_name[-1]
+                        parent_name = spilt_name[0]
+                        parent_loc_id = location_obj.search([('name', '=', parent_name)])
+                        location_dest_search = location_obj.search(
+                            [('name', '=', name), ('location_id', '=', parent_loc_id[0].id or False)])
+                        if location_dest_search:
+                            location_dest_search = location_dest_search[0].id
+                    for barcode in data.get('barcode_ids'):
+                        lot_brw = lot_obj.browse(int(barcode))
+                        operation_line_vals = {
+                            'product_id': lot_brw[0].product_id.id,
+                            'name': lot_brw[0].product_id.name,
+                            'product_uom': lot_brw[0].product_id.uom_id.id,
+                            'lot_id': lot_brw.id,
+                            'price_unit': lot_brw[0].product_id.list_price,
+                            'product_uom_qty': 1.0,
+                            'tax_id': lot_brw[0].product_id.taxes_id,
+                            'location_id': location_search,
+                            'location_dest_id': location_dest_search,
 
-                        # 'washing_type': type_of_order,
-                    }
+                        }
 
-                    create_crush = wash_obj.create(crush_container_vals)
-                    compact_container_vals = {
-                        'name': self.env['ir.sequence'].next_by_code('wash.order.compact'),
-                        'product_id': lot_brw[0].product_id.id,
-                        'type_of_order': 'compact',
-                        'product_uom': lot_brw[0].product_id.uom_id.id,
-                        'lot_id': int(barcode),
-                        'product_qty': 0,
-                        'location_id': location_search,
-                        'location_dest_id': location_dest_search,
-                        'washing_type': data.get('washing_type'),
-                        'operations': operation_data,
-                        # 'washing_type': type_of_order,
-                    }
-                    create_compact = wash_obj.create(compact_container_vals)
-                if data.get('type_of_order') == 'drum':
-                    type_of_order = 'drum'
-                    # if product_search_ids[0].type_of_drum == 'plastic':
-                    #     create_drum_crush = {
-                    #         'name': self.env['ir.sequence'].next_by_code('wash.order.crush'),
-                    #         'product_id': lot_brw[0].product_id.id,
-                    #         'type_of_order': 'crush',
-                    #         'product_uom': lot_brw[0].product_id.uom_id.id,
-                    #         'lot_id': int(barcode),
-                    #         'product_qty': 0,
-                    #         'location_id': location_search,
-                    #         'location_dest_id': location_dest_search,
-                    #         #  'washing_type': type_of_order,
-                    #         'washing_type': data.get('washing_type'),
-                    #         'operations': operation_data,
-                    #     }
-                    #
-                    #     create_drum_crush = wash_obj.create(crush_container_vals)
-                    # if product_search_ids[0].type_of_drum == 'metal':
-                    #     compact_container_vals = {
-                    #         'name': self.env['ir.sequence'].next_by_code('wash.order.compact'),
-                    #         'product_id': lot_brw[0].product_id.id,
-                    #         'type_of_order': 'compact',
-                    #         'product_uom': lot_brw[0].product_id.uom_id.id,
-                    #         'lot_id': int(barcode),
-                    #         'product_qty': 0,
-                    #         'location_id': location_search,
-                    #         'location_dest_id': location_dest_search,
-                    #         'operations': operation_data,
-                    #         # 'washing_type': type_of_order,
-                    #     }
-                    #     create_drum_compact = wash_obj.create(compact_container_vals)
+                        operation_line_data.append((0, 0, operation_line_vals))
 
-            # if create_crush and create_compact:
-            #     return {'success': "Successfully Created Wash Order!"}
-            # # if create_drum_crush:
-            # #     return {'success': "Successfully Created Wash Order!"}
-            # if create_drum_compact:
-            #     return {'success': "Successfully Created Wash Order!"}
+                    search_maintenance_ids.update({'operations': operation_line_data})
+                    return {'success': "Successfully updated !"}
+
+    # @api.multi
+    # def create_destruction_method(self, record_data):
+    #     inventory_obj = self.env['stock.inventory']
+    #     location_obj = self.env['stock.location']
+    #     lot_obj = self.env['stock.production.lot']
+    #     product_obj = self.env['product.product']
+    #     inventory_adjustment_table = []
+    #     print("xdd----------ddd")
+    #     ctx = dict(self._context)
+    #     location_search = False
+    #     name = False
+    #     user = self.env.uid
+    #     location_dest_search = False
+    #     brw_usr = self.env['res.users'].search([('id', '=', user)])
+    #     type_of_order = False
+    #     location_dest_search = False
+    #     location_search = False
+    #     dangerous_obj = self.env['dangerous.product']
+    #     args = brw_usr.company_id and [('company_id', '=', brw_usr.company_id.id)] or []
+    #     warehouse = self.env['stock.warehouse'].search(args, limit=1)
+    #     drum_wash_line = []
+    #     create_crush = False
+    #     create_compact = False
+    #     create_drum_compact = False
+    #     create_drum_crush = False
+    #     container_wash_line = []
+    #     for data in record_data:
+    #         if data.get('location'):
+    #             name_location = data.get('location')
+    #             name = name_location.split('/')[-1]
+    #             spilt_name = name_location.split('/')
+    #             name = spilt_name[-1]
+    #             parent_name = spilt_name[0]
+    #             parent_loc_id = location_obj.search([('name', '=', parent_name)])
+    #             location_search = location_obj.search(
+    #                 [('name', '=', name), ('location_id', '=', parent_loc_id[0].id or False)])
+    #             if location_search:
+    #                 location_search = location_search[0].id
+    #         if data.get('dest_location_id'):
+    #             name_dest_location = data.get('dest_location_id')
+    #             spilt_name = name_dest_location.split('/')
+    #             name = spilt_name[-1]
+    #             parent_name = spilt_name[0]
+    #             parent_loc_id = location_obj.search([('name', '=', parent_name)])
+    #             location_dest_search = location_obj.search(
+    #                 [('name', '=', name), ('location_id', '=', parent_loc_id[0].id or False)])
+    #             if location_dest_search:
+    #                 location_dest_search = location_dest_search[0].id
+    #         if data.get('washing_type'):
+    #             if data.get('washing_type') == 'dangerous':
+    #                 self.dangerous = True
+    #                 self.non_dangerous = False
+    #
+    #                 dangerous_product_con_ids = dangerous_obj.search(
+    #                     [('type_product', '=', 'container'), ('dangerous', '=', True)])
+    #                 dangerous_product_drum_ids = dangerous_obj.search(
+    #                     [('type_product', '=', 'drum'), ('dangerous', '=', True)])
+    #                 if dangerous_product_con_ids:
+    #                     if data.get('type_of_order') == 'Container':
+    #                         container_wash_line = []
+    #                         for product in dangerous_product_con_ids:
+    #                             vals = {
+    #                                 'product_id': product.product_id.product_variant_id.id,
+    #                                 'type': 'add',
+    #                                 'name': product.product_id.display_name,
+    #                                 'product_uom_qty': product.qty,
+    #                                 'product_uom': product.product_id.uom_id.id,
+    #                                 'location_dest_id': self.env['stock.location'].search(
+    #                                     [('usage', '=', 'production')], limit=1).id,
+    #                                 'location_id': warehouse.lot_stock_id.id,
+    #                                 'price_unit': 0.0
+    #                             }
+    #                             container_wash_line.append((0, 0, vals))
+    #                 if dangerous_product_drum_ids:
+    #                     if data.get('type_of_order') == 'Drum':
+    #                         drum_wash_line = []
+    #                         for product in dangerous_product_drum_ids:
+    #                             vals = {
+    #                                 'product_id': product.product_id.product_variant_id.id,
+    #                                 'type': 'add',
+    #                                 'name': product.product_id.display_name,
+    #                                 'product_uom_qty': product.qty,
+    #                                 'product_uom': product.product_id.uom_id.id,
+    #                                 'location_dest_id': self.env['stock.location'].search(
+    #                                     [('usage', '=', 'production')], limit=1).id,
+    #                                 'location_id': warehouse.lot_stock_id.id,
+    #                                 'price_unit': 0.0
+    #                             }
+    #                             drum_wash_line.append((0, 0, vals))
+    #             if data.get('washing_type') == 'non_dangerous':
+    #                 self.non_dangerous = True
+    #                 self.dangerous = False
+    #                 nondangerous_product_con_ids = dangerous_obj.search(
+    #                     [('type_product', '=', 'container'), ('non_dangerous', '=', True)])
+    #                 nondangerous_product_drum_ids = dangerous_obj.search(
+    #                     [('type_product', '=', 'drum'), ('non_dangerous', '=', True)])
+    #                 if nondangerous_product_con_ids:
+    #                     if data.get('type_of_order') == 'Container':
+    #                         container_wash_line = []
+    #                         for product in nondangerous_product_con_ids:
+    #                             vals = {
+    #                                 'product_id': product.product_id.product_variant_id.id,
+    #                                 'type': 'add',
+    #                                 'name': product.product_id.display_name,
+    #                                 'product_uom_qty': product.qty,
+    #                                 'product_uom': product.product_id.uom_id.id,
+    #                                 'location_dest_id': self.env['stock.location'].search(
+    #                                     [('usage', '=', 'production')], limit=1).id,
+    #                                 'location_id': warehouse.lot_stock_id.id,
+    #                                 'price_unit': 0.0
+    #                             }
+    #                             container_wash_line.append((0, 0, vals))
+    #                 if nondangerous_product_drum_ids:
+    #                     if data.get('type_of_order') == 'Drum':
+    #                         drum_wash_line = []
+    #                         for product in nondangerous_product_drum_ids:
+    #                             vals = {
+    #                                 'product_id': product.product_id.product_variant_id.id,
+    #                                 'type': 'add',
+    #                                 'name': product.product_id.display_name,
+    #                                 'product_uom_qty': product.qty,
+    #                                 'product_uom': product.product_id.uom_id.id,
+    #                                 'location_dest_id': self.env['stock.location'].search(
+    #                                     [('usage', '=', 'production')], limit=1).id,
+    #                                 'location_id': warehouse.lot_stock_id.id,
+    #                                 'price_unit': 0.0}
+    #                             drum_wash_line.append((0, 0, vals))
+    #
+    #         operation_data = []
+    #         if drum_wash_line:
+    #             operation_data = drum_wash_line
+    #         if container_wash_line:
+    #             operation_data = container_wash_line
+    #         for barcode in data.get('barcode_ids'):
+    #             lot_brw = self.env['stock.production.lot'].browse(int(barcode))
+    #             '''product_record_data = data.get('product_id')
+    #             first_split = product_record_data.split("[")
+    #             second_split = first_split[1].split("]")
+    #
+    #             product_search_ids = product_obj.search([('default_code', '=', second_split[0])])'''
+    #             pro_line_values = {
+    #                 'product_id': lot_brw[0].product_id.id,
+    #                 'product_uom_id': lot_brw[0].product_id.uom_id.id,
+    #                 'prod_lot_id': int(barcode),
+    #                 'product_qty': 0,
+    #                 'location_id': location_search,
+    #                 'state': 'confirm'
+    #             }
+    #             pro_inventory_sequence = self.env['ir.sequence'].next_by_code('stock.inventory') or _('New')
+    #             pro_inv_vals = {'name': pro_inventory_sequence,
+    #                             'filter': 'product',
+    #                             'line_ids': [(0, 0, pro_line_values)],
+    #                             'location_id': location_search,
+    #                             'product_id': lot_brw[0].product_id.id,
+    #                             # 'wash_id': wash_obj.id
+    #                             }
+    #             pro_inv = inventory_obj.create(pro_inv_vals)
+    #             pro_inv.action_start()
+    #             pro_inv.action_done()
+    #             if data.get('type_of_order') == 'Container':
+    #                 type_of_order = 'container'
+    #                 crush_container_vals = {
+    #                     'name': self.env['ir.sequence'].next_by_code('wash.order.crush'),
+    #                     'product_id': lot_brw[0].product_id.id,
+    #                     'type_of_order': 'crush',
+    #                     'product_uom': lot_brw[0].product_id.uom_id.id,
+    #                     'lot_id': int(barcode),
+    #                     'product_qty': 0,
+    #                     'location_id': location_search,
+    #                     'location_dest_id': location_dest_search,
+    #                     'washing_type': data.get('washing_type'),
+    #                     'operations': operation_data,
+    #
+    #                     # 'washing_type': type_of_order,
+    #                 }
+    #
+    #                 create_crush = wash_obj.create(crush_container_vals)
+    #                 compact_container_vals = {
+    #                     'name': self.env['ir.sequence'].next_by_code('wash.order.compact'),
+    #                     'product_id': lot_brw[0].product_id.id,
+    #                     'type_of_order': 'compact',
+    #                     'product_uom': lot_brw[0].product_id.uom_id.id,
+    #                     'lot_id': int(barcode),
+    #                     'product_qty': 0,
+    #                     'location_id': location_search,
+    #                     'location_dest_id': location_dest_search,
+    #                     'washing_type': data.get('washing_type'),
+    #                     'operations': operation_data,
+    #                     # 'washing_type': type_of_order,
+    #                 }
+    #                 create_compact = wash_obj.create(compact_container_vals)
+    #             if data.get('type_of_order') == 'drum':
+    #                 type_of_order = 'drum'
+    #                 # if product_search_ids[0].type_of_drum == 'plastic':
+    #                 #     create_drum_crush = {
+    #                 #         'name': self.env['ir.sequence'].next_by_code('wash.order.crush'),
+    #                 #         'product_id': lot_brw[0].product_id.id,
+    #                 #         'type_of_order': 'crush',
+    #                 #         'product_uom': lot_brw[0].product_id.uom_id.id,
+    #                 #         'lot_id': int(barcode),
+    #                 #         'product_qty': 0,
+    #                 #         'location_id': location_search,
+    #                 #         'location_dest_id': location_dest_search,
+    #                 #         #  'washing_type': type_of_order,
+    #                 #         'washing_type': data.get('washing_type'),
+    #                 #         'operations': operation_data,
+    #                 #     }
+    #                 #
+    #                 #     create_drum_crush = wash_obj.create(crush_container_vals)
+    #                 # if product_search_ids[0].type_of_drum == 'metal':
+    #                 #     compact_container_vals = {
+    #                 #         'name': self.env['ir.sequence'].next_by_code('wash.order.compact'),
+    #                 #         'product_id': lot_brw[0].product_id.id,
+    #                 #         'type_of_order': 'compact',
+    #                 #         'product_uom': lot_brw[0].product_id.uom_id.id,
+    #                 #         'lot_id': int(barcode),
+    #                 #         'product_qty': 0,
+    #                 #         'location_id': location_search,
+    #                 #         'location_dest_id': location_dest_search,
+    #                 #         'operations': operation_data,
+    #                 #         # 'washing_type': type_of_order,
+    #                 #     }
+    #                 #     create_drum_compact = wash_obj.create(compact_container_vals)
+    #
+    #         # if create_crush and create_compact:
+    #         #     return {'success': "Successfully Created Wash Order!"}
+    #         # # if create_drum_crush:
+    #         # #     return {'success': "Successfully Created Wash Order!"}
+    #         # if create_drum_compact:
+    #         #     return {'success': "Successfully Created Wash Order!"}
 
     @api.multi
     def set_product_name(self, product):
@@ -775,66 +875,61 @@ class OperationDashboard(models.Model):
 
     # saving inventory adjustments
     @api.multi
-    def save_inventory_adjustments(self, record_data, location_id, created_inventory_id, employee_id):
+    def save_inventory_adjustments(self, record_data, location_id, created_inventory_id):
         barcode_list = []
+        print("*******))created_inventory_id))))))))))", created_inventory_id)
         for rec in record_data:
             barcode_list.append(int(rec.get('barcode')))
         if len(barcode_list) != len(set(barcode_list)):
             return {'warning': 'The combination of serial number and product must be unique !'}
         if created_inventory_id == 'None':
             # first time saving record
-            return self.create_inventory_adjustments_record(record_data, location_id, created_inventory_id, employee_id)
+            return self.create_inventory_adjustments_record(record_data, location_id, created_inventory_id)
         else:
             # editing record
-            return self.edit_inventory_adjustments_record(record_data, location_id, created_inventory_id, employee_id)
+            return self.edit_inventory_adjustments_record(record_data, location_id, created_inventory_id)
 
-    #  saving wash order
+    #  saving Internal Transfer order
     @api.multi
-    def save_wash_order_method(self, record_data):
+    def save_internal_transfer_method(self, record_data):
         product_obj = self.env['product.product']
         if record_data:
             for rec in record_data:
                 if rec.get('barcode_ids'):
                     lot_ids = self.env['stock.production.lot'].search([('id', 'in', rec.get('barcode_ids'))])
                     if lot_ids:
+                        print("IIIIIIIIIIIIIIIlot_idsIIIIIIIII", lot_ids)
                         if rec.get('product_id'):
                             product_record_data = rec.get('product_id')
                             first_split = product_record_data.split("[")
                             second_split = first_split[1].split("]")
                             product_search_ids = product_obj.search([('default_code', '=', second_split[0])])
                             for lot in lot_ids:
-                                # search_wash_ids = self.env['wash.order'].search([('lot_id', '=', lot.id)])
-                                # if search_wash_ids:
-                                #     for wash in search_wash_ids:
-                                #         raise UserError(
-                                #             _('wash order alreday created for this Barcode %s ') % (lot.name))
+
                                 if product_search_ids:
                                     if lot.product_id.id != product_search_ids[0].id:
                                         raise UserError(
-                                            _('Barcode %s is not associated with wash product %s, please remove it') % (
+                                            _('Barcode %s is not associated with product %s, please remove it') % (
                                                 lot.name, lot.product_id.name))
             return {'success': "Successfully Created The Inventory Adjustments!"}
 
-    #  editing wash order
+    #  saving Delivery Return order
     @api.multi
-    def edit_wash_order_method(self):
-        return {'success': "Successfully Created The Inventory Adjustments!"}
+    def save_delivery_return_method(self, record_data):
+        return {'success': "Save Record!"}
 
     # creating inventory adjustments
     @api.multi
-    def create_inventory_adjustments_record(self, record_data, location_id, created_inventory_id, employee_id):
+    def create_inventory_adjustments_record(self, record_data, location_id, created_inventory_id):
         inventory_obj = self.env['stock.inventory']
         lot_obj = self.env['stock.production.lot']
         product_obj = self.env['product.product']
         inventory_adjustment_table = []
         ctx = dict(self._context)
         location = self.env['stock.location'].search([('id', '=', int(location_id))])
-        employee = False
-        if employee_id:
-            employee = self.env['hr.employee'].browse(int(employee_id))
         if not location:
             return {'warning': 'You must select a location !'}
-        if len(record_data) != 0 and location != None:
+        if len(record_data) != 0 and location is not None:
             line_vals = []
             inventory_sequence = self.env['ir.sequence'].next_by_code('stock.inventory') or _('New')
             for rec in record_data:
@@ -848,8 +943,7 @@ class OperationDashboard(models.Model):
                             'product_id': product_id.id,
                             'product_uom_id': product_id.uom_id.id,
                             'prod_lot_id': lot_id.id,
-                            #                         'theoretical_qty' :0,
-                            'product_qty': 1,
+                            'product_qty': rec.get('units') or 1.0,
                             'location_id': location.id,
                             'state': 'confirm'
                         }
@@ -858,7 +952,7 @@ class OperationDashboard(models.Model):
                     'filter': 'none',
                     'line_ids': [(0, 0, data) for data in line_vals],
                     'location_id': location.id,
-                    'user_id': employee.user_id.id if employee else False,
+                    'user_id': self._uid,
                     }
             if not created_inventory_id or created_inventory_id == 'None':
                 inventory_id = inventory_obj.create(vals)
@@ -869,15 +963,15 @@ class OperationDashboard(models.Model):
             if inventory_id:
                 for line in inventory_id.line_ids:
                     life_date = parser.parse(str(line.prod_lot_id.life_date)).strftime('%m/%d/%Y %H:%M:%S')
+
                     set_product = self.set_product_name(line.product_id)
                     inventory_adjustment_table.append({
                         'name': set_product or '',
                         'prod_lot_id': line.prod_lot_id.name or '',
+                        'units': line.product_qty,
                         'id': line.id or False,
                         'lot_id': line.prod_lot_id.id or False,
                         'life_date': life_date or '',
-                        'ler_code': "[%s] %s" % (line.product_id.name,
-                                                 line.product_id.description) if line.product_id else 'None',
                     })
                 return {'success': "Successfully Created The Inventory Adjustments!",
                         'inventory_adjustment_table': inventory_adjustment_table, 'id': inventory_id.id}
@@ -886,18 +980,18 @@ class OperationDashboard(models.Model):
 
     # editing inventory adjustment lines
     @api.multi
-    def edit_inventory_adjustments_record(self, record_data, location_id, created_inventory_id, employee_id):
+    def edit_inventory_adjustments_record(self, record_data, location_id, created_inventory_id):
         inventory_obj = self.env['stock.inventory']
         lot_obj = self.env['stock.production.lot']
         product_obj = self.env['product.product']
         inventory_adjustment_table = []
         inventory_id = inventory_obj.browse(int(created_inventory_id))
+        print("*******inventory_id**********", inventory_id)
         if inventory_id:
             for rec in record_data:
                 if 'line_id' not in rec:
                     create_data = [rec]
-                    self.create_inventory_adjustments_record(create_data, inventory_id.location_id.id, inventory_id,
-                                                             employee_id)
+                    self.create_inventory_adjustments_record(create_data, inventory_id.location_id.id, inventory_id)
             for line, rec in zip(inventory_id.line_ids, record_data):
                 if 'line_id' in rec:
                     if int(rec.get('line_id')) == line.id:
@@ -910,6 +1004,9 @@ class OperationDashboard(models.Model):
                                 lot_id.write({'product_id': product_id.id})
                             if new_life_date != line.prod_lot_id.life_date:
                                 line.prod_lot_id.life_date = new_life_date
+                            if rec.get('units'):
+                                if rec.get('units') != line.product_qty:
+                                    line.product_qty = float(rec.get('units'))
                             if rec.get('barcode') != line.prod_lot_id.name:
                                 prev_lot_id = lot_obj.search([('id', '=', line.prod_lot_id.id)])
                                 prev_lot_id.write({'life_date': '',
@@ -923,11 +1020,11 @@ class OperationDashboard(models.Model):
                 inventory_adjustment_table.append({
                     'name': set_product or '',
                     'prod_lot_id': line.prod_lot_id.name or '',
+                    'units': line.product_qty,
                     'id': line.id or False,
                     'lot_id': line.prod_lot_id.id or False,
                     'life_date': life_date or '',
-                    'ler_code': "[%s] %s" % (line.product_id.name,
-                                             line.product_id.description) if line.product_id else 'None',
+
                 })
             return {'success': 'Successfully Updated The Inventory Adjustments!',
                     'inventory_adjustment_table': inventory_adjustment_table, 'id': inventory_id.id}

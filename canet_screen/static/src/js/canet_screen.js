@@ -46,19 +46,22 @@ var CanetScreen = Widget.extend({
 		// ===========  main 4 button ===========
 		'click .generate_barcode': 'generate_barcode',
 		'click .generate': 'generate',
-		'click .create_destruction_order_confirm':'create_destruction_order_confirm',
 		'click .print_generate_barcode': 'print_generate_barcode',
 		'click .print_multi_barcode': 'print_multi_barcode',
-		'click .create_wash_order': 'create_wash_order',
-		'click .save_wash_order' : 'save_wash_order',
-		'click .edit_wash_order' :'edit_wash_order',
+		'click .transfer_to_task': 'transfer_to_task',
+		'click .transfer_to_task_delivery': 'transfer_to_task_delivery',
+		'click .edit_delivery_return_button': 'edit_delivery_return_button',
+		'click .save_internal_transfer' : 'save_internal_transfer',
+		//save_delivery_return_button
+		'click .save_delivery_return_button' :'save_delivery_return_button',
+		'click .edit_delivery_return_button' :'edit_delivery_return_button',
 		'click .onchange_product' :'onchange_product',
 		'click .main_button': 'main_button',
-		'change #washing_type' : 'washingOnChangeEvent',
+
 		'change #type-select' : 'TypeOrderOnChangeEvent',
 		'change #categ_select_id' : 'CategoryOnChangeEvent',
 		//'change #my-wash-product' : 'ProductOnChangeEvent',
-		'change #barcode_wash' : 'LotOnChangeEvent',
+		'change #barcode_product' : 'LotOnChangeEvent',
 		'change #my-select' : 'LocationOnChangeEvent',
 	}),
 	init: function(parent, context) {
@@ -135,7 +138,7 @@ var CanetScreen = Widget.extend({
             self.barcode_list = self.operation_data.barcode_list
             self.set_unused_barcode_list = self.operation_data.set_unused_barcode_list
             self.unused_barcode_list = self.operation_data.unused_barcode_list
-	    self.used_set_barcode_list = self.operation_data.used_set_barcode_list
+	        self.used_set_barcode_list = self.operation_data.used_set_barcode_list
             self.employee_id = session.employee_id
             self.employee = session.employee
             self.employee_image_url = session.employee_image_url
@@ -165,47 +168,13 @@ var CanetScreen = Widget.extend({
 	       }
 	  },
 
- washingOnChangeEvent: function (event)
-    {
-    	console.log("=====this",this);
-        var selectedValue = document.getElementById('washing_type').value;
-        var ordertype = document.getElementById('type-select').value;
-	if (ordertype == ''){
-
-		self.do_warn(_("Warning"),_("Please Enter the Order Type First!"));
-	}
-    var domain_dp = []
-            domain_dp.push(['type_product', '=', ordertype.toLowerCase()])
-            domain_dp.push([selectedValue.toLowerCase(), '=', true])
-    this._rpc({
-            model: 'dangerous.product',
-            method: 'search_read',
-            domain: domain_dp,
-        })
-        .then(function (result) {
-        	$('#dnproduct_table').remove();
-        	var product_table =
-			"<div  style='text-align: left; font-size: 15px; margin-top: 20px;margin-left:30px;margin-right:150px'>" +
-			"<table id='dnproduct_table'class='table'>" +
-			"<th><span>Product</span></th>" +
-			"<th><span>Quantity</span></th>"
-        	for(var dnproduct in result){
-        		product_table += "<tr><td>"+result[dnproduct]['product_id'][1]+"</td>" +
-        				"<td>"+result[dnproduct]['qty']+"</td></tr>" +
-        						"</table>"
-        	}
-		product_table +="</div>"
-		$('.modal-backdrop').remove();
-        	$("#recyled_product_div").after(product_table);
-        });
-    },
 
 
   LocationOnChangeEvent: function (event)
     {
        var selectedLOcationValue = document.getElementById('my-select').value;
         var location1
-	var location2
+	    var location2
         var length
 	    if (selectedLOcationValue != undefined){
 
@@ -216,38 +185,39 @@ var CanetScreen = Widget.extend({
                       length = obj_len
 
 		}
+		$('#barcode_product').empty();
         this._rpc({
             model: 'operation.dashboard',
             method: 'location_data',
             args: [location1,location2,length ],
         })
         .then(function (result) {
-		if (result.lot_list){
-		var lot = result.lot_list
-		if(lot.length != 0)
-		{
-		  $('#barcode_wash').select2('val', []);
-		   var lot_list = result.lot_list
-		   var optionsAsString = "";
-	           for(var i = 0; i < Object.keys(lot_list).length  ; i++)
-			{
+            if (result.lot_list){
+            var lot = result.lot_list
+                if(lot.length != 0)
+                {
+                  $('#barcode_wash').select2('val', []);
+                   var lot_list = result.lot_list
+                   var optionsAsString = "";
+                       for(var i = 0; i < Object.keys(lot_list).length  ; i++)
+                    {
 
-			     var lot_detail = lot_list[i]
-                            optionsAsString += "<option value='" + lot_detail['name'] + "'" + "ids='"+ lot_detail['id'] +"'>" + lot_detail['name'] + "</option>";
+                         var lot_detail = lot_list[i]
+                                    optionsAsString += "<option value='" + lot_detail['name'] + "'" + "ids='"+ lot_detail['id'] +"'>" + lot_detail['name'] + "</option>";
 
-			}
+			            }
 
-		$( '#barcode_wash' ).append( optionsAsString );
-		}
+                    $( '#barcode_product' ).append( optionsAsString );
+                    }
 
-		else {
-		     $('#barcode_wash').empty();
-		}
+                else {
+                     $('#barcode_product').empty();
+                }
 
-	}
+        }
 
-        });
-    },
+            });
+        },
 
  CategoryOnChangeEvent: function (event)
     {
@@ -274,18 +244,19 @@ var CanetScreen = Widget.extend({
 
         });
 
-	}
+	   }
     },
 
 
  LotOnChangeEvent: function (event)
+
     {
-        var selectedlotValue = document.getElementById('barcode_wash').value;
+        console.log("+++++++++++++++++++++++++++++++")
+        var selectedlotValue = document.getElementById('barcode_product').value;
+        console.log("_________selectedlotValue_______________",selectedlotValue )
         var domain_dp = []
 	    if (selectedlotValue != undefined){
-
-
-            	domain_dp.push(['name', '=', selectedlotValue])
+            domain_dp.push(['name', '=', selectedlotValue])
 		}
         this._rpc({
             model: 'operation.dashboard',
@@ -296,28 +267,24 @@ var CanetScreen = Widget.extend({
                if (result != undefined){
                if(result.product_name != ''){
 
-		var productvalue = document.getElementById('my-wash-product').value;
-		if (productvalue != undefined)
-		{
-			$('#my-wash-product').append(result.product_name);
-		}
-		$('#my-wash-product').select2('data', {text: result.product_name});
+                    var productvalue = document.getElementById('my-canet-product').text;
+//                     var productvalue = $("#my-canet-product").text();
+                    console.log("<Fvvvvproductvaluevvvvvvvv", productvalue)
+                        if (productvalue != undefined)
+                        console.log("*********result.product_name********",result.product_name )
+                        {
+                            $('#my-canet-product').append(result.product_name);
+                        }
 
-		}
-	       else {
-		 $('#my-wash-product').select2('val', []);
+                    $('#my-canet-product').select2('data', {text: result.product_name});
 
-		}
+                    }
+                else {
+                  console.log("_____________")
+                        $('#my-canet-product').select2('val', []);
 
-		if(result.recycled_product_name != ''){
+                }
 
-		$('#my-recycled-product').select2('data', {text: result.recycled_product_name});
-
-		}
-	       else {
-		 $('#my-recycled-product').select2('val', []);
-
-		}
 		  }
         });
 
@@ -328,9 +295,9 @@ TypeOrderOnChangeEvent: function (event)
     {
         var ordertype = document.getElementById('type-select').value;
             console.log("=====ordertype",ordertype)
-	var ctx = {}
+	    var ctx = {}
         var product_list = []
-	var reproduct_list = []
+	    var reproduct_list = []
 	if (ordertype == ''){
 
 		self.do_warn(_("Warning"),_("Please Enter the Order Type First!"));
@@ -339,62 +306,33 @@ TypeOrderOnChangeEvent: function (event)
 	if (ordertype == 'Internal Transfer'){
 		ctx['type_of_order']='internal_transfer'
 		 $("#task_div").css('display','none');
+
         $("#task_value_div").css('display','none');
+        $("#maintenance_div").css('display','none');
+        $("#maintenance_value_div").css('display','none');
 	}
 	if (ordertype == 'Project'){
 		ctx['type_of_order']='project'
+
+		$("#transfer_to_task_button").html('Transfer To Task');
 		 $("#task_div").css('display','inline');
         $("#task_value_div").css('display','inline');
+         $("#maintenance_div").css('display','none');
+        $("#maintenance_value_div").css('display','none');
 	}
 	if (ordertype == 'Maintenance'){
 		ctx['type_of_order']='maintenance'
-		 $("#task_div").css('display','inline');
-        $("#task_value_div").css('display','inline');
+
+		 $("#task_div").css('display','none');
+
+		  $("#transfer_to_task_button").html('Transfer To Maintenance');
+        $("#task_value_div").css('display','none');
+         $("#maintenance_div").css('display','inline');
+        $("#maintenance_value_div").css('display','inline');
 	}
 
-//       this._rpc({
-//            model: 'product.product',
-//            method: 'name_search',
-//	    args: ['', [],'ilike'],
-//	   context: ctx,
-//
-//        })
-//        .then(function (result) {
-//
-//		var size = 0, key;
-//		    for (key in result) {
-//			if (result.hasOwnProperty(key)) size++;
-//		    }
-//	       for(var i=0 ; i <= size; i++ ){
-//			var product_info = result[i]
-//			if (product_info){
-//					product_list.push({
-//					'id' : product_info[0],
-//					'name':product_info[1],
-//					})
-//			}
-//		}
-//
-//		/** var product_value =
-//			"<div class='col-md-3' style='width:350px'>" +
-//			"<select class='product_wash'  id='my-wash-product' style='height: 65px;font-size: 22px;margin-top: 20px;'>" **/
-//		var product_value = ""
-//		for (var i=0 ; i <= size; i++){
-//			var product_data = product_list[i]
-//
-//				if (product_data != undefined){
-//					var name=  product_data['name']
-//					name = name.replace("''","");
-//					product_value +=
-//					"<option  value='"+name + "'"+  "ids='" + product_data['id'] + "'>"  + name + "</option> "
-//
-//					}
-//
-//			}
-//		console.log("><<<<<<<<<<DSDssss",product_value)
-//		$("#my-wash-product").append( product_value );
 
-        $("#my-wash-product").select2({});
+        $("#my-canet-product").select2({});
 
    },
 
@@ -442,7 +380,7 @@ TypeOrderOnChangeEvent: function (event)
 	    	   self.do_warn(_("Warning"),_("Please Enter the Number First!"));
 	       }
 	  },
-	  print_generate_barcode: function(event){
+	 print_generate_barcode: function(event){
 		   	var self = this;
 		   	event.stopPropagation();
 		   	event.preventDefault();
@@ -578,13 +516,12 @@ add_an_item: function(event){
               console.log(">>>>>>>>>>>>>>@@>>>>>>.",location)
 	       if (location != undefined){
 		       var table_row = document.getElementById("inventory_adjustments_table").rows;
-		       console.log("*******table_row*********",table_row)
 		       if (table_row.length > 2){
 		           console.log("=@@@@@@@@@@@@@00000")
 		    	   $( "#inventory_adjustments_table tr:nth-last-child(2)").after("<tr class='active'>"+
 		    			   "<td style='width: 27%;' >"+self.product_list+"</td>"+
 		    			   "<td style='width: 17%; '> <input type='text' name='product_unit' id='product_unit' style='height:40px'/></td>"+
-		    			   "<td style='width: 22%;' id='barcode'>"+self.barcode_list+"</td>"+
+		    			   "<td style='width: 22%;' >"+self.barcode_list+"</td>"+
 		    			   "<td style='width: 22%; '> <input type='text' name='life_date' class='life_datetimepicker' /></td>"+
 		    			   "<td style='width: 7%;'> <input type='hidden' name='line_id'  value='none' /> </td>"+
 		    			   "<td style='width: 5%;'><button class='fa fa-trash-o btndelete' name='delete' aria-hidden='true'/></td>"+
@@ -596,7 +533,7 @@ add_an_item: function(event){
 		    	   $('#inventory_adjustments_table').prepend("<tr class='active'>"+
 		    			   "<td style='width: 27%;'>"+self.product_list+"</td>" +
 		    			   "<td style='width: 17%; '> <input type='text' name='product_unit' id='product_unit' style='height:40px'/></td>"+
-		    			   "<td style='width: 22%;' id='barcode'>"+self.barcode_list+"</td>"+
+		    			   "<td style='width: 22%;' >"+self.barcode_list+"</td>"+
 		    			   "<td style='width: 22%; '> <input type='text' name='life_date' class='life_datetimepicker' /></td>"+
 		    			   "<td style='width: 7%;'> <input type='hidden' name='line_id' value='none' /></td>"+
 		    			   "<td style='width: 5%;'><button class='fa fa-trash-o btndelete' name='delete' aria-hidden='true'/></td>"+
@@ -654,7 +591,6 @@ add_an_item: function(event){
 		var record_data= [];
 	   	var location = $(".es-list li[value='" + $(".locations").val() + "']").attr('ids');
 	   	var location_val = $(".locations").val()
-                console.log("^^^^^^^^^^^^^^^session.employee_id^^^^^^^", session.employee_id)
 	   	if (location == undefined){
 	   		if ($("#set_loction_id").length > 0){
 	   			location = $("#set_loction_id").text()
@@ -667,6 +603,7 @@ add_an_item: function(event){
 	   		$('#inventory_adjustments_table tr.active').each(function(){
 		  		var product = $(this).find('td .products')
 		  		var barcode = $(this).find('td .barcodes')
+		  		var units = $(this).find('td #product_unit')
 		  		var life_date = $(this).find('td .life_datetimepicker')
 		  		if (product.val() == ''){
 		  			product.css('border-bottom-color','red');
@@ -686,6 +623,12 @@ add_an_item: function(event){
 		  		}else{
 		  			life_date.css('border-bottom-color','#ccc');
 		  		}
+		  		if(units.val()  == ''){
+		  			units.css('border-bottom-color','red');
+		  			allow_save = false
+		  		}else{
+		  			units.css('border-bottom-color','#ccc');
+		  		}
 	   		})
 	   		if (allow_save == true){
 	   		    var count_lines = 0
@@ -693,13 +636,16 @@ add_an_item: function(event){
 			  		count_lines += 1;
 			  			var product_ids = $(".es-list li[value='" + $(this).find('td .products').val() + "']").attr('ids');
 				  		var barcode_ids = $(".es-list li[value='" + $(this).find('td .barcodes').val() + "']").attr('value');
+				  		var units = $("#product_unit").val();
 				  		var life_date = $(this).find('td .life_datetimepicker').val();
 				  		var line_ids = $(this).find('td #created_line_id');
+				  		console.log("=============product_ids===============",product_ids, units ,barcode_ids,life_date,line_ids)
 			   	    	if (line_ids.length > 0){
 			   	    		if (life_date != undefined  && product_ids != undefined && barcode_ids != undefined){
 			   	    			record_data.push({
 				   	    		    'product': product_ids,
 				   	    		    'barcode': barcode_ids,
+                                    'units' : units,
 				   	    		    'line_id' : line_ids.attr('line_id'),
 				   	    		    'life_date' : life_date
 				   	    		});
@@ -709,6 +655,7 @@ add_an_item: function(event){
 				   	    		record_data.push({
 				   	    		    'product': product_ids,
 				   	    		    'barcode': barcode_ids,
+				   	    		    'units' : units,
 				   	    		    'life_date' : life_date
 				   	    		});
 				   	    	}
@@ -719,7 +666,7 @@ add_an_item: function(event){
 				   self._rpc({
 			                model: 'operation.dashboard',
 			                method: 'save_inventory_adjustments',
-			                args: [[],record_data,location,created_inventory_id,self.employee_id],
+			                args: [[],record_data,location,created_inventory_id],
 			            })
 			            .then(function(result) {
 			            	if (result.success) {
@@ -732,7 +679,7 @@ add_an_item: function(event){
 			            			 var html = $(this).html();
 			        				 var span = $("<tr class='active'>"+
 			        						"<td style='width: 25%;'  class='set_product_ids'><span id='product_value'>"+ result.inventory_adjustment_table[i]['name'] +"</span></td>"+
-			        						"<td style='width: 15%;'  class='set_ler_code_ids'><span id='ler_code_value'>"+  result.inventory_adjustment_table[i]['ler_code']+"</span></td>"+
+			        						"<td style='width: 15%;'  class='set_unit'><span id='unit_value'>"+  result.inventory_adjustment_table[i]['units']+"</span></td>"+
 			        						"<td style='width: 20%;' lines='"+ result.inventory_adjustment_table[i]['id'] +"' class='set_barcode_ids' >"+ result.inventory_adjustment_table[i]['prod_lot_id'] +"</td>" +
 			        						"<td style='width: 20%;' life_date='"+result.inventory_adjustment_table[i]['life_date'] +"' class='set_life_date' >"+ result.inventory_adjustment_table[i]['life_date'] +"</td>"+
 			        						"<td style='width: 5%;'class='set_line_ids'><input type='hidden' name='line_id' value='"+ result.inventory_adjustment_table[i]['id']+ "'id='created_line_id' line_id='"+ result.inventory_adjustment_table[i]['id'] +"' /> </td>"+
@@ -782,8 +729,10 @@ add_an_item: function(event){
 		   	var barcode_data = []
                     //edit inventory adjustments
 		   	$('#inventory_adjustments_table tr.active').each(function(i){
+		   	    console.log("^^^^^^^^^^^^^^^^^^^^^^")
      			var product = $(this).find('td.set_product_ids');
-     			var ler = $(this).find('td.set_ler_code_ids');
+     			var units =  $(this).find('td.set_unit');
+     			console.log("%%%%%%%%%%%%%%%%%%%%%%",units.text())
 			   	var barcode = $(this).find('td.set_barcode_ids');
 			   	var delete_line = $(this).find('td.set_delete_ids');
 			   	var print_line = $(this).find('td.set_print_ids');
@@ -821,10 +770,9 @@ add_an_item: function(event){
 				       }
 
 				    	 if (self.cat_product_list[line]['name'] == correct_product_name){
-                                                console.log("JJJJJJJJJJJJJJJJJJJJJJJJ")
-				          product_list += '<option selected="true" label="'+self.cat_product_list[line]['default_code'] + '" ids="' +self.cat_product_list[line]['id']+'"'+ ' value="'+self.cat_product_list[line]['name']+'" product_ler_code="'+ler.text()+'">' +self.cat_product_list[line]['name']+'</option>'
+				          product_list += '<option selected="true" label="'+self.cat_product_list[line]['default_code'] + '" ids="' +self.cat_product_list[line]['id']+'"'+ ' value="'+self.cat_product_list[line]['name']+'">' +self.cat_product_list[line]['name']+'</option>'
 				    	  }else{
-				    		 product_list += '<option label="'+self.cat_product_list[line]['default_code'] + '" ids="' +self.cat_product_list[line]['id']+'"'+ ' value="'+self.cat_product_list[line]['name']+'" product_ler_code="'+self.cat_product_list[line]['ler_code']+'">' +self.cat_product_list[line]['name']+'</option>'
+				    		 product_list += '<option label="'+self.cat_product_list[line]['default_code'] + '" ids="' +self.cat_product_list[line]['id']+'"'+ ' value="'+self.cat_product_list[line]['name'] +'">' +self.cat_product_list[line]['name']+'</option>'
 				    	  }
 
 			    	   }
@@ -847,9 +795,10 @@ add_an_item: function(event){
 			        }else{
 			        	barcode_list = '<select class="barcodes" style="overflow-y: auto!important; font-size: 18px;"><option> No Data Found ! </option> </select>'
 			        }
+			        console.log("==========units===========",units.text())
 	              var data = "<tr class='active'>"+
 	                         "<td style='width: 25%;' class='set_product_ids'>"+product_list+"</td>"+
-	                         "<td style='width: 15%; position:absolute;' > <input type='text' name='ler_code_txt' id='ler_code_id'  readonly='readonly' value='"+ler.text() +"'/></td>"+
+	                         "<td style='width: 15%; position:absolute;'  class='set_unit'> <input type='text' style='height:40px' name='units' id='product_unit' value='"+units.text() +"'/></td>"+
 	                         "<td style='width: 20%;' class='set_barcode_ids'>"+barcode_list+"</td>"+
 	                         "<td style='width: 20%; position:absolute;'> <input type='text' name='life_date' class='life_datetimepicker' value='"+life_date.text() +"'/></td>"+
 	                         "<td style='width: 5%;'  class='set_line_ids'>"+ line_ids.html()+"</td>"+
@@ -860,19 +809,8 @@ add_an_item: function(event){
 	              $(this).replaceWith(data);
 		   	})
 		   	$(".barcodes").editableSelect();
-		   	$('.products')
-		       .editableSelect()
-		       .on('select.editable-select', function (e, li) {
-		    	   var ler_code = li.attr('product_ler_code');
-		           var product_id = li.text();
-		           var row_ids = $('.products').closest('tr')
-		           row_ids.each(function(i){
-		           var current_product_id = $(this).find('.products').val();
-			           if(current_product_id === product_id){
-			        	   $(this).find('td #ler_code_id').val(ler_code)
-			           }
-		           })
-		       });
+		   	$('.products').editableSelect();
+
 	        var today = new Date();
 	        var deafult_date = new Date(today.getFullYear() + 1,  today.getMonth(),today.getDate(),today.getHours(),today.getMinutes(),today.getSeconds())
 	        $('.life_datetimepicker').datetimepicker({format: 'MM/DD/YYYY hh:mm:ss',
@@ -891,28 +829,7 @@ add_an_item: function(event){
 	        // visible save button
 	        $("#save_inventory_adjustments_button").css("display", "inline");
  	  },
-    /**inventory_adjustments: function(event){
-   	 var self = this;
-        event.stopPropagation();
-        event.preventDefault();
-        self._rpc({
-            model: 'operation.dashboard',
-            method: 'get_operation_info',
-        }, []).then(function(result){
-            self.operation_data = result[0]
 
-           self.product_list = self.operation_data.product_list
-//           self.ler_list = self.operation_data.ler_list
-           self.barcode_list = self.operation_data.barcode_list
-           self.employee_id = session.employee_id
-           self.employee = session.employee
-           self.employee_image_url = session.employee_image_url
-        }).done(function(){
-        	self.href = window.location.href;
-        	return  self.$el.html(QWeb.render("InventoryAdjustmentsButton", {widget: self}));
-        });
-
-    },**/
 
     inventory_adjustments: function(event){
    	 var self = this;
@@ -948,6 +865,7 @@ add_an_item: function(event){
            self.barcode_list = result['data']['barcode_list']
            self.location_list = result['data']['location_list']
 	       self.task_list = result['data']['task_list']
+	       self.maintenance_list = result['data']['maintenance_list']
            self.type_of_order = result['data']['type_of_order']
         }).done(function(){
         	self.href = window.location.href;
@@ -968,6 +886,7 @@ add_an_item: function(event){
            self.barcode_list = result['data']['barcode_list']
            self.location_list = result['data']['location_list']
 	       self.task_list = result['data']['task_list']
+	       self.maintenance_list = result['data']['maintenance_list']
            self.type_of_order = result['data']['type_of_order']
            self.operation_type = result['data']['operation_type']
 
@@ -977,8 +896,6 @@ add_an_item: function(event){
         });
 
     },
-
-
 
 
     product_wash: function(event){
@@ -994,26 +911,24 @@ add_an_item: function(event){
 	   	event.preventDefault();
 		var barcode_list = [];
 	   	var location = $("#my-select").val() ;
-                var product_id =document.getElementById('my-wash-product').value;
-               // var recycled_product_id = document.getElementById('my-recycled-product').value;
-		var recycled_product_id= $("#my-recycled-product").select2('data')['text'] ;
-                var dest_location_id =  $("#my-dest-select").val() ;
-                var barcode_ids =  $("#barcode_wash").attr("ids");
+        var product_id =document.getElementById('my-canet-product').value;
+        var dest_location_id =  $("#my-dest-select").val() ;
+        var barcode_ids =  $("#barcode_product").attr("ids");
 		var type_of_order = document.getElementById("type-select").value;
-		var washing_type = $("#washing_type").val() ;
-		$("#barcode_wash :selected").each(function(){
+		if (type_of_order != 'Internal Transfer' ){
+                self.do_warn(_("Warning"),_("Please select Internal Transfer!"));
+		      }
+		$("#barcode_product :selected").each(function(){
 			barcode_list.push(parseInt($(this).attr("ids")))
 		    });
 	   	var report_data = [];
-	   	if (location != undefined &&   dest_location_id != undefined ){
+	   	if (location != undefined &&  dest_location_id != undefined ){
 		   	report_data.push({
 				'location': location,
 				'product_id': product_id,
-				'recycled_product_id': recycled_product_id,
 				'type_of_order': type_of_order,
 				'dest_location_id': dest_location_id,
 				'barcode_ids' :barcode_list,
-				'washing_type' :washing_type,
  				});
 			self._rpc({
 			        model: 'operation.dashboard',
@@ -1032,39 +947,37 @@ add_an_item: function(event){
   }
 },
 
-
-
-
-create_destruction_order_confirm: function(event){
-   	var self = this;
+transfer_to_task : function(event){
+	   	var self = this;
 	   	event.stopPropagation();
 	   	event.preventDefault();
 		var barcode_list = [];
 	   	var location = $("#my-select").val() ;
-                var product_id =document.getElementById('my-wash-product').value;
-                var recycled_product_id = document.getElementById('my-recycled-product').value;
-                var dest_location_id =  $("#my-dest-select").val() ;
-                var barcode_ids =  $("#barcode_wash").attr("ids");
+        var product_id =document.getElementById('my-canet-product').value;
+        var dest_location_id =  $("#my-dest-select").val() ;
+        var task_number =  $("#task_number").val() ;
+        var maintenance_number =  $("#maintenance_number").val() ;
+        var barcode_ids =  $("#barcode_product").attr("ids");
 		var type_of_order = document.getElementById("type-select").value;
-		var washing_type = $("#washing_type").val() ;
-		$("#barcode_wash :selected").each(function(){
+		if (type_of_order == 'Internal Transfer' ){
+                self.do_warn(_("Warning"),_("You can not Transfer to Task, Please change the Type!"));
+		      }
+		$("#barcode_product :selected").each(function(){
 			barcode_list.push(parseInt($(this).attr("ids")))
 		    });
 	   	var report_data = [];
-	   	if (location != undefined &&  product_id != undefined   &&  recycled_product_id != undefined   && dest_location_id != undefined  &&  type_of_order != undefined){
+	   	if (location != undefined &&  dest_location_id != undefined ){
 		   	report_data.push({
 				'location': location,
 				'product_id': product_id,
-				'recycled_product_id': recycled_product_id,
-				'type_of_order': type_of_order,
+				'task_number': task_number,
+				'maintenance_number':maintenance_number,
 				'dest_location_id': dest_location_id,
 				'barcode_ids' :barcode_list,
  				});
-			console.log(">>>>aseff>>>>>",location,product_id )
-		        console.log(">>>>>report_data>>>>>",report_data)
 			self._rpc({
 			        model: 'operation.dashboard',
-			        method: 'create_destruction_method',
+			        method: 'update_task',
 			        args: [[],report_data ],
 			    })
 	            .then(function(result) {
@@ -1079,6 +992,55 @@ create_destruction_order_confirm: function(event){
   }
 },
 
+transfer_to_task_delivery_button : function(event){
+	   	var self = this;
+	   	var ctx  = {};
+	   	event.stopPropagation();
+	   	event.preventDefault();
+		var barcode_list = [];
+	   	var location = $("#my-select").val() ;
+        var product_id =document.getElementById('my-canet-product').value;
+        var dest_location_id =  $("#my-dest-select").val() ;
+        var task_number =  $("#task_number").val() ;
+        var maintenance_number =  $("#maintenance_number").val() ;
+        var barcode_ids =  $("#barcode_product").attr("ids");
+		var type_of_order = document.getElementById("type-select").value;
+		if (type_of_order == 'Internal Transfer' ){
+                self.do_warn(_("Warning"),_("You can not Transfer to Task, Please change the Type!"));
+		      }
+		$("#barcode_product :selected").each(function(){
+			barcode_list.push(parseInt($(this).attr("ids")))
+		    });
+		ctx['delivery'] = True
+	   	var report_data = [];
+	   	if (location != undefined &&  dest_location_id != undefined ){
+		   	report_data.push({
+				'location': location,
+				'product_id': product_id,
+				'task_number': task_number,
+				'maintenance_number':maintenance_number,
+				'dest_location_id': dest_location_id,
+				'barcode_ids' :barcode_list,
+ 				});
+			self._rpc({
+			        model: 'operation.dashboard',
+			        method: 'update_task',
+			        args: [[],report_data ,ctx],
+			    })
+	            .then(function(result) {
+	            	if (result.success) {
+	            		return self.$el.html(QWeb.render("Confirm", {widget: self}));
+	            	}else{
+	            		self.do_warn(_("Warning"),_("No Data Found!"));
+	            	}
+	               });
+        }else{
+              self.do_warn(_("Warning"),_("Please Select Inventoried Location First!"));
+  }
+},
+
+
+
 // Confirm main screen
 
 	main_button : function(event){
@@ -1090,20 +1052,20 @@ create_destruction_order_confirm: function(event){
 },
 
 
-// save wash order
+// save internal Transfer
 
-       save_wash_order : function(event){
+       save_internal_transfer : function(event){
 	   	var self = this;
 	   	event.stopPropagation();
 	   	event.preventDefault();
 	   	//var location = $(".es-list li[value='" + document.getElementById("my-select").val() + "']").attr('ids');
                 var location = $("#my-select").val() ;
-                var product_id =document.getElementById('my-wash-product').value;
-                var recycled_product_id = document.getElementById('my-recycled-product').value;
+                var product_id =document.getElementById('my-canet-product').value;
                 var dest_location_id =  $("#my-dest-select").val() ;
-                var barcode_ids =  $("#barcode_wash").attr("ids");
+                var barcode_ids =  $("#barcode_product").attr("ids");
 		var type_of_order = document.getElementById("type-select").value;
-		var washing_type = $("#washing_type").val() ;
+		var task_number = $("#task_number").val() ;
+		var maintenance_number =  $("#maintenance_number").val() ;
 	   	var report_data = [];
 		var barcode_list = []
 		var allow_save = true
@@ -1111,10 +1073,7 @@ create_destruction_order_confirm: function(event){
 			self.do_warn(_("Warning"),_("Please Select Inventoried Location First!"));
 		}
 		if (product_id == undefined ){
-			self.do_warn(_("Warning"),_("Please Select Wash Product!!"));
-		}
-		if (recycled_product_id == undefined ){
-			self.do_warn(_("Warning"),_("Please Select Recycled Product!"));
+			self.do_warn(_("Warning"),_("Please Select Product!!"));
 		}
 		if (dest_location_id == undefined ){
 			self.do_warn(_("Warning"),_("Please Select Destination Location"));
@@ -1122,23 +1081,41 @@ create_destruction_order_confirm: function(event){
 		if (type_of_order == undefined ){
 			self.do_warn(_("Warning"),_("Please Select Order Type!"));
 		}
-		$("#barcode_wash :selected").each(function(){
+		if (type_of_order != undefined ){
+		      if (type_of_order == 'Project' ){
+		            $("#transfer_to_task_button").css("display", "inline");
+                    if (task_number == undefined ){
+                        self.do_warn(_("Warning"),_("Please Select Task Number!"));
+
+                    }
+		      }
+		      if (type_of_order == 'Maintenance' ){
+		            $("#transfer_to_task_button").css("display", "inline");
+                    if (maintenance_number == undefined ){
+                        self.do_warn(_("Warning"),_("Please Select Maintenance Number!"));
+
+                    }
+		      }
+		      if (type_of_order == 'Internal Transfer' ){
+		            $("#create_internal_transfer_button").css("display", "inline");
+		      }
+		}
+
+
+		$("#barcode_product :selected").each(function(){
 			barcode_list.push(parseInt($(this).attr("ids")))
 		    });
-		if (location != undefined &&  product_id != undefined   &&  recycled_product_id != undefined   && dest_location_id != undefined  &&  type_of_order != undefined) {
+		if (location != undefined &&  product_id != undefined   && dest_location_id != undefined  &&  type_of_order != undefined) {
 		   	report_data.push({
 				'location': location,
 				'product_id': product_id,
-				'recycled_product_id': recycled_product_id,
 				'type_of_order': type_of_order,
 				'dest_location_id': dest_location_id,
 				'barcode_ids' :barcode_list,
-				'washing_type':washing_type,
-
  				});
 			self._rpc({
 			        model: 'operation.dashboard',
-			        method: 'save_wash_order_method',
+			        method: 'save_internal_transfer_method',
 			        args: [[],report_data ],
 			    })
 
@@ -1147,19 +1124,16 @@ create_destruction_order_confirm: function(event){
 	            	if (result.success) {
 	            		self.do_warn(_("Success"),_("Record Saved"));
 	            		// hide validate barcode button
-	            		$("#edit_wash_order_button").css("display", "inline");
-	            		$("#create_destruction_order_button").css("display", "inline");
-				$("#create_wash_order_button").css("display", "inline");
-				$("#create_internal_transfer_button").css("display", "inline");
-				$("#save_wash_order_button").css("display", "none");
+	            		$("#edit_internal_transfer_button").css("display", "inline");
+
+				$("#save_internal_transfer_button").css("display", "none");
 				$("#type-select").attr("disabled", true);
 				$("#my-dest-select").attr("disabled", true);
 				$("#my-select").attr("disabled", true);
-				$("#my-wash-product").attr("disabled", true);
-				$("#my-recycled-product").attr("disabled", true);
-				$("#barcode_wash").attr("disabled", true);
-				$("#washing_type").attr("disabled", true);
-				$("#destruction_wash_order").attr("display", "inline");
+				$("#my-canet-product").attr("disabled", true);
+				$("#barcode_product").attr("disabled", true);
+				$("#maintenance_number").attr("disabled", true);
+				$("#task_number").attr("disabled", true);
 	            		// hide delete button
 	            	}else{
 	            		self.do_warn(_("Warning"),_("Can not save!!"));
@@ -1170,9 +1144,105 @@ create_destruction_order_confirm: function(event){
   }
 },
 
-// edit wash order
+//save_delivery_return_button
 
-       edit_wash_order : function(event){
+  save_delivery_return_button : function(event){
+	   	var self = this;
+	   	event.stopPropagation();
+	   	event.preventDefault();
+	   	//var location = $(".es-list li[value='" + document.getElementById("my-select").val() + "']").attr('ids');
+        var location = $("#my-select").val() ;
+        var product_id =document.getElementById('my-canet-product').value;
+        var dest_location_id =  $("#my-dest-select").val() ;
+        var barcode_ids =  $("#barcode_product").attr("ids");
+		var type_of_order = document.getElementById("type-select").value;
+		var task_number = $("#task_number").val() ;
+		var maintenance_number =  $("#maintenance_number").val() ;
+	   	var report_data = [];
+		var barcode_list = []
+		var allow_save = true
+	   	if (location == undefined ){
+			self.do_warn(_("Warning"),_("Please Select Inventoried Location First!"));
+		}
+		if (product_id == undefined ){
+			self.do_warn(_("Warning"),_("Please Select Product!!"));
+		}
+		if (dest_location_id == undefined ){
+			self.do_warn(_("Warning"),_("Please Select Destination Location"));
+		}
+		if (type_of_order == undefined ){
+			self.do_warn(_("Warning"),_("Please Select Order Type!"));
+		}
+		if (type_of_order != undefined ){
+		      if (type_of_order == 'Project' ){
+		            console.log("+_____________________")
+		            $("#transfer_to_task_delivery_button").css("display", "inline");
+                    if (task_number == undefined ){
+                        self.do_warn(_("Warning"),_("Please Select Task Number!"));
+
+                    }
+		      }
+		      if (type_of_order == 'Maintenance' ){
+		            $("#transfer_to_task_delivery_button").css("display", "inline");
+                    if (maintenance_number == undefined ){
+                        self.do_warn(_("Warning"),_("Please Select Maintenance Number!"));
+
+                    }
+		      }
+		      if (type_of_order == 'Assign to Employee' ){
+		            $("#create_internal_transfer_button").css("display", "inline");
+		      }
+		}
+
+
+		$("#barcode_product :selected").each(function(){
+			barcode_list.push(parseInt($(this).attr("ids")))
+		    });
+		if (location != undefined &&  product_id != undefined   && dest_location_id != undefined  &&  type_of_order != undefined) {
+		   	report_data.push({
+				'location': location,
+				'product_id': product_id,
+				'type_of_order': type_of_order,
+				'dest_location_id': dest_location_id,
+				'barcode_ids' :barcode_list,
+ 				});
+			self._rpc({
+			        model: 'operation.dashboard',
+			        method: 'save_delivery_return_method',
+			        args: [[],report_data ],
+			    })
+
+	            .then(function(result) {
+
+	            	if (result.success) {
+	            		self.do_warn(_("Success"),_("Record Saved"));
+	            		// hide validate barcode button
+	            $("#edit_delivery_return_button").css("display", "inline");
+
+				$("#save_delivery_return_button").css("display", "none");
+				$("#type-select").attr("disabled", true);
+				$("#my-dest-select").attr("disabled", true);
+				$("#my-select").attr("disabled", true);
+				$("#my-canet-product").attr("disabled", true);
+				$("#barcode_product").attr("disabled", true);
+				$("#maintenance_number").attr("disabled", true);
+				$("#task_number").attr("disabled", true);
+	            		// hide delete button
+	            	}else{
+	            		self.do_warn(_("Warning"),_("Can not save!!"));
+	            	}
+	               });
+        }else{
+              self.do_warn(_("Warning"),_("Can not save!!"));
+  }
+},
+
+
+
+
+// edit delivery return
+
+       edit_delivery_return_button : function(event){
 	   	var self = this;
 	   	event.stopPropagation();
 	   	event.preventDefault();

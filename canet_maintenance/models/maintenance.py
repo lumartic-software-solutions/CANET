@@ -6,7 +6,7 @@ from odoo.tools import float_compare, pycompat
 class AnalyticLine(models.Model):
     _inherit = 'account.analytic.line'
 
-    maintenance_id = fields.Many2one('maintenance.request','Maintenanance')
+    maintenance_id = fields.Many2one('maintenance.request', 'Maintenanance')
     time = fields.Char('Maintenance Time')
     start_date = fields.Datetime(string="Start Date")
     date = fields.Datetime('End Date', required=True, index=True, default=datetime.datetime.now())
@@ -41,7 +41,7 @@ class Maintenanace(models.Model):
         self.amount_untaxed = total
 
     @api.one
-    @api.depends('operations.price_unit', 'operations.product_uom_qty', 'operations.product_id',)
+    @api.depends('operations.price_unit', 'operations.product_uom_qty', 'operations.product_id', )
     def _amount_tax(self):
         val = 0.0
         for operation in self.operations:
@@ -67,6 +67,7 @@ class Maintenanace(models.Model):
         vals['reference'] = self.env['ir.sequence'].next_by_code('maintenance.req') or _('New')
         result = super(Maintenanace, self).create(vals)
         return result
+
 
 class MaintenanaceRequestLine(models.Model):
     _name = 'maintenance.request.line'
@@ -129,12 +130,11 @@ class MaintenanaceRequestLine(models.Model):
             self.price_unit = self.product_id.list_price
 
     @api.one
-    @api.depends('price_unit', 'maintenance_id', 'product_uom_qty', 'product_id','tax_id')
+    @api.depends('price_unit', 'maintenance_id', 'product_uom_qty', 'product_id', 'tax_id')
     def _compute_price_subtotal(self):
         taxes = self.tax_id.compute_all(self.price_unit, self.env.user.currency_id, self.product_uom_qty,
                                         self.product_id, self.env.user.partner_id)
         self.price_subtotal = taxes['total_excluded']
-
 
 
 class MaintenanceEquipment(models.Model):
@@ -142,40 +142,41 @@ class MaintenanceEquipment(models.Model):
 
     image_variant = fields.Binary(
         "Variant Image", attachment=True,
-       )
+    )
     image = fields.Binary(
         "Big-sized image", compute='_compute_images', inverse='_set_image',
-        )
+    )
     image_small = fields.Binary(
         "Small-sized image", compute='_compute_images', inverse='_set_image_small',
-       )
+    )
     image_medium = fields.Binary(
         "Medium-sized image", compute='_compute_images', inverse='_set_image_medium',
-       )
-    default_code =fields.Char('Internal Reference')
+    )
+    default_code = fields.Char('Internal Reference')
 
     barcode = fields.Char('Barcode')
     task_count = fields.Integer(string="Task", compute='_compute_task_count')
 
     @api.multi
     def _compute_task_count(self):
-        task_data = self.env['maintenance.equipment.task'].search([('equipment_id','=' ,self.id)])
+        task_data = self.env['maintenance.equipment.task'].search([('equipment_id', '=', self.id)])
         count = 0
         if task_data:
-            if task_data.task_id:
-                count +=1
-        if count :
+            for task in task_data:
+                if task.task_id:
+                    count += 1
+        if count:
             self.task_count = count
 
     def action_equipment_task(self):
         action = self.env.ref('canet_maintenance.action_view_task_canet').read()[0]
-        task_ids =[]
-        task_data = self.env['maintenance.equipment.task'].search([('equipment_id', '=' ,self.id)])
+        task_ids = []
+        task_data = self.env['maintenance.equipment.task'].search([('equipment_id', '=', self.id)])
         if task_data:
-            task_ids.append(task_data.task_id.id)
+            for task in task_data:
+                task_ids.append(task.task_id.id)
         action['res_ids'] = task_ids
         return action
-
 
     @api.one
     def _compute_images(self):
@@ -184,7 +185,8 @@ class MaintenanceEquipment(models.Model):
             self.image_small = self.image_variant
             self.image = self.image_variant
         else:
-            resized_images = tools.image_get_resized_images(self.image_variant, return_big=True, avoid_resize_medium=True)
+            resized_images = tools.image_get_resized_images(self.image_variant, return_big=True,
+                                                            avoid_resize_medium=True)
             self.image_medium = resized_images['image_medium']
             self.image_small = resized_images['image_small']
             self.image = resized_images['image']
@@ -208,22 +210,23 @@ class MaintenanceEquipment(models.Model):
         image = tools.image_resize_image_big(value)
         self.image_variant = image
 
+
 class MaintenanceEquipmentTask(models.Model):
     _name = 'maintenance.equipment.task'
 
-    task_id = fields.Many2one('project.task','Task')
-    user_id = fields.Many2one('res.users','Employee')
+    task_id = fields.Many2one('project.task', 'Task')
+    user_id = fields.Many2one('res.users', 'Employee')
     description = fields.Char('Description')
-    equipment_id = fields.Many2one('maintenance.equipment','Equipments')
+    equipment_id = fields.Many2one('maintenance.equipment', 'Equipments')
     units = fields.Float('Units')
     barcode = fields.Char('Barcode')
     date_in = fields.Date('Date In')
     date_out = fields.Date('Date Out')
-    state= fields.Selection([('delivery','Delivery'),('return','Return')], 'State')
-    maintenance_id = fields.Many2one('maintenance.request','Maintenance')
+    state = fields.Selection([('delivery', 'Delivery'), ('return', 'Return')], 'State')
+    maintenance_id = fields.Many2one('maintenance.request', 'Maintenance')
 
     @api.onchange('equipment_id')
     def onchange_equipment_id(self):
         if self.equipment_id:
             self.description = self.equipment_id.note or ''
-            self.barcode =  self.equipment_id.barcode
+            self.barcode = self.equipment_id.barcode

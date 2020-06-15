@@ -50,13 +50,25 @@
 								</t>
 				</select>
 			</div>
-            <div id="task_div" class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-60px">
+            <div id="task_div" class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-60px;display:none">
                        <span>Task Number:</span>
 			</div>
-            <div id= "task_value_div" class="col-md-3 " style="width:350px">
+            <div id= "task_value_div" class="col-md-3 " style="width:350px;display:none">
 				 <select class="task_number" id="task_number" style="height:35px;font-size: 22px;margin-top: 20px;">
 				    <option> -- select Task Number -- </option>
                      <t t-foreach="widget.task_list" t-as="i">
+				    <option t-attf-value="#{i['name']}" t-attf-ids="#{i['id']}"><span t-esc="i['name']" /></option>
+				                </t>
+				</select>
+			</div>
+
+			<div id="maintenance_div" class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-60px;display:none">
+                       <span>Maintenance Number:</span>
+			</div>
+            <div id= "maintenance_value_div" class="col-md-3 " style="width:350px;display:none">
+				 <select class="maintenance_number" id="maintenance_number" style="height:35px;font-size: 22px;margin-top: 20px;">
+				    <option> -- select Maintenance Number -- </option>
+                     <t t-foreach="widget.maintenance_list" t-as="i">
 				    <option t-attf-value="#{i['name']}" t-attf-ids="#{i['id']}"><span t-esc="i['name']" /></option>
 				                </t>
 				</select>
@@ -118,7 +130,7 @@
 				<span style="margin-left: 50px;">Select Lot /Series Number:</span>
 			</div>
             <div class="col-md-9" style="width:920px; ">
-				 <select class="select2 barcode_wash" id="barcode_wash" multiple="multiple" style="height:35px;width:300px;font-size: 22px;margin-top: 20px;  overflow: hidden !important;
+				 <select class="select2 barcode_product" id="barcode_product" multiple="multiple" style="height:35px;width:300px;font-size: 22px;margin-top: 20px;  overflow: hidden !important;
     height: auto !important;">
 				</select>
 			</div>
@@ -127,10 +139,10 @@
         <div class="row" style="margin-left: 30px;">
 			<div class="col-md-3" id="product_wash_div"
                  style="text-align:right; font-size:22px; margin-top:20px; margin-left:-100px">
-				<span>Producto Parts:</span>
+				<span>Equipments:</span>
 			</div>
             <div class="col-md-8" style="width:850px">
-				 <select id="my-wash-product" multiple="multiple"
+				 <select id="my-canet-product" multiple="multiple"
                          style="height: 35px;font-size: 22px;margin-top: 20px;">
 				</select>
 			</div>
@@ -140,27 +152,27 @@
         <div class="row" style="margin-left: 20px;">
 				<div class="col-md-2">
 					<button style="display:none;margin-left:180px;margin-top: 25px;" class="btn btn-primary common_button
-						create_wash_order" id="create_wash_order_button"
+						transfer_to_task_delivery" id="transfer_to_task_delivery_button"
                             type="button">Transfer To Task</button>
 				</div>
 
             <div class="col-md-2">
 					<button style=" margin-left: 25px;margin-top: 25px;" class="btn
-						btn-primary common_button save_wash_order" id="save_wash_order_button"
+						btn-primary common_button save_delivery_return_button" id="save_delivery_return_button"
                             type="button">Save</button>
 				</div>
 
             <div class="col-md-2">
 					<button style="display:none; margin-left: -385px;margin-top: 25px;" class="btn
-						btn-primary common_button edit_wash_order" id="edit_wash_order_button"
+						btn-primary common_button edit_delivery_return_button" id="edit_delivery_return_button"
                             type="button">Edit</button>
 
 				</div>
-            <div class="col-md-2">
-					<button style="display:none;margin-left: -180px;margin-top: 25px;" class="btn btn-primary common_button
-						create_internal_transfer_button" id="create_internal_transfer_button"
-                            type="button">Create Internal Transfer</button>
-				</div>
+<!--            <div class="col-md-2">-->
+<!--					<button style="display:none;margin-left: -180px;margin-top: 25px;" class="btn btn-primary common_button-->
+<!--						create_internal_transfer_button" id="create_internal_transfer_button"-->
+<!--                            type="button">Create Internal Transfer</button>-->
+<!--				</div>-->
 
             <div class="col-md-2">
 			     <t t-call='ExitPopup' style="margin-left: 1000px;"/></div>
