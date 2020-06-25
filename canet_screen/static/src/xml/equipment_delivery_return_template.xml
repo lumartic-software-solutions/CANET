@@ -39,7 +39,7 @@
         <!-- select type of order -->
         <div class="row" style="margin-left: 30px;">
 			<div class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-100px">
-				<input type="hidden" name="wash_id" value="None" id="created_wash_id"/>
+				<input type="hidden" value="None"/>
                 <span>Tipo de Task:</span>
 			</div>
             <div class="col-md-3" style="width:350px">
@@ -55,7 +55,7 @@
 			</div>
             <div id= "task_value_div" class="col-md-3 " style="width:350px;display:none">
 				 <select class="task_number" id="task_number" style="height:35px;font-size: 22px;margin-top: 20px;">
-				    <option> -- select Task Number -- </option>
+				    <option> </option>
                      <t t-foreach="widget.task_list" t-as="i">
 				    <option t-attf-value="#{i['name']}" t-attf-ids="#{i['id']}"><span t-esc="i['name']" /></option>
 				                </t>
@@ -67,7 +67,7 @@
 			</div>
             <div id= "maintenance_value_div" class="col-md-3 " style="width:350px;display:none">
 				 <select class="maintenance_number" id="maintenance_number" style="height:35px;font-size: 22px;margin-top: 20px;">
-				    <option> -- select Maintenance Number -- </option>
+				    <option> </option>
                      <t t-foreach="widget.maintenance_list" t-as="i">
 				    <option t-attf-value="#{i['name']}" t-attf-ids="#{i['id']}"><span t-esc="i['name']" /></option>
 				                </t>
@@ -75,34 +75,66 @@
 			</div>
 		</div>
 
-        <!-- location design -->
+
         <div class="row" style="margin-left: 30px;">
 			<div class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-100px">
-				<span>Source Location:</span>
+				<span>Responsible:</span>
 			</div>
-            <div class="col-md-3" style="width:350px">
-				 <select id="my-select" style="height: 35px;font-size: 22px;margin-top: 20px;">
-				<option> -- select an option -- </option>
-                     <t t-foreach="widget.location_list" t-as="i">
-						<option t-attf-value="#{i['name']}" t-attf-ids="#{i['id']}"><span t-esc="i['name']" /></option>
-					</t>
+            <div class="col-md-3" style="width:350px;">
+				<select class="technician_list" id="technician_list" style="height:35px;font-size: 22px;margin-top: 20px;">
+				    <option></option>
+                     <t t-foreach="widget.technician_list" t-as="i">
+				    <option t-attf-value="#{i['name']}" t-attf-ids="#{i['id']}"><span t-esc="i['name']" /></option>
+				                </t>
 				</select>
 			</div>
             <div class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-60px">
-				<span>Destination Location:</span>
+				<span>Team:</span>
 			</div>
             <div class="col-md-3" style="width:350px">
-				 <select id="my-dest-select" style="height: 35px;font-size: 22px;margin-top: 20px;">
-				<option> -- select an option -- </option>
-                     <t t-foreach="widget.location_list" t-as="i">
-						<option t-attf-value="#{i['name']}" t-attf-ids="#{i['id']}"><span t-esc="i['name']" /></option>
-					</t>
+				 <select class="team_list" id="team_list" style="height:35px;font-size: 22px;margin-top: 20px;">
+				    <option> </option>
+                     <t t-foreach="widget.maintenance_team" t-as="i">
+				    <option t-attf-value="#{i['name']}" t-attf-ids="#{i['id']}"><span t-esc="i['name']" /></option>
+				                </t>
 				</select>
 			</div>
 		</div>
 
 
-        <!-- quantity design -->
+        <!-- barcode design-->
+        <div id="lot_selection" class="row" style="margin-left: 30px; ">
+
+			<div class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-100px">
+				<span style="margin-left: 50px;">Select Lot /Series Number:</span>
+			</div>
+            <div class="col-md-9" style="width:920px; ">
+				 <select class="select2 barcode_equ" id="barcode_equ" multiple="multiple" style="height:35px;width:300px;font-size: 22px;margin-top: 20px;  overflow: hidden !important;
+    height: auto !important;">
+					 <option>  </option>
+                     <t t-foreach="widget.barcode_list" t-as="i">
+							<option t-attf-value="#{i['name']}"  t-attf-ids="#{i['id']}"><span t-esc="i['name']" /></option>
+								</t>
+				</select>
+			</div>
+		</div>
+		<!-- product design  -->
+        <div class="row" style="margin-left: 30px;">
+			<div class="col-md-3" id="equipment_div"
+                 style="text-align:right; font-size:22px; margin-top:20px; margin-left:-100px">
+				<span>Equipments:</span>
+			</div>
+            <div class="col-md-8" style="width:920px">
+				 <select class="select2 my-canet-equ" id="my-canet-equ" multiple="multiple"
+                         style="height: 35px;font-size: 20px;margin-top: 20px;overflow-y: auto!important;">
+					 <option> -- select an option -- </option>
+                      <t t-foreach="widget.equipment_list" t-as="i">
+							<option t-attf-value="#{i['name']}"  ><span t-esc="i['name']" /></option>
+								</t>
+				</select>
+			</div>
+		</div>
+		 <!-- quantity design -->
         <div class="row" style="margin-left: 30px;">
 			<div class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-100px">
 				<span>Quantity:</span>
@@ -116,43 +148,20 @@
 			</div>
             <div class="col-md-3" style="width:350px">
 				 <select id="operation_type" style="height: 35px;font-size: 22px;margin-top: 20px;">
-				<option> -- select an option -- </option>
+				<option>  </option>
                      <t t-foreach="widget.operation_type" t-as="i">
 							<option t-attf-value="#{i['type']}"><span t-esc="i['type']" /></option>
 								</t>
 				</select>
 			</div>
 		</div>
-        <!-- barcode design-->
-        <div id="lot_selection" class="row" style="margin-left: 30px; ">
 
-			<div class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-100px">
-				<span style="margin-left: 50px;">Select Lot /Series Number:</span>
-			</div>
-            <div class="col-md-9" style="width:920px; ">
-				 <select class="select2 barcode_product" id="barcode_product" multiple="multiple" style="height:35px;width:300px;font-size: 22px;margin-top: 20px;  overflow: hidden !important;
-    height: auto !important;">
-				</select>
-			</div>
-		</div>
-        <!-- product design  -->
-        <div class="row" style="margin-left: 30px;">
-			<div class="col-md-3" id="product_wash_div"
-                 style="text-align:right; font-size:22px; margin-top:20px; margin-left:-100px">
-				<span>Equipments:</span>
-			</div>
-            <div class="col-md-8" style="width:850px">
-				 <select id="my-canet-product" multiple="multiple"
-                         style="height: 35px;font-size: 22px;margin-top: 20px;">
-				</select>
-			</div>
-		</div>
 
         <!--buttons -->
         <div class="row" style="margin-left: 20px;">
 				<div class="col-md-2">
 					<button style="display:none;margin-left:180px;margin-top: 25px;" class="btn btn-primary common_button
-						transfer_to_task_delivery" id="transfer_to_task_delivery_button"
+						transfer_to_task_delivery" id="transfer_to_task_button"
                             type="button">Transfer To Task</button>
 				</div>
 
@@ -163,16 +172,16 @@
 				</div>
 
             <div class="col-md-2">
-					<button style="display:none; margin-left: -385px;margin-top: 25px;" class="btn
+					<button style="display:none; margin-left: -300px;margin-top: 25px;" class="btn
 						btn-primary common_button edit_delivery_return_button" id="edit_delivery_return_button"
                             type="button">Edit</button>
 
 				</div>
-<!--            <div class="col-md-2">-->
-<!--					<button style="display:none;margin-left: -180px;margin-top: 25px;" class="btn btn-primary common_button-->
-<!--						create_internal_transfer_button" id="create_internal_transfer_button"-->
-<!--                            type="button">Create Internal Transfer</button>-->
-<!--				</div>-->
+            <div class="col-md-2">
+					<button style="display:none;margin-left: -50px;margin-top: 25px;" class="btn btn-primary common_button
+						return_to_task_button" id="return_to_task_button"
+                            type="button">Return To Task</button>
+				</div>
 
             <div class="col-md-2">
 			     <t t-call='ExitPopup' style="margin-left: 1000px;"/></div>

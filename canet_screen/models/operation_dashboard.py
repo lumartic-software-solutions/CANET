@@ -40,8 +40,6 @@ class OperationDashboard(models.Model):
         used_barcode_list = []
         unused_barcode_list = []
         unsed_wash_barcode_list = []
-        recycled_product = ''
-        recycled_product_list = []
         product_ids = product_obj.search([('sale_ok', '=', True), ('type', '=', 'product')])
         for data in product_ids:
             set_product = self.set_product_name(data)
@@ -57,12 +55,6 @@ class OperationDashboard(models.Model):
                                      data.name, data.description) if data else 'None',
                                  })
 
-        if product_list:
-            recycled_product = '<select class="product_recycled onchange_product"  id="my-recycled-product" style="height: 45px;font-size: 22px;margin-top: 20px;">'
-            for line in product_list:
-                recycled_product += '<option label="' + line['name'] + '" ids="' + line['id'] + '"' + ' value="' + line[
-                    'name'] + '">' + line['name'] + '</option>'
-            recycled_product += '</select>'
 
         sample_product_id = self.env.ref('canet_screen.sample_product_canet_id').id
         unused_barcode_ids = lot_obj.search([('product_id', '=', sample_product_id)])
@@ -122,10 +114,7 @@ class OperationDashboard(models.Model):
 
         if len(unused_barcode_list) > 0:
             set_unused_barcode_list = True
-        if recycled_product:
-            recycled_product = recycled_product
-        else:
-            recycled_product = recycled_product_list
+
         if user_id:
             data = {
                 'product_list': product_selection,
@@ -350,24 +339,47 @@ class OperationDashboard(models.Model):
             'task_list': task_list,
             'maintenance_list': maintenance_list,
         }
-        print("__________________", data)
         return {'data': data}
 
     @api.model
     def get_equipment_delivery_return_info(self):
         uid = request.session.uid
         ctx = dict(self._context)
-        lot_obj = self.env['stock.production.lot']
-        location_obj = self.env['stock.location']
         product_obj = self.env['product.product']
         task_obj = self.env['project.task']
         maintenance_obj = self.env['maintenance.request']
-        location_list = []
+        barcode_list = []
+        product_list =[]
         maintenance_list = []
         task_list = []
+        technician_list =[]
+        maintenance_team = []
+        maintenance_team_ids = self.env['maintenance.team'].search([])
+        technician_ids = self.env['res.users'].search([])
         maintenance_ids = maintenance_obj.search([('state', '!=', 'end')])
         task_ids = task_obj.search([])
-        location_ids = location_obj.search([('usage', 'in', ['internal'])])
+        equipment_ids = self.env['maintenance.equipment'].search([])
+        for equipment in equipment_ids:
+            product_list.append({
+                            'name' : equipment.name,
+                            'id': str(equipment.id),
+            })
+            barcode_list.append({
+                            'name':  equipment.barcode or '',
+                            'id' : str(equipment.id),
+            })
+        if technician_ids:
+            for tech in  technician_ids:
+                technician_list.append({
+                    'name': tech.name or '',
+                    'id': str(tech.id),
+                })
+        if maintenance_team_ids:
+            for maintenance in  maintenance_team_ids:
+                maintenance_team.append({
+                    'name': maintenance.name or '',
+                    'id': str(maintenance.id),
+                })
 
         if task_ids:
             for task in task_ids:
@@ -384,23 +396,13 @@ class OperationDashboard(models.Model):
                     'id': str(maintenance.id) or '',
                 })
 
-        for location in location_ids:
-            orig_location = location
-            name = location.name
-            while location.location_id and location.usage != 'view':
-                location = location.location_id
-                if not name:
-                    raise UserError(_('You have to set a name for this location.'))
-                name = location.name + "/" + name
-            location_list.append({'name': name or '',
-                                  'id': str(orig_location.id) or '',
-                                  })
         data = {
-            #  'product_list': product_list,
-            'barcode_list': [],
-            'location_list': location_list,
+             'equipment_list': product_list,
+            'barcode_list': barcode_list,
             'type_of_order': [{'order': 'Assign to Employee'}, {'order': 'Project'}, {'order': 'Maintenance'}],
             'task_list': task_list,
+            'maintenance_team': maintenance_team,
+            'technician_list': technician_list,
             'maintenance_list': maintenance_list,
             'operation_type': [{'type': 'Delivery'}, {'type': 'Return'}]
         }
@@ -510,97 +512,108 @@ class OperationDashboard(models.Model):
         lot_obj = self.env['stock.production.lot']
         location_obj = self.env['stock.location']
         task_obj = self.env['project.task']
+        user_obj = self.env['res.users']
+        team_obj = self.env['maintenance.team']
         maintenance_obj = self.env['maintenance.request']
+        equipment_obj = self.env['maintenance.equipment']
         name = False
         location_dest_search = False
         location_search = False
+        assign_equipment =[]
+        location = ''
         operation_line_data = []
+        context = dict(self._context)
+        operation_type =''
+        search_users = False
         for data in record_data:
+            if data.get('operation_type') == 'Delivery':
+                operation_type = 'delivery'
+            if data.get('operation_type') == 'Return':
+                operation_type = 'return'
             if data.get('task_number'):
                 search_task_ids = task_obj.search([('number', '=', data.get('task_number'))])
-                if search_task_ids:
-                    if data.get('location'):
-                        name_location = data.get('location')
-                        spilt_name = name_location.split('/')
-                        name = spilt_name[-1]
-                        parent_name = spilt_name[0]
-                        parent_loc_id = location_obj.search([('name', '=', parent_name)])
-                        location_search = location_obj.search(
-                            [('name', '=', name), ('location_id', '=', parent_loc_id[0].id or False)])
-                        if location_search:
-                            location_search = location_search[0].id
-                    if data.get('dest_location_id'):
-                        name_dest_location = data.get('dest_location_id')
-                        spilt_name = name_dest_location.split('/')
-                        name = spilt_name[-1]
-                        parent_name = spilt_name[0]
-                        parent_loc_id = location_obj.search([('name', '=', parent_name)])
-                        location_dest_search = location_obj.search(
-                            [('name', '=', name), ('location_id', '=', parent_loc_id[0].id or False)])
-                        warehouse_id = location_dest_search.get_warehouse()
-                        if location_dest_search:
-                            location_dest_search = location_dest_search[0].id
-                    for barcode in data.get('barcode_ids'):
-                        lot_brw = lot_obj.browse(int(barcode))
-                        operation_line_vals = {
-                            'product_id': lot_brw[0].product_id.id,
-                            'name': lot_brw[0].product_id.name,
-                            'product_uom': lot_brw[0].product_id.uom_id.id,
-                            'lot_id': lot_brw.id,
-                            'price_unit': lot_brw[0].product_id.list_price,
-                            'product_uom_qty': 1.0,
-                            'tax_id': lot_brw[0].product_id.taxes_id,
-                            'location_id': location_search,
-                            'location_dest_id': location_dest_search,
-
-                        }
-
-                        operation_line_data.append((0, 0, operation_line_vals))
-
-                    search_task_ids.update({'operations': operation_line_data})
-                    return {'success': "Successfully Created Internl Transfer!"}
+                location = data.get('task_number')
             if data.get('maintenance_number'):
                 search_maintenance_ids = maintenance_obj.search([('reference', '=', data.get('maintenance_number'))])
-                if search_maintenance_ids:
-                    if data.get('location'):
-                        name_location = data.get('location')
-                        spilt_name = name_location.split('/')
-                        name = spilt_name[-1]
-                        parent_name = spilt_name[0]
-                        parent_loc_id = location_obj.search([('name', '=', parent_name)])
-                        location_search = location_obj.search(
-                            [('name', '=', name), ('location_id', '=', parent_loc_id[0].id or False)])
-                        if location_search:
-                            location_search = location_search[0].id
-                    if data.get('dest_location_id'):
-                        name_dest_location = data.get('dest_location_id')
-                        spilt_name = name_dest_location.split('/')
-                        name = spilt_name[-1]
-                        parent_name = spilt_name[0]
-                        parent_loc_id = location_obj.search([('name', '=', parent_name)])
-                        location_dest_search = location_obj.search(
-                            [('name', '=', name), ('location_id', '=', parent_loc_id[0].id or False)])
-                        if location_dest_search:
-                            location_dest_search = location_dest_search[0].id
-                    for barcode in data.get('barcode_ids'):
-                        lot_brw = lot_obj.browse(int(barcode))
-                        operation_line_vals = {
-                            'product_id': lot_brw[0].product_id.id,
-                            'name': lot_brw[0].product_id.name,
-                            'product_uom': lot_brw[0].product_id.uom_id.id,
-                            'lot_id': lot_brw.id,
-                            'price_unit': lot_brw[0].product_id.list_price,
-                            'product_uom_qty': 1.0,
-                            'tax_id': lot_brw[0].product_id.taxes_id,
-                            'location_id': location_search,
-                            'location_dest_id': location_dest_search,
+                location = data.get('maintenance_number')
+            if context.get('delivery'):
+                for barcode in data.get('barcode_ids'):
+                    equipment_brw = equipment_obj.browse(int(barcode))
 
-                        }
+                    if data.get('responsible'):
+                        search_users = user_obj.search([('name','=',data.get('responsible'))])
+                    if data.get('team'):
+                        search_team = team_obj.search([('name','=',data.get('team'))])
+                    equipment_brw.update({'state': operation_type, 'technician_user_id':search_users[0].id ,
+                                          'maintenance_team_id':search_team[0].id,'location': location})
+                    assign_equipment_vals = {
+                        'equipment_id': int(barcode),
+                        'user_id': search_users and search_users[0].id,
+                        'description': equipment_brw[0].note,
+                        'barcode': equipment_brw[0].barcode,
+                        'state': operation_type,
+                        'units':  data.get('quantity')
+                    }
 
-                        operation_line_data.append((0, 0, operation_line_vals))
+                    assign_equipment.append((0, 0, assign_equipment_vals))
+                if data.get('task_number'):
+                    if search_task_ids:
+                        print ("_______data.get('barcode_ids')_______",data.get('barcode_ids'))
+                        search_task_ids.update({'equipment_ids': assign_equipment})
+                        return {'success': "Successfully Created!"}
+                if data.get('maintenance_number'):
+                    if search_maintenance_ids:
+                        search_maintenance_ids.update({'equipment_ids': assign_equipment})
+                        return {'success': "Successfully updated !"}
+            if context.get('transfer'):
+                if data.get('location'):
+                    name_location = data.get('location')
+                    spilt_name = name_location.split('/')
+                    name = spilt_name[-1]
+                    parent_name = spilt_name[0]
+                    parent_loc_id = location_obj.search([('name', '=', parent_name)])
+                    location_search = location_obj.search(
+                        [('name', '=', name), ('location_id', '=', parent_loc_id[0].id or False)])
+                    if location_search:
+                        location_search = location_search[0].id
+                if data.get('dest_location_id'):
+                    name_dest_location = data.get('dest_location_id')
+                    spilt_name = name_dest_location.split('/')
+                    name = spilt_name[-1]
+                    parent_name = spilt_name[0]
+                    parent_loc_id = location_obj.search([('name', '=', parent_name)])
+                    location_dest_search = location_obj.search(
+                        [('name', '=', name), ('location_id', '=', parent_loc_id[0].id or False)])
+                    warehouse_id = location_dest_search.get_warehouse()
+                    if location_dest_search:
+                        location_dest_search = location_dest_search[0].id
+                for barcode in data.get('barcode_ids'):
+                    lot_brw = lot_obj.browse(int(barcode))
+                    operation_line_vals = {
+                        'product_id': lot_brw[0].product_id.id,
+                        'name': lot_brw[0].product_id.name,
+                        'product_uom': lot_brw[0].product_id.uom_id.id,
+                        'lot_id': lot_brw.id,
+                        'price_unit': lot_brw[0].product_id.list_price,
+                        'product_uom_qty': 1.0,
+                        'tax_id': lot_brw[0].product_id.taxes_id,
+                        'location_id': location_search,
+                        'location_dest_id': location_dest_search,
 
-                    search_maintenance_ids.update({'operations': operation_line_data})
-                    return {'success': "Successfully updated !"}
+                    }
+
+                    operation_line_data.append((0, 0, operation_line_vals))
+                if data.get('task_number'):
+                    if search_task_ids:
+
+
+                        search_task_ids.update({'operations': operation_line_data})
+                        return {'success': "Successfully Created Internal Transfer!"}
+                if data.get('maintenance_number'):
+                    if search_maintenance_ids:
+
+                        search_maintenance_ids.update({'operations': operation_line_data})
+                        return {'success': "Successfully updated !"}
 
     # @api.multi
     # def create_destruction_method(self, record_data):
@@ -912,11 +925,11 @@ class OperationDashboard(models.Model):
                                             _('Barcode %s is not associated with product %s, please remove it') % (
                                                 lot.name, lot.product_id.name))
             return {'success': "Successfully Created The Inventory Adjustments!"}
-
-    #  saving Delivery Return order
-    @api.multi
-    def save_delivery_return_method(self, record_data):
-        return {'success': "Save Record!"}
+    #
+    # #  saving Delivery Return order
+    # @api.multi
+    # def save_delivery_return_method(self, record_data):
+    #     return {'success': "Save Record!"}
 
     # creating inventory adjustments
     @api.multi

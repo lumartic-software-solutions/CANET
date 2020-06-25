@@ -140,6 +140,8 @@ class MaintenanaceRequestLine(models.Model):
 class MaintenanceEquipment(models.Model):
     _inherit = 'maintenance.equipment'
 
+    state = fields.Selection([('in_stock','In Stock'),('delivery','Delivery'),('return','Return')],'State',default='in_stock')
+
     image_variant = fields.Binary(
         "Variant Image", attachment=True,
     )
