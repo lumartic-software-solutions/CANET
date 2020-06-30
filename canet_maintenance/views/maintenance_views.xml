@@ -195,7 +195,7 @@
                     <page name="equipment_ids" string="History">
                              <field name="equipment_ids" readonly="1">
                                 <tree string="Equipment" >
-                                    <field name="equipment_id"/>
+                                   
                                     <field name="description"/>
                                     <field name='units'/>
                                     <field name="user_id"/>
@@ -207,7 +207,7 @@
                              </field>
                         </page>
                 </xpath>
-				
+
             </field>
          </record>
 		
