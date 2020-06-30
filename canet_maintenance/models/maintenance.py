@@ -158,6 +158,7 @@ class MaintenanceEquipment(models.Model):
 
     barcode = fields.Char('Barcode')
     task_count = fields.Integer(string="Task", compute='_compute_task_count')
+    equipment_ids = fields.One2many('maintenance.equipment.task', 'equipment_id', 'History')
 
     @api.multi
     def _compute_task_count(self):

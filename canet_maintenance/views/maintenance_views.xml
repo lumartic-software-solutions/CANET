@@ -189,6 +189,25 @@
                         <field name="default_code"/>
 						<field name="barcode" required="1"/>
                     </field>
+                <xpath
+					expr="//form/sheet/notebook"
+					position="inside">
+                    <page name="equipment_ids" string="History">
+                             <field name="equipment_ids" readonly="1">
+                                <tree string="Equipment" >
+                                    <field name="equipment_id"/>
+                                    <field name="description"/>
+                                    <field name='units'/>
+                                    <field name="user_id"/>
+                                    <field name='barcode'/>
+                                    <field name="date_in"/>
+                                    <field name='date_out'/>
+                                    <field name='state'/>
+                                </tree>
+                             </field>
+                        </page>
+                </xpath>
+				
             </field>
          </record>
 		
@@ -210,7 +229,7 @@
                 <xpath expr="//div[@class='oe_kanban_content']/div[@class='o_kanban_record_body']" position="inside">
                     <div t-if="record.barcode.raw_value"><field name="barcode"/></div>
                 </xpath>
-				
+
             </field>
          </record>
 
