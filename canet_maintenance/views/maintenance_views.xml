@@ -197,7 +197,6 @@
                                 <tree string="Equipment" >
                                     <field name="task_id"/>
                                     <field name="maintenance_id"/>
-                                    <field name="description"/>
                                     <field name='units'/>
                                     <field name="user_id"/>
                                     <field name='barcode'/>
