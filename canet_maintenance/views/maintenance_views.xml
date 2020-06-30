@@ -195,7 +195,8 @@
                     <page name="equipment_ids" string="History">
                              <field name="equipment_ids" readonly="1">
                                 <tree string="Equipment" >
-                                   
+                                    <field name="task_id"/>
+                                    <field name="maintenance_id"/>
                                     <field name="description"/>
                                     <field name='units'/>
                                     <field name="user_id"/>
