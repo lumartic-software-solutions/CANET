@@ -4,7 +4,7 @@
       License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
  -->
 <odoo>
-    <data>
+    <data  noupdate="1">
         <!-- Sequences for stock.production.lot in lot number -->
         <record id="seq_stock_move_line_itm" model="ir.sequence">
             <field name="name">Sequence Of Lot Serial Number </field>

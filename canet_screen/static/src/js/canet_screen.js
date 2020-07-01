@@ -62,6 +62,7 @@ var CanetScreen = Widget.extend({
 		'change #categ_select_id' : 'CategoryOnChangeEvent',
 		//'change #my-wash-product' : 'ProductOnChangeEvent',
 		'change #barcode_product' : 'LotOnChangeEvent',
+		'change #barcode_equ' : 'LotequOnChangeEvent',
 		'change #my-select' : 'LocationOnChangeEvent',
 	}),
 	init: function(parent, context) {
@@ -76,7 +77,7 @@ var CanetScreen = Widget.extend({
                 method: 'get_operation_info',
             }, []).then(function(result){
             	self.operation_data = result[0]
-                //self.product_list = self.operation_data.product_list
+                self.product_list = self.operation_data.product_list
                 self.barcode_list = self.operation_data.barcode_list
                 self.set_unused_barcode_list = self.operation_data.set_unused_barcode_list
                 self.unused_barcode_list = self.operation_data.unused_barcode_list
@@ -182,7 +183,7 @@ var CanetScreen = Widget.extend({
                 var obj_len = Object.keys(first_step).length
 		      location1 = first_step[0]
 		      location2 = first_step[obj_len - 1]
-                      length = obj_len
+              length = obj_len
 
 		}
 		$('#barcode_product').empty();
@@ -212,6 +213,29 @@ var CanetScreen = Widget.extend({
 
                 else {
                      $('#barcode_product').empty();
+                }
+
+        }
+            if (result.product_list){
+            var product = result.product_list
+                if(product.length != 0)
+                {
+                  $('#my-canet-product').select2('val', []);
+                   var product_list = result.product_list
+                   var optionsProduct = "";
+                       for(var i = 0; i < Object.keys(product_list).length  ; i++)
+                    {
+
+                         var product_detail = product_list[i]
+                                    optionsProduct += "<option value='" + product_detail['name'] + "'" + "ids='"+ product_detail['id'] +"'>" + product_detail['name'] + "</option>";
+
+			            }
+
+                    $( '#my-canet-product' ).append( optionsProduct );
+                    }
+
+                else {
+                     $('#my-canet-product').empty();
                 }
 
         }
@@ -254,6 +278,8 @@ var CanetScreen = Widget.extend({
         console.log("+++++++++++++++++++++++++++++++")
         var selectedlotValue = document.getElementById('barcode_product').value;
         console.log("_________selectedlotValue_______________",selectedlotValue )
+        var lot =  $("#barcode_product").select2('val');
+        console.log("_______lot_____________",lot)
         var domain_dp = []
 	    if (selectedlotValue != undefined){
             domain_dp.push(['name', '=', selectedlotValue])
@@ -267,21 +293,73 @@ var CanetScreen = Widget.extend({
                if (result != undefined){
                if(result.product_name != ''){
 
-                    var productvalue = document.getElementById('my-canet-product').text;
-//                     var productvalue = $("#my-canet-product").text();
-                    console.log("<Fvvvvproductvaluevvvvvvvv", productvalue)
-                        if (productvalue != undefined)
-                        console.log("*********result.product_name********",result.product_name )
+//                    var productvalue = document.getElementById('my-canet-product').value;
+                     var productvalue = $("#my-canet-product").select2('val');
+                    console.log("<==================", productvalue)
+                        if (productvalue   )
+
                         {
-                            $('#my-canet-product').append(result.product_name);
+                            console.log("*********result.product_name********",result.product_name )
+                            productvalue.push(result.product_name);
                         }
 
-                    $('#my-canet-product').select2('data', {text: result.product_name});
+
+                          console.log("*********elseeeee****",result.product_name )
+                          $('#my-canet-product').select2('val',  productvalue);
 
                     }
                 else {
                   console.log("_____________")
                         $('#my-canet-product').select2('val', []);
+
+                }
+
+		  }
+        });
+
+},
+
+LotequOnChangeEvent: function (event)
+
+    {
+        console.log("+++++++++++++++++++++++++++++++")
+        var selectedlotValue = document.getElementById('barcode_equ').value;
+        console.log("_________selectedlotValue_______________",selectedlotValue )
+        var lot =  $("#my-canet-equ").select2('val');
+        console.log("_______lot_____________",lot)
+        var domain_dp = []
+        var ctx = {}
+        ctx ['equipment_lot'] = true
+	    if (selectedlotValue != undefined){
+            domain_dp.push(['barcode', '=', selectedlotValue])
+		}
+        this._rpc({
+            model: 'operation.dashboard',
+            method: 'lot_equ_data',
+            args: [domain_dp],ctx
+        })
+        .then(function (result) {
+               if (result != undefined){
+               if(result.product_name != ''){
+
+//                    var productvalue = document.getElementById('my-canet-product').value;
+                     var productvalue = $("#my-canet-equ").select2('val');
+                    console.log("<==================", productvalue)
+                        if (productvalue   )
+
+                        {
+                            console.log("*********result.product_name********",result.product_name )
+                            productvalue.push(result.product_name);
+                        }
+
+
+                          console.log("*********elseeeee****",result.product_name )
+                          $('#my-canet-equ').select2('val',  productvalue);
+
+                    }
+                else {
+                  console.log("_____________")
+                        $('#my-canet-equ').select2('val', []);
 
                 }
 
@@ -297,7 +375,7 @@ TypeOrderOnChangeEvent: function (event)
             console.log("=====ordertype",ordertype)
 	    var ctx = {}
         var product_list = []
-	    var reproduct_list = []
+
 	if (ordertype == ''){
 
 		self.do_warn(_("Warning"),_("Please Enter the Order Type First!"));
@@ -321,15 +399,15 @@ TypeOrderOnChangeEvent: function (event)
          $("#maintenance_div").css('display','none');
         $("#maintenance_value_div").css('display','none');
 	}
-	if (ordertype == 'Assign to Employee'){
-		ctx['type_of_order']='assign_employee'
-
-
-		 $("#task_div").css('display','none');
-        $("#task_value_div").css('display','none');
-         $("#maintenance_div").css('display','none');
-        $("#maintenance_value_div").css('display','none');
-	}
+//	if (ordertype == 'Assign to Employee'){
+//		ctx['type_of_order']='assign_employee'
+//
+//
+//		 $("#task_div").css('display','none');
+//        $("#task_value_div").css('display','none');
+//         $("#maintenance_div").css('display','none');
+//        $("#maintenance_value_div").css('display','none');
+//	}
 	if (ordertype == 'Maintenance'){
 		ctx['type_of_order']='maintenance'
 
@@ -527,7 +605,6 @@ add_an_item: function(event){
 	       if (location != undefined){
 		       var table_row = document.getElementById("inventory_adjustments_table").rows;
 		       if (table_row.length > 2){
-		           console.log("=@@@@@@@@@@@@@00000")
 		    	   $( "#inventory_adjustments_table tr:nth-last-child(2)").after("<tr class='active'>"+
 		    			   "<td style='width: 27%;' >"+self.product_list+"</td>"+
 		    			   "<td style='width: 17%; '> <input type='text' name='product_unit' id='product_unit' style='height:40px'/></td>"+
@@ -646,7 +723,7 @@ add_an_item: function(event){
 			  		count_lines += 1;
 			  			var product_ids = $(".es-list li[value='" + $(this).find('td .products').val() + "']").attr('ids');
 				  		var barcode_ids = $(".es-list li[value='" + $(this).find('td .barcodes').val() + "']").attr('value');
-				  		var units = $("#product_unit").val();
+				  		var units = $(this).find('td #product_unit').val()
 				  		var life_date = $(this).find('td .life_datetimepicker').val();
 				  		var line_ids = $(this).find('td #created_line_id');
 				  		console.log("=============product_ids===============",product_ids, units ,barcode_ids,life_date,line_ids)
@@ -806,9 +883,9 @@ add_an_item: function(event){
 			        }
 			        console.log("==========units===========",units.text())
 	              var data = "<tr class='active'>"+
-	                         "<td style='width: 25%;' class='set_product_ids'>"+product_list+"</td>"+
+	                         "<td style='width: 25%;' class='set_product_ids'>"+ product_list+"</td>"+
 	                         "<td style='width: 15%; position:absolute;'  class='set_unit'> <input type='text' style='height:40px' name='units' id='product_unit' value='"+units.text() +"'/></td>"+
-	                         "<td style='width: 20%;' class='set_barcode_ids'>"+barcode_list+"</td>"+
+	                         "<td style='width: 20%;' class='set_barcode_ids'>"+ barcode_list+"</td>"+
 	                         "<td style='width: 20%; position:absolute;'> <input type='text' name='life_date' class='life_datetimepicker' value='"+life_date.text() +"'/></td>"+
 	                         "<td style='width: 5%;'  class='set_line_ids'>"+ line_ids.html()+"</td>"+
 	                         "<td style='width: 5%;'  class='set_delete_ids'>"+delete_line.html()+"</td>"+
@@ -849,6 +926,7 @@ add_an_item: function(event){
             method: 'get_inventory_adjustment_info',
         }, []).then(function(result){
             //self.operation_data = result[0]
+           self.barcode_list =  result['data']['barcode_list']
            self.employee_id = session.employee_id
            self.location_list = result['data']['location_list']
            self.category_list = result['data']['category_list']
@@ -993,6 +1071,7 @@ transfer_to_task : function(event){
 			        args: [[],report_data,ctx ],
 			    })
 	            .then(function(result) {
+	                console.log("________result________",result)
 	            	if (result.success) {
 	            		return self.$el.html(QWeb.render("Confirm", {widget: self}));
 	            	}else{
@@ -1042,7 +1121,15 @@ transfer_to_task_delivery_button : function(event){
 	            .then(function(result) {
 	            	if (result.success) {
 	            		return self.$el.html(QWeb.render("Confirm", {widget: self}));
-	            	}else{
+	            	}
+	            	else if(result.delivery_warning){
+
+                            self.do_warn(_("Warning"),_("Equipment has already delivered!"));
+	            	}
+	            	else if(result.return_warning){
+                            self.do_warn(_("Warning"),_("Equipment has already returned!"));
+	            	}
+	            	else{
 	            		self.do_warn(_("Warning"),_("No Data Found!"));
 	            	}
 	               });
@@ -1071,10 +1158,12 @@ transfer_to_task_delivery_button : function(event){
 	   	event.stopPropagation();
 	   	event.preventDefault();
 	   	//var location = $(".es-list li[value='" + document.getElementById("my-select").val() + "']").attr('ids');
-                var location = $("#my-select").val() ;
-                var product_id =document.getElementById('my-canet-product').value;
-                var dest_location_id =  $("#my-dest-select").val() ;
-                var barcode_ids =  $("#barcode_product").attr("ids");
+            var location = $("#my-select").val() ;
+
+            var dest_location_id =  $("#my-dest-select").val() ;
+            var barcode_ids =  $("#barcode_product").attr("ids");
+         var product_id = $("#my-canet-product").val();
+         console.log("_--------product_id-------------",product_id)
 		var type_of_order = document.getElementById("type-select").value;
 		var task_number = $("#task_number").val() ;
 		var maintenance_number =  $("#maintenance_number").val() ;
@@ -1120,7 +1209,7 @@ transfer_to_task_delivery_button : function(event){
 		if (location != undefined &&  product_id != undefined   && dest_location_id != undefined  &&  type_of_order != undefined) {
 		   	report_data.push({
 				'location': location,
-				'product_id': product_id,
+
 				'type_of_order': type_of_order,
 				'dest_location_id': dest_location_id,
 				'barcode_ids' :barcode_list,
@@ -1210,9 +1299,7 @@ transfer_to_task_delivery_button : function(event){
 
                     }
 		      }
-		      if (type_of_order == 'Assign to Employee' ){
-//		            $("#create_internal_transfer_button").css("display", "inline");
-		      }
+
 		}
 
 
@@ -1230,6 +1317,7 @@ transfer_to_task_delivery_button : function(event){
 				$("#operation_type").attr("disabled", true);
 				$("#lot_selection").attr("disabled", true);
 				$("#barcode_equ").attr("disabled", true);
+				$("#my-canet-equ").attr("disabled", true);
 	            		// hide delete button
 
 	        self.do_warn(_("Success"),_("Record Saved"));
@@ -1270,7 +1358,7 @@ transfer_to_task_delivery_button : function(event){
 	   	var self = this;
 	   	event.stopPropagation();
 	   	event.preventDefault();
-                var product_id = $(".es-list li[value='" + $(".product_wash").val() + "']").attr('ids');
+        var product_id = $(".es-list li[value='" + $(".product_wash").val() + "']").attr('ids');
 		var type_of_order = $(".select").val() ;
 	   	var report_data = [];
 		var barcode_list = [];
@@ -1397,44 +1485,7 @@ transfer_to_task_delivery_button : function(event){
 	    	   }
 
 	 },
-	 lot_details_wizard :function(event){
-	       var self = this;
-	       event.stopPropagation();
-	       event.preventDefault();
-	       var  product = $(event.target).closest('tr').find('.products')
-	       var product_id = $(".es-list li[value='" + product.val() + "']").attr('ids');
-	       $(event.target).attr("product_id", product_id);
-	       var  barcode = $(event.target).closest('tr').find('.barcodes');
-	       var barcode_id = $(".es-list li[value='" + barcode.val() + "']").attr('ids');
-	       $(event.target).attr("barcode_id", barcode_id);
-	       if (product.val() == '') {
-	    	   self.do_warn(_("Warning"),_("Product is Required!"));
-	       }
-	       else if (barcode.val() == '') {
-	    	   self.do_warn(_("Warning"),_("Barcode is Required!"));
-			}
-	       else {
-	    	   var line_id = event.target.getAttribute("line_id");
-	    	   var lot_id = event.target.getAttribute("lot_id");
-	    	   var product_id = event.target.getAttribute("product_id");
-	    	   var barcode_id = event.target.getAttribute("barcode_id");
-	    	   self.do_action({
-	            name: _t("Lots/Serial Number Details"),
-	            type: 'ir.actions.act_window',
-	            res_model: 'lot.details.wizard',
-	            view_mode: 'form',
-	            view_type: 'form',
-	            views: [[false, 'form']],
-	            context: {
-	                    'lot_id': lot_id,
-	                    'line_id':line_id,
-	                    'product_ids': product_id,
-	                    'barcode_ids' : barcode_id
-	                    },
-	            target: 'new'
-	          })
-	       }
-     },
+
 	   action_my_profile: function(event) {
 	       var self = this;
 	       event.stopPropagation();

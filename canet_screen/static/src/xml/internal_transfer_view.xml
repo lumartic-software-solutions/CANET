@@ -119,7 +119,7 @@
 				<span>Producto Parts:</span>
 			</div>
             <div class="col-md-8" style="width:850px">
-				 <select  id="my-canet-product" multiple="multiple"
+				 <select  class="select2" id="my-canet-product" multiple="multiple"
                          style="height: 35px;font-size: 22px;margin-top: 20px;">
 				</select>  
 			</div>
