@@ -199,7 +199,8 @@ class MaintenanceEquipment(models.Model):
         task_data = self.env['maintenance.equipment.task'].search([('equipment_id', '=', self.id)])
         if task_data:
             for task in task_data:
-                task_ids.append(task.task_id.id)
+                if task.task_id:
+                    task_ids.append(task.task_id.id)
         action['res_ids'] = task_ids
         return action
 
@@ -209,7 +210,8 @@ class MaintenanceEquipment(models.Model):
         maintenance_data = self.env['maintenance.equipment.task'].search([('equipment_id', '=', self.id)])
         if maintenance_data:
             for maintenance in maintenance_data:
-                maintenance_ids.append(maintenance.maintenance_id.id)
+                if maintenance.maintenance_id:
+                    maintenance_ids.append(maintenance.maintenance_id.id)
         action['res_ids'] = maintenance_ids
         return action
 
