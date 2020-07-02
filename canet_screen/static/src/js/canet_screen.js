@@ -348,7 +348,7 @@ LotequOnChangeEvent: function (event)
                         if (productvalue   )
 
                         {
-                            console.log("*********result.product_name********",result.product_name )
+
                             productvalue.push(result.product_name);
                         }
 
@@ -362,6 +362,43 @@ LotequOnChangeEvent: function (event)
                         $('#my-canet-equ').select2('val', []);
 
                 }
+
+                if(result.maintenance_team != 'False'){
+
+                     document.getElementById('team_list').value =  result.maintenance_team;
+
+                }
+
+                if(result.technician != 'False'){
+                     document.getElementById('technician_list').value =  result.technician;
+
+                }
+                if(result.task_number != ''){
+                    document.getElementById('type-select').value =  'Project';
+                    document.getElementById('task_number').value =  result.task_number;
+                    $("#task_div").css('display','inline');
+                    $("#task_value_div").css('display','inline');
+                    $("#maintenance_div").css('display','none');
+                    $("#maintenance_value_div").css('display','none');
+
+
+                }
+                if(result.maintenance_number != ''){
+                    document.getElementById('type-select').value =  'Maintenance';
+                    document.getElementById('maintenance_number').value =  result.maintenance_number;
+                    $("#task_div").css('display','none');
+                    $("#task_value_div").css('display','none');
+                    $("#maintenance_div").css('display','inline');
+                    $("#maintenance_value_div").css('display','inline');
+
+                }
+                if(result.qty != ''){
+
+                     document.getElementById('quantity').value =  result.qty;
+
+
+                }
+
 
 		  }
         });

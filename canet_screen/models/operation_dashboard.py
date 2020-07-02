@@ -55,11 +55,10 @@ class OperationDashboard(models.Model):
                                      data.name, data.description) if data else 'None',
                                  })
 
-
         sample_product_id = self.env.ref('canet_screen.sample_product_canet_id').id
 
         barcode_ids = lot_obj.search([('product_id', '=', sample_product_id)])
-        print ("*8888888888888barcode_ids8888888",barcode_ids)
+        print("*8888888888888barcode_ids8888888", barcode_ids)
         used_barcode_ids = lot_obj.search([('product_id', '!=', sample_product_id)], limit=1000)
         for data in barcode_ids:
             barcode_list.append({'barcode': data.name or '',
@@ -107,7 +106,7 @@ class OperationDashboard(models.Model):
         else:
             barcode_selection = '<select class="barcodes" style="overflow-y: auto!important; font-size: ' \
                                 '18px;height:40px"><option> No Data Found ! </option> </select> '
-        print ("________________barcode_selection_______v",barcode_selection)
+        print("________________barcode_selection_______v", barcode_selection)
         set_unused_barcode_list = False
 
         if len(unused_barcode_list) > 0:
@@ -252,10 +251,32 @@ class OperationDashboard(models.Model):
     def lot_equ_data(self, doamin):
         if doamin:
             lot_ids = self.env['maintenance.equipment'].search(doamin)
+            task_obj = self.env['project.task']
+            maintenance_obj = self.env['maintenance.request']
+            equ_task_obj = self.env['maintenance.equipment.task']
+            maintenance_number = ''
+            task_number = ''
+            qty = ''
             if lot_ids:
-                display_name = lot_ids.name
-                print("+++++++display_name+++++++++++++++++", display_name)
-                return {'product_name': display_name}
+                display_name = lot_ids[0].name
+                maintenance_team = lot_ids[0].maintenance_team_id and lot_ids[0].maintenance_team_id.name or False
+                technician = lot_ids[0].technician_user_id and lot_ids[0].technician_user_id.name or False
+
+                if lot_ids[0].location:
+                    task_ids = task_obj.search([('number', '=', lot_ids[0].location)])
+                    maintenance_ids = maintenance_obj.search([('reference', '=', lot_ids[0].location)])
+                    if task_ids:
+                        task_number = lot_ids[0].location
+                        equ_task_ids = equ_task_obj.search([('task_id', '=', task_ids[0].id)])
+                        if equ_task_ids:
+                            qty = equ_task_ids[0].units
+                    if maintenance_ids:
+                        maintenance_number = lot_ids[0].location
+                        equ_task_ids = equ_task_obj.search([('maintenance_id', '=', maintenance_ids[0].id)])
+                        if equ_task_ids:
+                            qty = equ_task_ids[0].units
+                return {'product_name': display_name, 'maintenance_team': maintenance_team, 'qty': qty,
+                        'technician': technician, 'task_number': task_number, 'maintenance_number': maintenance_number}
         else:
             return {}
 
@@ -272,7 +293,7 @@ class OperationDashboard(models.Model):
         location_ids = location_obj.search([('usage', 'in', ['internal'])])
         category_ids = categ_obj.search([])
         sample_product_id = self.env.ref('canet_screen.sample_product_canet_id').id
-        lot_ids = lot_obj.search([('product_id','=', sample_product_id )])
+        lot_ids = lot_obj.search([('product_id', '=', sample_product_id)])
         for location in location_ids:
             orig_location = location
             name = location.name
@@ -286,8 +307,8 @@ class OperationDashboard(models.Model):
                                   })
         for lot in lot_ids:
             barcode_list.append({'barcode': lot.name or '',
-                                  'id': str(lot.id) or '',
-                                  })
+                                 'id': str(lot.id) or '',
+                                 })
         barcode_selection = ''
         if len(barcode_list) > 0:
             barcode_selection = '<select class="barcodes" style="overflow-y: auto!important; font-size: 18px;">'
@@ -308,7 +329,7 @@ class OperationDashboard(models.Model):
 
         data = {
             #  'product_list': product_list,
-            'barcode_list' : barcode_selection,
+            'barcode_list': barcode_selection,
             'location_list': location_list,
             'category_list': category_list,
         }
@@ -376,10 +397,10 @@ class OperationDashboard(models.Model):
         task_obj = self.env['project.task']
         maintenance_obj = self.env['maintenance.request']
         barcode_list = []
-        product_list =[]
+        product_list = []
         maintenance_list = []
         task_list = []
-        technician_list =[]
+        technician_list = []
         maintenance_team = []
         maintenance_team_ids = self.env['maintenance.team'].search([])
         technician_ids = self.env['res.users'].search([])
@@ -388,21 +409,21 @@ class OperationDashboard(models.Model):
         equipment_ids = self.env['maintenance.equipment'].search([])
         for equipment in equipment_ids:
             product_list.append({
-                            'name' : equipment.name,
-                            'id': str(equipment.id),
+                'name': equipment.name,
+                'id': str(equipment.id),
             })
             barcode_list.append({
-                            'name':  equipment.barcode or '',
-                            'id' : str(equipment.id),
+                'name': equipment.barcode or '',
+                'id': str(equipment.id),
             })
         if technician_ids:
-            for tech in  technician_ids:
+            for tech in technician_ids:
                 technician_list.append({
                     'name': tech.name or '',
                     'id': str(tech.id),
                 })
         if maintenance_team_ids:
-            for maintenance in  maintenance_team_ids:
+            for maintenance in maintenance_team_ids:
                 maintenance_team.append({
                     'name': maintenance.name or '',
                     'id': str(maintenance.id),
@@ -424,9 +445,9 @@ class OperationDashboard(models.Model):
                 })
 
         data = {
-             'equipment_list': product_list,
+            'equipment_list': product_list,
             'barcode_list': barcode_list,
-            'type_of_order': [ {'order': 'Project'}, {'order': 'Maintenance'}],
+            'type_of_order': [{'order': 'Project'}, {'order': 'Maintenance'}],
             'task_list': task_list,
             'maintenance_team': maintenance_team,
             'technician_list': technician_list,
@@ -448,7 +469,7 @@ class OperationDashboard(models.Model):
             for rec in range(number):
                 count += 1
                 barcode_sequence = self.env['ir.sequence'].next_by_code('canet.stock.production.lot') or _('New')
-                print (")_______________barcode_sequence________",barcode_sequence )
+                print(")_______________barcode_sequence________", barcode_sequence)
                 vals = {'barcode': barcode_sequence}
                 product_id = self.env.ref('canet_screen.sample_product_canet_id').id
                 lot_vals = {'product_id': product_id or False,
@@ -546,12 +567,12 @@ class OperationDashboard(models.Model):
         name = False
         location_dest_search = False
         location_search = False
-        assign_equipment =[]
+        assign_equipment = []
         location = ''
         operation_line_data = []
         context = dict(self._context)
-        print ("_______record_data________", context ,record_data )
-        operation_type =''
+        print("_______record_data________", context, record_data)
+        operation_type = ''
         search_users = False
         date_in = ''
         date_out = ''
@@ -573,35 +594,35 @@ class OperationDashboard(models.Model):
             if context.get('delivery'):
                 for barcode in data.get('barcode_ids'):
                     equipment_brw = equipment_obj.browse(int(barcode))
+                    if data.get('responsible'):
+                        search_users = user_obj.search([('name', '=', data.get('responsible'))])
+                    if data.get('team'):
+                        search_team = team_obj.search([('name', '=', data.get('team'))])
                     if data.get('operation_type') == 'Delivery':
                         if equipment_brw.state == 'delivery':
-                            print ("----------------")
+                            print("----------------")
                             return {'delivery_warning': "Successfully updated !"}
-
+                        equipment_brw.update({'state': 'delivery', 'technician_user_id': search_users[0].id,
+                                              'maintenance_team_id': search_team[0].id, 'location': location})
                     if data.get('operation_type') == 'Return':
                         if equipment_brw.state == 'return':
-                            print ("-----------")
+                            print("-----------")
                             return {'return_warning': "Successfully updated !"}
-                    if data.get('responsible'):
-                        search_users = user_obj.search([('name','=',data.get('responsible'))])
-                    if data.get('team'):
-                        search_team = team_obj.search([('name','=',data.get('team'))])
-                    equipment_brw.update({'state': operation_type, 'technician_user_id':search_users[0].id ,
-                                          'maintenance_team_id':search_team[0].id,'location': location})
+                        equipment_brw.update({'state': 'in_stock', 'technician_user_id': False,
+                                              'maintenance_team_id': False, 'location': ''})
                     assign_equipment_vals = {
                         'equipment_id': int(barcode),
                         'user_id': search_users and search_users[0].id,
                         'description': equipment_brw[0].note,
                         'barcode': equipment_brw[0].barcode,
                         'state': operation_type,
-                        'date_in':date_in,
-                        'date_out':date_out,
-                        'units':  data.get('quantity')
+                        'date_in': date_in,
+                        'date_out': date_out,
+                        'units': data.get('quantity')
                     }
 
                     assign_equipment.append((0, 0, assign_equipment_vals))
                 if data.get('task_number'):
-                    print ("^^^^^^^^^^^^^^^^^^^^^^")
                     if search_task_ids:
                         search_task_ids.update({'equipment_ids': assign_equipment})
                         return {'success': "Successfully Created!"}
@@ -653,7 +674,6 @@ class OperationDashboard(models.Model):
                         return {'success': "Successfully Created Internal Transfer!"}
                 if data.get('maintenance_number'):
                     if search_maintenance_ids:
-
                         search_maintenance_ids.update({'operations': operation_line_data})
                         return {'success': "Successfully updated !"}
 
@@ -968,6 +988,7 @@ class OperationDashboard(models.Model):
                         #                     _('Barcode %s is not associated with product %s, please remove it') % (
                         #                         lot.name, lot.product_id.name))
             return {'success': "Successfully Created The Inventory Adjustments!"}
+
     #
     # #  saving Delivery Return order
     # @api.multi

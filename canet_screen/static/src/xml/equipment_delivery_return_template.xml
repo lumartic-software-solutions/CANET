@@ -36,6 +36,38 @@
             <t t-call='LoginUser'/>
 		</div>
         <br/>
+		<!-- barcode design-->
+        <div id="lot_selection" class="row" style="margin-left: 30px; ">
+
+			<div class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-100px">
+				<span style="margin-left: 50px;">Select Lot /Series Number:</span>
+			</div>
+            <div class="col-md-9" style="width:920px; ">
+				 <select class="select2 barcode_equ" id="barcode_equ" multiple="multiple" style="height:35px;width:300px;font-size: 22px;margin-top: 20px;  overflow: hidden !important;
+    height: auto !important;">
+					 <option>  </option>
+                     <t t-foreach="widget.barcode_list" t-as="i">
+							<option t-attf-value="#{i['name']}"  t-attf-ids="#{i['id']}"><span t-esc="i['name']" /></option>
+								</t>
+				</select>
+			</div>
+		</div>
+		<!-- product design  -->
+        <div class="row" style="margin-left: 30px;">
+			<div class="col-md-3" id="equipment_div"
+                 style="text-align:right; font-size:22px; margin-top:20px; margin-left:-100px">
+				<span>Equipments:</span>
+			</div>
+            <div class="col-md-8" style="width:920px">
+				 <select class="select2 my-canet-equ" id="my-canet-equ" multiple="multiple"
+                         style="height: 35px;font-size: 20px;margin-top: 20px;overflow-y: auto!important;">
+					 <option> -- select an option -- </option>
+                      <t t-foreach="widget.equipment_list" t-as="i">
+							<option t-attf-value="#{i['name']}"  ><span t-esc="i['name']" /></option>
+								</t>
+				</select>
+			</div>
+		</div>
         <!-- select type of order -->
         <div class="row" style="margin-left: 30px;">
 			<div class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-100px">
@@ -102,38 +134,7 @@
 		</div>
 
 
-        <!-- barcode design-->
-        <div id="lot_selection" class="row" style="margin-left: 30px; ">
 
-			<div class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-100px">
-				<span style="margin-left: 50px;">Select Lot /Series Number:</span>
-			</div>
-            <div class="col-md-9" style="width:920px; ">
-				 <select class="select2 barcode_equ" id="barcode_equ" multiple="multiple" style="height:35px;width:300px;font-size: 22px;margin-top: 20px;  overflow: hidden !important;
-    height: auto !important;">
-					 <option>  </option>
-                     <t t-foreach="widget.barcode_list" t-as="i">
-							<option t-attf-value="#{i['name']}"  t-attf-ids="#{i['id']}"><span t-esc="i['name']" /></option>
-								</t>
-				</select>
-			</div>
-		</div>
-		<!-- product design  -->
-        <div class="row" style="margin-left: 30px;">
-			<div class="col-md-3" id="equipment_div"
-                 style="text-align:right; font-size:22px; margin-top:20px; margin-left:-100px">
-				<span>Equipments:</span>
-			</div>
-            <div class="col-md-8" style="width:920px">
-				 <select class="select2 my-canet-equ" id="my-canet-equ" multiple="multiple"
-                         style="height: 35px;font-size: 20px;margin-top: 20px;overflow-y: auto!important;">
-					 <option> -- select an option -- </option>
-                      <t t-foreach="widget.equipment_list" t-as="i">
-							<option t-attf-value="#{i['name']}"  ><span t-esc="i['name']" /></option>
-								</t>
-				</select>
-			</div>
-		</div>
 		 <!-- quantity design -->
         <div class="row" style="margin-left: 30px;">
 			<div class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-100px">

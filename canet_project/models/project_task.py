@@ -59,6 +59,16 @@ class ProjectTask(models.Model):
             for i in self:
                 i.write({'state': 'stop'})
 
+    @api.depends('number')
+    def name_get(self):
+        result = []
+        number = ''
+        for line in self:
+            if line.number:
+                number = line.number
+            result.append((line.id, number))
+        return result
+
 
 class MaintenanaceRequestLine(models.Model):
     _inherit = 'maintenance.request.line'

@@ -68,6 +68,16 @@ class Maintenanace(models.Model):
         result = super(Maintenanace, self).create(vals)
         return result
 
+    @api.depends('reference')
+    def name_get(self):
+        result = []
+        reference = ''
+        for line in self:
+            if line.reference:
+                reference = line.reference
+            result.append((line.id, reference))
+        return result
+
 
 class MaintenanaceRequestLine(models.Model):
     _name = 'maintenance.request.line'
@@ -158,6 +168,7 @@ class MaintenanceEquipment(models.Model):
 
     barcode = fields.Char('Barcode')
     task_count = fields.Integer(string="Task", compute='_compute_task_count')
+    count_maintenance = fields.Integer(string="Maintenance", compute='_compute_maintenance')
     equipment_ids = fields.One2many('maintenance.equipment.task', 'equipment_id', 'History')
 
     @api.multi
@@ -171,6 +182,17 @@ class MaintenanceEquipment(models.Model):
         if count:
             self.task_count = count
 
+    @api.multi
+    def _compute_maintenance(self):
+        maintenance_data = self.env['maintenance.equipment.task'].search([('equipment_id', '=', self.id)])
+        count = 0
+        if maintenance_data:
+            for maintenance in maintenance_data:
+                if maintenance.maintenance_id:
+                    count += 1
+        if count:
+            self.count_maintenance = count
+
     def action_equipment_task(self):
         action = self.env.ref('canet_maintenance.action_view_task_canet').read()[0]
         task_ids = []
@@ -179,6 +201,16 @@ class MaintenanceEquipment(models.Model):
             for task in task_data:
                 task_ids.append(task.task_id.id)
         action['res_ids'] = task_ids
+        return action
+
+    def action_equipment_maintenance(self):
+        action = self.env.ref('canet_maintenance.action_view_maintenance_canet').read()[0]
+        maintenance_ids = []
+        maintenance_data = self.env['maintenance.equipment.task'].search([('equipment_id', '=', self.id)])
+        if maintenance_data:
+            for maintenance in maintenance_data:
+                maintenance_ids.append(maintenance.maintenance_id.id)
+        action['res_ids'] = maintenance_ids
         return action
 
     @api.one
