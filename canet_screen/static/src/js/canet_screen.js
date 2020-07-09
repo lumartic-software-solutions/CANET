@@ -52,6 +52,7 @@ var CanetScreen = Widget.extend({
 		'click .transfer_to_task_delivery': 'transfer_to_task_delivery_button',
 		'click .edit_delivery_return_button': 'edit_delivery_return_button',
 		'click .save_internal_transfer' : 'save_internal_transfer',
+		'click .return_to_task_button' : 'return_to_task_button',
 		//save_delivery_return_button
 		'click .save_delivery_return_button' :'save_delivery_return_button',
 		'click .edit_delivery_return_button' :'edit_delivery_return_button',
@@ -358,7 +359,6 @@ LotequOnChangeEvent: function (event)
 
                     }
                 else {
-                  console.log("_____________")
                         $('#my-canet-equ').select2('val', []);
 
                 }
@@ -368,7 +368,14 @@ LotequOnChangeEvent: function (event)
                      document.getElementById('team_list').value =  result.maintenance_team;
 
                 }
+                if(result.operation_type != 'False'){
 
+                     document.getElementById('operation_type').value =  result.operation_type;
+                      if(result.operation_type == 'Return'){
+                             $("#return_to_task_button").css("display", "inline");
+                             $("#transfer_to_task_button").css("display", "none");
+                      }
+                }
                 if(result.technician != 'False'){
                      document.getElementById('technician_list').value =  result.technician;
 
@@ -1175,6 +1182,61 @@ transfer_to_task_delivery_button : function(event){
   }
 },
 
+return_to_task_button : function(event){
+	   	var self = this;
+	   	var ctx  = {};
+	   	event.stopPropagation();
+	   	event.preventDefault();
+		var barcode_list = [];
+
+        var task_number =  $("#task_number").val() ;
+        var quantity =  $("#quantity").val() ;
+        var operation_type =  document.getElementById("operation_type").value;
+        var maintenance_number =  $("#maintenance_number").val() ;
+        var barcode_ids =  $("#barcode_equ").attr("ids");
+		var type_of_order = document.getElementById("type-select").value;
+        var responsible = document.getElementById("technician_list").value;
+		var team = document.getElementById("team_list").value;
+		$("#barcode_equ :selected").each(function(){
+			barcode_list.push(parseInt($(this).attr("ids")))
+		    });
+		ctx['delivery'] = true
+	   	var report_data = [];
+	   	if ( quantity && operation_type && responsible && team){
+		   	report_data.push({
+				'quantity': quantity,
+				'responsible': responsible,
+				'operation_type': operation_type,
+				'maintenance_number':maintenance_number,
+				'task_number':task_number,
+				'team': team,
+				'barcode_ids' :barcode_list,
+ 				});
+			self._rpc({
+			        model: 'operation.dashboard',
+			        method: 'update_task',
+			        args: [[],report_data ,ctx],
+			    })
+	            .then(function(result) {
+	            	if (result.success) {
+	            		return self.$el.html(QWeb.render("Confirm", {widget: self}));
+	            	}
+	            	else if(result.delivery_warning){
+
+                            self.do_warn(_("Warning"),_("Equipment has already delivered!"));
+	            	}
+	            	else if(result.return_warning){
+                            self.do_warn(_("Warning"),_("Equipment has already returned!"));
+	            	}
+	            	else{
+	            		self.do_warn(_("Warning"),_("No Data Found!"));
+	            	}
+	               });
+        }else{
+              self.do_warn(_("Warning"),_("Something Wrong!! Please check selected Data!"));
+  }
+},
+
 
 
 // Confirm main screen
@@ -1300,7 +1362,6 @@ transfer_to_task_delivery_button : function(event){
 	   	var report_data = [];
 		var barcode_list = []
 		var allow_save = true
-		console.log("+=================================",equipment_id ,barcode_ids ,quantity , type_of_order ,responsible,team ,task_number,maintenance_number )
 		if (equipment_id == undefined || equipment_id ==''){
 			self.do_warn(_("Warning"),_("Please Select equipment!!"));
 		}
@@ -1343,7 +1404,7 @@ transfer_to_task_delivery_button : function(event){
             if(equipment_id && barcode_ids && quantity && type_of_order && responsible && team ) {
 	            $("#edit_delivery_return_button").css("display", "inline");
                 $("#transfer_to_task_button").css("display", "inline");
-                $("#return_to_task_button").css("display", "inline");
+                $("#return_to_task_button").css("display", "none");
 				$("#save_delivery_return_button").css("display", "none");
 				$("#type-select").attr("disabled", true);
 				$("#task_number").attr("disabled", true);

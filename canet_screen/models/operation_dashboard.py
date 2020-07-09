@@ -257,25 +257,30 @@ class OperationDashboard(models.Model):
             maintenance_number = ''
             task_number = ''
             qty = ''
+            operation_type = ''
             if lot_ids:
                 display_name = lot_ids[0].name
                 maintenance_team = lot_ids[0].maintenance_team_id and lot_ids[0].maintenance_team_id.name or False
                 technician = lot_ids[0].technician_user_id and lot_ids[0].technician_user_id.name or False
-
+                if lot_ids[0].state == 'delivery':
+                    operation_type = 'Return'
+                if lot_ids[0].state == 'in_stock':
+                    operation_type = 'Delivery'
                 if lot_ids[0].location:
                     task_ids = task_obj.search([('number', '=', lot_ids[0].location)])
                     maintenance_ids = maintenance_obj.search([('reference', '=', lot_ids[0].location)])
                     if task_ids:
                         task_number = lot_ids[0].location
-                        equ_task_ids = equ_task_obj.search([('task_id', '=', task_ids[0].id)])
+                        equ_task_ids = equ_task_obj.search([('task_id', '=', task_ids[0].id),('equipment_id','=',lot_ids[0].id)])
                         if equ_task_ids:
                             qty = equ_task_ids[0].units
                     if maintenance_ids:
                         maintenance_number = lot_ids[0].location
-                        equ_task_ids = equ_task_obj.search([('maintenance_id', '=', maintenance_ids[0].id)])
+                        equ_task_ids = equ_task_obj.search([('maintenance_id', '=', maintenance_ids[0].id),('equipment_id','=',lot_ids[0].id)])
                         if equ_task_ids:
                             qty = equ_task_ids[0].units
                 return {'product_name': display_name, 'maintenance_team': maintenance_team, 'qty': qty,
+                        'operation_type': operation_type,
                         'technician': technician, 'task_number': task_number, 'maintenance_number': maintenance_number}
         else:
             return {}
@@ -600,13 +605,11 @@ class OperationDashboard(models.Model):
                         search_team = team_obj.search([('name', '=', data.get('team'))])
                     if data.get('operation_type') == 'Delivery':
                         if equipment_brw.state == 'delivery':
-                            print("----------------")
                             return {'delivery_warning': "Successfully updated !"}
                         equipment_brw.update({'state': 'delivery', 'technician_user_id': search_users[0].id,
                                               'maintenance_team_id': search_team[0].id, 'location': location})
                     if data.get('operation_type') == 'Return':
                         if equipment_brw.state == 'return':
-                            print("-----------")
                             return {'return_warning': "Successfully updated !"}
                         equipment_brw.update({'state': 'in_stock', 'technician_user_id': False,
                                               'maintenance_team_id': False, 'location': ''})
@@ -620,7 +623,6 @@ class OperationDashboard(models.Model):
                         'date_out': date_out,
                         'units': data.get('quantity')
                     }
-
                     assign_equipment.append((0, 0, assign_equipment_vals))
                 if data.get('task_number'):
                     if search_task_ids:
