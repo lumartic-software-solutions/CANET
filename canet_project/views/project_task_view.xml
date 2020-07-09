@@ -126,6 +126,17 @@
         </field>
     </record>
 
+     <record id="view_canet_task_tree" model="ir.ui.view">
+            <field name="name">project Task</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_tree2"/>
+            <field name="arch" type="xml">
+                    <field name="name" position="after">
+                        <field name="number"/>
+                    </field>
+            </field>
+         </record>
+
     <record id="inherit_project_task_search" model="ir.ui.view">
         <field name="name">project.task.inherit</field>
         <field name="model">project.task</field>

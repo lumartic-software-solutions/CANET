@@ -174,24 +174,22 @@ class MaintenanceEquipment(models.Model):
     @api.multi
     def _compute_task_count(self):
         task_data = self.env['maintenance.equipment.task'].search([('equipment_id', '=', self.id)])
-        count = 0
+        task_ids = []
         if task_data:
             for task in task_data:
                 if task.task_id:
-                    count += 1
-        if count:
-            self.task_count = count
+                    task_ids.append(task.task_id.id)
+        self.task_count =   len(list(dict.fromkeys(task_ids)))
 
     @api.multi
     def _compute_maintenance(self):
         maintenance_data = self.env['maintenance.equipment.task'].search([('equipment_id', '=', self.id)])
-        count = 0
+        maintenance_ids = []
         if maintenance_data:
             for maintenance in maintenance_data:
                 if maintenance.maintenance_id:
-                    count += 1
-        if count:
-            self.count_maintenance = count
+                    maintenance_ids.append(maintenance.maintenance_id.id)
+        self.count_maintenance = len(list(dict.fromkeys(maintenance_ids)))
 
     def action_equipment_task(self):
         action = self.env.ref('canet_maintenance.action_view_task_canet').read()[0]
@@ -202,17 +200,20 @@ class MaintenanceEquipment(models.Model):
                 if task.task_id:
                     task_ids.append(task.task_id.id)
         action['res_ids'] = task_ids
+
         return action
 
     def action_equipment_maintenance(self):
         action = self.env.ref('canet_maintenance.action_view_maintenance_canet').read()[0]
         maintenance_ids = []
         maintenance_data = self.env['maintenance.equipment.task'].search([('equipment_id', '=', self.id)])
+        print ("_-----------maintenance_data-----------",maintenance_data)
         if maintenance_data:
             for maintenance in maintenance_data:
                 if maintenance.maintenance_id:
                     maintenance_ids.append(maintenance.maintenance_id.id)
         action['res_ids'] = maintenance_ids
+
         return action
 
     @api.one
