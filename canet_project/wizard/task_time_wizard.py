@@ -17,6 +17,10 @@ class TaskTimeWizard(models.TransientModel):
         project_task = self.env['project.task'].search([('id', '=', context.get('active_id'))])
         if context.get('start_task')  and context.get('active_model') == 'project.task':
             result.update({'name': "Are you going to start the task " + project_task.name + '?'})
+        if context.get('end_task') and context.get('active_model') == 'project.task':
+            if project_task.equipment_id:
+                if project_task.equipment_id.state == 'delivery':
+                    raise UserError(_('Equipment is not return yet, You can not end the task.'))
         if context.get('continue_task')  and context.get('active_model') == 'project.task':
             result.update({'name': "Are you going to continue the task " + project_task.name + '?'})
         if context.get('restart_task')  and context.get('active_model') == 'project.task':
@@ -70,7 +74,6 @@ class TaskTimeWizard(models.TransientModel):
             dur_m = (_('%0*d') % (2, m * 1.677966102))
             dur_s = (_('%0*d') % (2, s))
             duration = dur_h + '.' + dur_m + '.' + dur_s
-            print ("<<<<<<<duration<<<<<<<",duration)
             data = {'name': self.description,
                     'date': datetime.now(),
                     'start_date': start_time if project_task else '',
@@ -115,5 +118,5 @@ class TaskTimeWizard(models.TransientModel):
                     'time': duration,
                     'user_id': self._uid}
             data_list.append((0, 0, data))
-            project_task.write({'state': 'stop', 'timesheet_ids': data_list})
+            project_task.write({'state': 'pause', 'timesheet_ids': data_list})
         return True

@@ -4,6 +4,7 @@ import datetime
 
 class ProjectTask(models.Model):
     _inherit = 'project.task'
+
     start_date = fields.Date(string="Start Date")
     start_time = fields.Datetime("Start Time")
     con_time = fields.Datetime("Continue Time")
@@ -16,8 +17,9 @@ class ProjectTask(models.Model):
     amount_untaxed = fields.Float('Untaxed Amount', compute='_amount_untaxed', store=True)
     amount_tax = fields.Float('Taxes', compute='_amount_tax', store=True)
     amount_total = fields.Float('Total', compute='_amount_total', store=True)
+    equipment_id = fields.Many2one('maintenance.equipment', 'Equipment')
     state = fields.Selection(
-        [('draft', 'New'), ('start', 'Start'), ('continue', 'Continue'), ('stop', 'Stop'), ('end', 'End')],
+        [('draft', 'New'), ('start', 'Start'), ('continue', 'Continue'), ('pause', 'Pause'), ('end', 'End')],
         string='Status', default='draft')
     # user_ids = fields.Many2many('res.users','task_id','user_id','task_user_rel','Employees')
     equipment_ids = fields.One2many('maintenance.equipment.task', 'task_id', 'Equipments')
@@ -57,7 +59,7 @@ class ProjectTask(models.Model):
         context = self._context
         if context.get('stop_task'):
             for i in self:
-                i.write({'state': 'stop'})
+                i.write({'state': 'pause'})
 
     @api.depends('number')
     def name_get(self):

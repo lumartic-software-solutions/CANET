@@ -32,7 +32,6 @@ class OperationDashboard(models.Model):
         location_obj = self.env['stock.location']
         product_obj = self.env['product.product']
         user_id = self.env['res.users'].sudo().search_read([('id', '=', uid)], limit=1)
-        print("---------------------", user_id[0])
         product_list = []
         # internal_product_list = []
         location_list = []
@@ -157,11 +156,9 @@ class OperationDashboard(models.Model):
 
     @api.model
     def location_data(self, location1, location2, length):
-        print(")_____________location1, location2, length__________", location1, location2, length)
         location_obj = self.env['stock.location']
         location_search = False
         if location1 or location2:
-            print("**************Vfvfd")
             if length >= 3:
                 parent_location_search = location_obj.search([('name', '=', str(location1))])
                 prent_of_parent_search = location_obj.search([('location_id', '=', parent_location_search[0].id)])
@@ -237,12 +234,10 @@ class OperationDashboard(models.Model):
 
     @api.model
     def lot_data(self, doamin):
-
         if doamin:
             lot_ids = self.env['stock.production.lot'].search(doamin)
             if lot_ids:
                 display_name = lot_ids.product_id.name
-                print("+++++++display_name+++++++++++++++++", display_name)
                 return {'product_name': display_name}
         else:
             return {}
@@ -330,8 +325,6 @@ class OperationDashboard(models.Model):
             category_list.append({'name': name or '',
                                   'id': str(orig_categ.id) or '',
                                   })
-        print("^^^^^^^^^^^^^^^category_list", category_list)
-
         data = {
             #  'product_list': product_list,
             'barcode_list': barcode_selection,
@@ -344,7 +337,6 @@ class OperationDashboard(models.Model):
     def get_internal_transfer_info(self):
         uid = request.session.uid
         ctx = dict(self._context)
-        print("ddddd>>>>>>>>>>>>>>>ddddddd", ctx)
         lot_obj = self.env['stock.production.lot']
         location_obj = self.env['stock.location']
         product_obj = self.env['product.product']
@@ -474,7 +466,6 @@ class OperationDashboard(models.Model):
             for rec in range(number):
                 count += 1
                 barcode_sequence = self.env['ir.sequence'].next_by_code('canet.stock.production.lot') or _('New')
-                print(")_______________barcode_sequence________", barcode_sequence)
                 vals = {'barcode': barcode_sequence}
                 product_id = self.env.ref('canet_screen.sample_product_canet_id').id
                 lot_vals = {'product_id': product_id or False,
@@ -576,7 +567,6 @@ class OperationDashboard(models.Model):
         location = ''
         operation_line_data = []
         context = dict(self._context)
-        print("_______record_data________", context, record_data)
         operation_type = ''
         search_users = False
         date_in = ''
@@ -626,11 +616,11 @@ class OperationDashboard(models.Model):
                     assign_equipment.append((0, 0, assign_equipment_vals))
                 if data.get('task_number'):
                     if search_task_ids:
-                        search_task_ids.update({'equipment_ids': assign_equipment})
+                        search_task_ids.update({'equipment_ids': assign_equipment, 'equipment_id' : int(barcode)})
                         return {'success': "Successfully Created!"}
                 if data.get('maintenance_number'):
                     if search_maintenance_ids:
-                        search_maintenance_ids.update({'equipment_ids': assign_equipment})
+                        search_maintenance_ids.update({'equipment_ids': assign_equipment,'equipment_id' : int(barcode)})
                         return {'success': "Successfully updated !"}
             if context.get('internal'):
                 if data.get('location'):
@@ -672,11 +662,11 @@ class OperationDashboard(models.Model):
                     operation_line_data.append((0, 0, operation_line_vals))
                 if data.get('task_number'):
                     if search_task_ids:
-                        search_task_ids.update({'operations': operation_line_data})
+                        search_task_ids.update({'operations': operation_line_data,'equipment_id' : int(barcode)})
                         return {'success': "Successfully Created Internal Transfer!"}
                 if data.get('maintenance_number'):
                     if search_maintenance_ids:
-                        search_maintenance_ids.update({'operations': operation_line_data})
+                        search_maintenance_ids.update({'operations': operation_line_data,'equipment_id' : int(barcode)})
                         return {'success': "Successfully updated !"}
 
     # @api.multi

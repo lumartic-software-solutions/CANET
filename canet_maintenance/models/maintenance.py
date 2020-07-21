@@ -30,7 +30,7 @@ class Maintenanace(models.Model):
     amount_tax = fields.Float('Taxes', compute='_amount_tax', store=True)
     amount_total = fields.Float('Total', compute='_amount_total', store=True)
     state = fields.Selection(
-        [('draft', 'New'), ('start', 'Start'), ('continue', 'Continue'), ('stop', 'Stop'), ('end', 'End')],
+        [('draft', 'New'), ('start', 'Start'), ('continue', 'Continue'), ('pause', 'Pause'), ('end', 'End')],
         string='Status', default='draft')
     equipment_ids = fields.One2many('maintenance.equipment.task', 'maintenance_id', 'Equipments')
 

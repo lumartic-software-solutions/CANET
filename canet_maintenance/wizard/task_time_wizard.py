@@ -17,8 +17,13 @@ class TaskTimeWizard(models.TransientModel):
     def default_get(self, vals):
         result = super(TaskTimeWizard, self).default_get(vals)
         context = self.env.context
+        maintenance_ids = self.env['maintenance.request'].sudo().search([('id', '=', context.get('active_id'))])
         if context.get('start_task') and context.get('active_model') == 'maintenance.request':
             result.update({'name': "Are you going to start the task " })
+        if context.get('end_task') and context.get('active_model') == 'maintenance.request':
+            if maintenance_ids.equipment_id:
+                if maintenance_ids.equipment_id.state == 'delivery':
+                    raise UserError(_('Equipment is not return yet, You can not end the task.'))
         if context.get('continue_task') and context.get('active_model') == 'maintenance.request':
             result.update({'name': "Are you going to continue the task " })
         if context.get('restart_task') and context.get('active_model') == 'maintenance.request':
@@ -97,7 +102,6 @@ class TaskTimeWizard(models.TransientModel):
     @api.multi
     def accept_task(self):
         context = self._context
-        print ("^^^^^^^context^^^^^^^^^",context)
         maintenance_ids = self.env['maintenance.request'].sudo().search([('id', '=', context.get('active_id'))])
         data_list = []
         start_date = datetime.today()
@@ -116,6 +120,8 @@ class TaskTimeWizard(models.TransientModel):
             if maintenance_ids:
                 maintenance_ids.write({'state': 'continue', 'con_time': p_time, 'start_date': start_date})
         if context.get('ok') and context.get('end_task') and context.get('active_model') == 'maintenance.request':
+
+
             if maintenance_ids.start_time != False and maintenance_ids.con_time == False and maintenance_ids.restart_time == False:
                 start_time = maintenance_ids.start_time
                 endtime_diff = datetime.strptime(str(p_time), '%Y-%m-%d %H:%M:%S') - datetime.strptime(
@@ -132,14 +138,12 @@ class TaskTimeWizard(models.TransientModel):
                 start_time = maintenance_ids.restart_time
                 endtime_diff = datetime.strptime(str(p_time), '%Y-%m-%d %H:%M:%S') - datetime.strptime(
                     str(maintenance_ids.restart_time), '%Y-%m-%d %H:%M:%S')
-            print("---------------------", endtime_diff)
             m, s = divmod(endtime_diff.total_seconds(), 60)
             h, m = divmod(m, 60)
             dur_h = (_('%0*d') % (2, h))
             dur_m = (_('%0*d') % (2, m * 1.677966102))
             dur_s = (_('%0*d') % (2, s))
             duration = dur_h + '.' + dur_m + '.' + dur_s
-            print("<<<<<<<duration<<<<<<<", duration)
             data = {'name': self.description,
                     'date': datetime.now(),
                     'start_date': start_time if maintenance_ids else '',
@@ -149,6 +153,7 @@ class TaskTimeWizard(models.TransientModel):
             data_list.append((0, 0, data))
             maintenance_ids.write({'state': 'end', 'timesheet_ids': data_list})
         if context.get('ok') and context.get('stop_task') and context.get('active_model') == 'maintenance.request':
+
             if maintenance_ids.start_time != False and maintenance_ids.con_time == False and maintenance_ids.restart_time == False:
                 start_time = maintenance_ids.start_time
                 stoptime_diff = datetime.strptime(str(p_time), '%Y-%m-%d %H:%M:%S') - datetime.strptime(
@@ -184,5 +189,5 @@ class TaskTimeWizard(models.TransientModel):
                     'account_id': account_id,
                     'user_id': self._uid}
             data_list.append((0, 0, data))
-            maintenance_ids.write({'state': 'stop', 'timesheet_ids': data_list})
+            maintenance_ids.write({'state': 'pause', 'timesheet_ids': data_list})
         return True

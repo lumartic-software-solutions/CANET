@@ -32,18 +32,20 @@
 					[('state', 'in', ('draft', 'start','continue','end'))]}"/>
                 <button name="%(canet_maintenance.action_task_time_wizard_custom)d" string="Start Task" type="action"
                         style="background-color: #4CAF50;" context="{'start_task' : True}" attrs="{'invisible':
-					[('state', 'in', ('start','continue','end','stop'))]}"/>
+					[('state', 'in', ('start','continue','end','pause'))]}"/>
                 <button name="%(canet_maintenance.action_task_time_wizard_custom)d" string="Continue" type="action"
                         context="{'continue_task' : True}" style="background-color: #4CAF50;" attrs="{'invisible':
-					[('state', 'in', ('draft','end','continue','start','stop'))]}"/>
-                <button name="%(canet_maintenance.action_task_time_wizard_custom)d" string="Stop Task" type="action"
-                        context="{'stop_task' : True}" style="background-color: #f44336;" attrs="{'invisible':
-					[('state', 'in', ('end','stop'))]}"/>
+					[('state', 'in', ('draft','end','continue','start','pause'))]}"/>
+                <button name="%(canet_maintenance.action_task_time_wizard_custom)d" string="Pause Task" type="action"
+                        context="{'stop_task' : True}" style="background-color: #FF9933;" attrs="{'invisible':
+					[('state', 'in', ('draft','end','pause'))]}"/>
                 <button name="%(canet_maintenance.action_task_time_wizard_custom)d" string="End Task" type="action"
-                        context="{'end_task' : True}" style="background-color: #FF9933;" attrs="{'invisible':
-					[('state', 'in', ('draft','end','stop'))]}"/>
+                        context="{'end_task' : True}" style="background-color: #f44336;" attrs="{'invisible':
+					[('state', 'in', ('draft','end','pause'))]}"/>
             </xpath>
-
+            <field name="project_id" position="after">
+                <field name="equipment_id" invisible="1"/>
+            </field>
             <xpath expr="//notebook/page" position="before">
                 <page string="Parts">
                     <field name="operations">
