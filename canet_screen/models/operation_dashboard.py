@@ -171,7 +171,8 @@ class OperationDashboard(models.Model):
             lot_list = []
             product_list = []
             if location_search:
-                quant_search_ids = self.env['stock.quant'].search([('location_id', '=', location_search[0].id)])
+                sample_product_id = self.env.ref('canet_screen.sample_product_canet_id').id
+                quant_search_ids = self.env['stock.quant'].search([('location_id', '=', location_search[0].id),('product_id','!=',sample_product_id )])
                 if quant_search_ids:
                     for quant in quant_search_ids:
                         lot_list.append({
@@ -237,7 +238,7 @@ class OperationDashboard(models.Model):
         if doamin:
             lot_ids = self.env['stock.production.lot'].search(doamin)
             if lot_ids:
-                display_name = lot_ids.product_id.name
+                display_name = [lot.product_id.name for lot in  lot_ids]
                 return {'product_name': display_name}
         else:
             return {}
@@ -254,7 +255,9 @@ class OperationDashboard(models.Model):
             qty = ''
             operation_type = ''
             if lot_ids:
-                display_name = lot_ids[0].name
+                print ("_________ids_________",(lot_ids))
+                display_name = [i.name for i in lot_ids]
+                print ("(___display_name_______",display_name )
                 maintenance_team = lot_ids[0].maintenance_team_id and lot_ids[0].maintenance_team_id.name or False
                 technician = lot_ids[0].technician_user_id and lot_ids[0].technician_user_id.name or False
                 if lot_ids[0].state == 'delivery':

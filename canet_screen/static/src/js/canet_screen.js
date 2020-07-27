@@ -277,13 +277,13 @@ var CanetScreen = Widget.extend({
 
     {
         console.log("+++++++++++++++++++++++++++++++")
-        var selectedlotValue = document.getElementById('barcode_product').value;
-        console.log("_________selectedlotValue_______________",selectedlotValue )
-        var lot =  $("#barcode_product").select2('val');
-        console.log("_______lot_____________",lot)
+//        var selectedlotValue = document.getElementById('barcode_product').value;
+           var selectedlotValue = $("#barcode_product").val();
+
+
         var domain_dp = []
 	    if (selectedlotValue != undefined){
-            domain_dp.push(['name', '=', selectedlotValue])
+            domain_dp.push(['name', 'in', selectedlotValue])
 		}
         this._rpc({
             model: 'operation.dashboard',
@@ -295,18 +295,18 @@ var CanetScreen = Widget.extend({
                if(result.product_name != ''){
 
 //                    var productvalue = document.getElementById('my-canet-product').value;
-                     var productvalue = $("#my-canet-product").select2('val');
-                    console.log("<==================", productvalue)
-                        if (productvalue   )
 
-                        {
-                            console.log("*********result.product_name********",result.product_name )
-                            productvalue.push(result.product_name);
-                        }
+
+//                        if (productvalue   )
+//
+//                        {
+//                            console.log("*********result.product_name********",result.product_name )
+//                            productvalue.push(result.product_name);
+//                        }
 
 
                           console.log("*********elseeeee****",result.product_name )
-                          $('#my-canet-product').select2('val',  productvalue);
+                          $('#my-canet-product').select2('val',  result.product_name);
 
                     }
                 else {
@@ -323,17 +323,15 @@ var CanetScreen = Widget.extend({
 LotequOnChangeEvent: function (event)
 
     {
-        console.log("+++++++++++++++++++++++++++++++")
-        var selectedlotValue = document.getElementById('barcode_equ').value;
-        console.log("_________selectedlotValue_______________",selectedlotValue )
-        var lot =  $("#my-canet-equ").select2('val');
-        console.log("_______lot_____________",lot)
+//        var selectedlotValue = document.getElementById('barcode_equ').value;
+        var selectedlotValue = $("#barcode_equ").val();
         var domain_dp = []
         var ctx = {}
         ctx ['equipment_lot'] = true
 	    if (selectedlotValue != undefined){
-            domain_dp.push(['barcode', '=', selectedlotValue])
+            domain_dp.push(['barcode', 'in', selectedlotValue])
 		}
+
         this._rpc({
             model: 'operation.dashboard',
             method: 'lot_equ_data',
@@ -342,20 +340,20 @@ LotequOnChangeEvent: function (event)
         .then(function (result) {
                if (result != undefined){
                if(result.product_name != ''){
-
+                    console.log("________result.product_name _______", result.product_name )
 //                    var productvalue = document.getElementById('my-canet-product').value;
-                     var productvalue = $("#my-canet-equ").select2('val');
-                    console.log("<==================", productvalue)
-                        if (productvalue   )
+//
+//
+//                        if (productvalue   )
+//
+//                        {
+//
+//                            productvalue.push(result.product_name);
+//                        }
 
-                        {
-
-                            productvalue.push(result.product_name);
-                        }
 
 
-                          console.log("*********elseeeee****",result.product_name )
-                          $('#my-canet-equ').select2('val',  productvalue);
+                          $('#my-canet-equ').select2('val',  result.product_name);
 
                     }
                 else {
@@ -1446,6 +1444,7 @@ return_to_task_button : function(event){
 				$("#operation_type").attr("disabled", false);
 				$("#lot_selection").attr("disabled", false);
 				$("#barcode_equ").attr("disabled", false);
+				$("#my-canet-equ").attr("disabled", false);
 
 },
 
