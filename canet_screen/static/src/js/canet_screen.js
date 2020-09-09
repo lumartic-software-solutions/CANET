@@ -379,7 +379,7 @@ LotequOnChangeEvent: function (event)
 
                 }
                 if(result.task_number != ''){
-                    document.getElementById('type-select').value =  'Project';
+                    document.getElementById('type-select').value =  'Proyecto';
                     document.getElementById('task_number').value =  result.task_number;
                     $("#task_div").css('display','inline');
                     $("#task_value_div").css('display','inline');
@@ -389,7 +389,7 @@ LotequOnChangeEvent: function (event)
 
                 }
                 if(result.maintenance_number != ''){
-                    document.getElementById('type-select').value =  'Maintenance';
+                    document.getElementById('type-select').value =  'Mantenimiento';
                     document.getElementById('maintenance_number').value =  result.maintenance_number;
                     $("#task_div").css('display','none');
                     $("#task_value_div").css('display','none');
@@ -424,7 +424,7 @@ TypeOrderOnChangeEvent: function (event)
 
 	}
 	console.log("________888",ordertype)
-	if (ordertype == 'Internal Transfer'){
+	if (ordertype == 'Transferencia interna'){
 		ctx['type_of_order']='internal_transfer'
 		 $("#task_div").css('display','none');
 
@@ -432,7 +432,7 @@ TypeOrderOnChangeEvent: function (event)
         $("#maintenance_div").css('display','none');
         $("#maintenance_value_div").css('display','none');
 	}
-	if (ordertype == 'Project'){
+	if (ordertype == 'Proyecto'){
 		ctx['type_of_order']='project'
 
 		$("#transfer_to_task_button").html('Transfer To Task');
@@ -450,7 +450,7 @@ TypeOrderOnChangeEvent: function (event)
 //         $("#maintenance_div").css('display','none');
 //        $("#maintenance_value_div").css('display','none');
 //	}
-	if (ordertype == 'Maintenance'){
+	if (ordertype == 'Mantenimiento'){
 		ctx['type_of_order']='maintenance'
 
 		 $("#task_div").css('display','none');
@@ -1045,7 +1045,7 @@ add_an_item: function(event){
         var dest_location_id =  $("#my-dest-select").val() ;
         var barcode_ids =  $("#barcode_product").attr("ids");
 		var type_of_order = document.getElementById("type-select").value;
-		if (type_of_order != 'Internal Transfer' ){
+		if (type_of_order != 'Transferencia interna' ){
                 self.do_warn(_("Warning"),_("Please select Internal Transfer!"));
 		      }
 		$("#barcode_product :selected").each(function(){
@@ -1090,7 +1090,7 @@ transfer_to_task : function(event){
         var maintenance_number =  $("#maintenance_number").val() ;
         var barcode_ids =  $("#barcode_product").attr("ids");
 		var type_of_order = document.getElementById("type-select").value;
-		if (type_of_order == 'Internal Transfer' ){
+		if (type_of_order == 'Transferencia interna' ){
                 self.do_warn(_("Warning"),_("You can not Transfer to Task, Please change the Type!"));
 		      }
 		$("#barcode_product :selected").each(function(){
@@ -1280,21 +1280,21 @@ return_to_task_button : function(event){
 			self.do_warn(_("Warning"),_("Please Select Order Type!"));
 		}
 		if (type_of_order != undefined ){
-		      if (type_of_order == 'Project' ){
+		      if (type_of_order == 'Proyecto' ){
 		            $("#transfer_to_task_button").css("display", "inline");
                     if (task_number == undefined ){
                         self.do_warn(_("Warning"),_("Please Select Task Number!"));
 
                     }
 		      }
-		      if (type_of_order == 'Maintenance' ){
+		      if (type_of_order == 'Mantenimiento' ){
 		            $("#transfer_to_task_button").css("display", "inline");
                     if (maintenance_number == undefined ){
                         self.do_warn(_("Warning"),_("Please Select Maintenance Number!"));
 
                     }
 		      }
-		      if (type_of_order == 'Internal Transfer' ){
+		      if (type_of_order == 'Transferencia interna' ){
 		            $("#create_internal_transfer_button").css("display", "inline");
 		      }
 		}
@@ -1380,7 +1380,7 @@ return_to_task_button : function(event){
 			self.do_warn(_("Warning"),_("Please Add Quantity!"));
 		}
 		if (type_of_order != undefined ){
-		      if (type_of_order == 'Project' ){
+		      if (type_of_order == 'Proyecto' ){
 		            console.log("+_____________________")
 //		            $("#transfer_to_task_delivery_button").css("display", "inline");
                     if (task_number == undefined ){
@@ -1388,7 +1388,7 @@ return_to_task_button : function(event){
 
                     }
 		      }
-		      if (type_of_order == 'Maintenance' ){
+		      if (type_of_order == 'Mantenimiento' ){
 //		            $("#transfer_to_task_delivery_button").css("display", "inline");
                     if (maintenance_number == undefined ){
                         self.do_warn(_("Warning"),_("Please Select Maintenance Number!"));
