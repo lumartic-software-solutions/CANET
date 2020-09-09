@@ -38,7 +38,7 @@
             <!--			</div>-->
             <div class="col-md-4">
 				<input type="hidden" name="inventory_id" value="None" id="created_inventory_id"/>
-                <h3>Inventoried Location :</h3>
+                <h3>Ubicación inventariada :</h3>
 			</div>
             <div class="col-md-4" id="location_data">
 				<select class="locations" style="margin-top: 18px; margin-bottom: 9px; overflow-y:
@@ -54,12 +54,12 @@
         <div class="row" style="margin-left: 10px;">
 			<div class="col-md-4">
 				<input type="hidden" name="categ_id" value="None" id="created_categ_id"/>
-                <h3>Product Category :</h3>
+                <h3>Categoria de producto :</h3>
 			</div>
             <div class="col-md-4" id="categ_data">
 				<select class="category" id="categ_select_id" style="height:35px;margin-top: 18px; margin-bottom: 9px; overflow-y:
 					auto!important; width:100%; font-size: 16px; ">
-					<option> -- select an option -- </option>
+					<option> -- seleccione una opción -- </option>
                     <t t-foreach="widget.category_list" t-as="i">
 						<option t-attf-value="#{i['name']}" t-attf-ids="#{i['id']}"><span t-esc="i['name']" /></option>
 					</t>
@@ -71,7 +71,7 @@
 
         <div class="row" style="margin-left: 10px;margin-top:-20px">
 			<div class="col-md-12">
-				<h3>Inventory Adjustments</h3>
+				<h3>Ajustes de inventario</h3>
                 <br/>
                 <div class="scrollbar" style=" margin-right: 7px;margin-top:-20px">
 					<table class="common_table table table-condensed table-striped o_list_view_ungrouped"
@@ -80,16 +80,16 @@
 						<thead class="navbar-default common_color" style="width: 100%;">
 							<tr style="width: 100%;">
 								<th style="width: 27%;">
-									<span>Product</span>
+									<span>Producto</span>
 								</th>
                                 <th style="width: 17%;">
-									<span>Units</span>
+									<span>Unidad</span>
 								</th>
                                 <th style="width: 22%;">
-									<span>Barcode</span>
+									<span>Código de barras</span>
 								</th>
                                 <th style="width: 22%;">
-									<span>Inventory Date</span>
+									<span>Fecha inventario</span>
 								</th>
                                 <th style="width: 7%;">
 								</th>

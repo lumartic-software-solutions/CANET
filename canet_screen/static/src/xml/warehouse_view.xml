@@ -18,7 +18,7 @@
 						</a>
 					</li>
 					<li>
-						<a href="" class="warehouse">Warehouse</a>
+						<a href="" class="warehouse">Almacén</a>
 					</li>
 				</ol>
 			</div>
@@ -27,13 +27,13 @@
 		<br/>
 		<div class="row">
 			<div class="col-md-4" style="margin-top:-50px">
-				<a href="javascript:;" class="oe_highlight dashborad_button inventory_adjustments">Inventory Adjustments</a>
+				<a href="javascript:;" class="oe_highlight dashborad_button inventory_adjustments">Ajustes de inventario</a>
 			</div>
 			<div class="col-md-4"  style="margin-top:-50px">
-				<a href="javascript:;" class="oe_highlight dashborad_button internal_transfers">Internal transfers</a>
+				<a href="javascript:;" class="oe_highlight dashborad_button internal_transfers">Transferencias internas</a>
 			</div>
 			<div class="col-md-4"  style="margin-top:-50px">
-				<a href="javascript:;" class="oe_highlight dashborad_button equipment_delivery">Equipment Delivery and return</a>
+				<a href="javascript:;" class="oe_highlight dashborad_button equipment_delivery">Entrega y devolución de equipos</a>
 			</div>
 		</div>
 		<div class="row" style="margin-top:50px;">

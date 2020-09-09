@@ -29,7 +29,7 @@
 						<a href="" class="warehouse">Almacén</a>
 					</li>
                     <li>
-						<a href="" class="internal_transfers">Equipment Delivery and return</a>
+						<a href="" class="internal_transfers">Entrega y devolución de equipos</a>
 					</li>
 				</ol>
 			</div>
@@ -40,7 +40,7 @@
         <div id="lot_selection" class="row" style="margin-left: 30px; ">
 
 			<div class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-100px">
-				<span style="margin-left: 50px;">Select Lot /Series Number:</span>
+				<span style="margin-left: 50px;">Seleccionar número de lote /Serie:</span>
 			</div>
             <div class="col-md-9" style="width:920px; ">
 				 <select class="select2 barcode_equ" id="barcode_equ" multiple="multiple" style="height:35px;width:300px;font-size: 22px;margin-top: 20px;  overflow: hidden !important;
@@ -56,7 +56,7 @@
         <div class="row" style="margin-left: 30px;">
 			<div class="col-md-3" id="equipment_div"
                  style="text-align:right; font-size:22px; margin-top:20px; margin-left:-100px">
-				<span>Equipments:</span>
+				<span>Equipos:</span>
 			</div>
             <div class="col-md-8" style="width:920px">
 				 <select class="select2 my-canet-equ" id="my-canet-equ" multiple="multiple"
@@ -72,18 +72,18 @@
         <div class="row" style="margin-left: 30px;">
 			<div class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-100px">
 				<input type="hidden" value="None"/>
-                <span>Tipo de Task:</span>
+                <span>Tipo de Tarea:</span>
 			</div>
             <div class="col-md-3" style="width:350px">
 				 <select id="type-select" style="height: 35px;width:100%;font-size: 22px;margin-top: 20px;">
-					<option> -- select an option -- </option>
+					<option> -- seleccione opcion -- </option>
                      <t t-foreach="widget.type_of_order" t-as="i">
 					<option t-attf-value="#{i['order']}"><span t-esc="i['order']" /></option>
 								</t>
 				</select>
 			</div>
             <div id="task_div" class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-60px;display:none">
-                       <span>Task Number:</span>
+                       <span>Numero Tarea:</span>
 			</div>
             <div id= "task_value_div" class="col-md-3 " style="width:350px;display:none">
 				 <select class="task_number" id="task_number" style="height:35px;font-size: 22px;margin-top: 20px;">
@@ -95,7 +95,7 @@
 			</div>
 
 			<div id="maintenance_div" class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-60px;display:none">
-                       <span>Maintenance Number:</span>
+                       <span>Numero Mantenimiento:</span>
 			</div>
             <div id= "maintenance_value_div" class="col-md-3 " style="width:350px;display:none">
 				 <select class="maintenance_number" id="maintenance_number" style="height:35px;font-size: 22px;margin-top: 20px;">
@@ -110,7 +110,7 @@
 
         <div class="row" style="margin-left: 30px;">
 			<div class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-100px">
-				<span>Responsible:</span>
+				<span>Responsable:</span>
 			</div>
             <div class="col-md-3" style="width:350px;">
 				<select class="technician_list" id="technician_list" style="height:35px;font-size: 22px;margin-top: 20px;">
@@ -121,7 +121,7 @@
 				</select>
 			</div>
             <div class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-60px">
-				<span>Team:</span>
+				<span>Equipo de Tareas:</span>
 			</div>
             <div class="col-md-3" style="width:350px">
 				 <select class="team_list" id="team_list" style="height:35px;font-size: 22px;margin-top: 20px;">
@@ -138,14 +138,14 @@
 		 <!-- quantity design -->
         <div class="row" style="margin-left: 30px;">
 			<div class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-100px">
-				<span>Quantity:</span>
+				<span>Cantidad:</span>
 			</div>
             <div class="col-md-3" style="width:350px;height: 35px;font-size: 22px;margin-top: 20px;">
 				 <input type="number" id="quantity" name="quantity" min="1" max="100"
 					/>
 			</div>
             <div class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-60px">
-				<span>Operation Type:</span>
+				<span>Tipo de operacion:</span>
 			</div>
             <div class="col-md-3" style="width:350px">
 				 <select id="operation_type" style="height: 35px;font-size: 22px;margin-top: 20px;">
@@ -163,25 +163,25 @@
 				<div class="col-md-2">
 					<button style="display:none;margin-left:180px;margin-top: 25px;" class="btn btn-primary common_button
 						transfer_to_task_delivery" id="transfer_to_task_button"
-                            type="button">Transfer To Task</button>
+                            type="button">Transferir a Tarea</button>
 				</div>
 
             <div class="col-md-2">
 					<button style=" margin-left: 25px;margin-top: 25px;" class="btn
 						btn-primary common_button save_delivery_return_button" id="save_delivery_return_button"
-                            type="button">Save</button>
+                            type="button">Guardar</button>
 				</div>
 
             <div class="col-md-2">
 					<button style="display:none; margin-left: -300px;margin-top: 25px;" class="btn
 						btn-primary common_button edit_delivery_return_button" id="edit_delivery_return_button"
-                            type="button">Edit</button>
+                            type="button">Salir</button>
 
 				</div>
             <div class="col-md-2">
 					<button style="display:none;margin-left: -50px;margin-top: 25px;" class="btn btn-primary common_button
 						return_to_task_button" id="return_to_task_button"
-                            type="button">Return To Task</button>
+                            type="button">Retornar a Tarea</button>
 				</div>
 
             <div class="col-md-2">

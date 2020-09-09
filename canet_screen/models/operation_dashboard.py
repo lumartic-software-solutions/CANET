@@ -383,7 +383,7 @@ class OperationDashboard(models.Model):
             #  'product_list': product_list,
             # 'barcode_list': [],
             'location_list': location_list,
-            'type_of_order': [{'order': 'Internal Transfer'}, {'order': 'Project'}, {'order': 'Maintenance'}],
+            'type_of_order': [{'order': 'Transferencia interna'}, {'order': 'Proyecto'}, {'order': 'Mantenimiento'}],
             'task_list': task_list,
             'maintenance_list': maintenance_list,
         }
@@ -447,12 +447,12 @@ class OperationDashboard(models.Model):
         data = {
             'equipment_list': product_list,
             'barcode_list': barcode_list,
-            'type_of_order': [{'order': 'Project'}, {'order': 'Maintenance'}],
+            'type_of_order': [{'order': 'Proyecto'}, {'order': 'Mantenimiento'}],
             'task_list': task_list,
             'maintenance_team': maintenance_team,
             'technician_list': technician_list,
             'maintenance_list': maintenance_list,
-            'operation_type': [{'type': 'Delivery'}, {'type': 'Return'}]
+            'operation_type': [{'type': 'Entrega'}, {'type': 'Regreso'}]
         }
         return {'data': data}
 
@@ -575,11 +575,11 @@ class OperationDashboard(models.Model):
         date_in = ''
         date_out = ''
         for data in record_data:
-            if data.get('operation_type') == 'Delivery':
+            if data.get('operation_type') == 'Entrega':
                 operation_type = 'delivery'
                 date_out = fields.Date.today()
 
-            if data.get('operation_type') == 'Return':
+            if data.get('operation_type') == 'Regreso':
                 operation_type = 'return'
                 date_in = fields.Date.today()
 
@@ -596,12 +596,12 @@ class OperationDashboard(models.Model):
                         search_users = user_obj.search([('name', '=', data.get('responsible'))])
                     if data.get('team'):
                         search_team = team_obj.search([('name', '=', data.get('team'))])
-                    if data.get('operation_type') == 'Delivery':
+                    if data.get('operation_type') == 'Entrega':
                         if equipment_brw.state == 'delivery':
                             return {'delivery_warning': "Successfully updated !"}
                         equipment_brw.update({'state': 'delivery', 'technician_user_id': search_users[0].id,
                                               'maintenance_team_id': search_team[0].id, 'location': location})
-                    if data.get('operation_type') == 'Return':
+                    if data.get('operation_type') == 'Regreso':
                         if equipment_brw.state == 'return':
                             return {'return_warning': "Successfully updated !"}
                         equipment_brw.update({'state': 'in_stock', 'technician_user_id': False,
