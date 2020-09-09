@@ -107,9 +107,19 @@
 				<span style="margin-left: 50px;">Seleccionar número de lote /serie:</span>
 			</div>
             <div class="col-md-9" style="width:920px; ">
-				 <select class="select2 barcode_product" id="barcode_product" multiple="multiple" style="height:35px;width:300px;font-size: 22px;margin-top: 20px;  overflow: hidden !important;
+				 <select class="select2 barcode_product" id="barcode_product" multiple="multiple" style="height:35px;width:300px;font-size: 22px;margin-top: 20px; width:600px; overflow: hidden !important;
     height: auto !important;">
 				</select> 
+			</div>
+		</div>
+		<!--quantity design-->
+        <div id="qty_selection" class="row" style="margin-left: 30px; ">
+			<div class="col-md-3" style="text-align: right; font-size: 22px; margin-top: 20px;margin-left:-100px">
+				<span>Cantidad:</span>
+			</div>
+            <div class="col-md-3" style="width:350px;height: 35px;font-size: 22px;margin-top: 20px;">
+				 <input type="number" id="quantity_internal" name="quantity_internal" min="1" max="100"
+					/>
 			</div>
 		</div>
         <!-- product design  -->
