@@ -148,7 +148,7 @@
 				<span>Tipo de operacion:</span>
 			</div>
             <div class="col-md-3" style="width:350px">
-				 <select id="operation_type" style="height: 35px;font-size: 22px;margin-top: 20px;">
+				 <select id="operation_type" style="height: 35px;font-size: 22px;margin-top: 20px;width:350px">
 				<option>  </option>
                      <t t-foreach="widget.operation_type" t-as="i">
 							<option t-attf-value="#{i['type']}"><span t-esc="i['type']" /></option>
