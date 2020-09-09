@@ -72,7 +72,7 @@
 		<div class="row">
 			<div class="col-md-8 pull-right">
 				<button style=" margin-right: 25px; margin-top: 25px; width: 140px;" class="btn btn-primary
-					common_button generate" id="generate_button" type="button">Generate</button>
+					common_button generate" id="generate_button" type="button">Generar</button>
 				<t t-call='ExitPopup' />
 				<button style="display:none;  margin-top: 25px; width: 180px;"
 					class=" btn btn-primary common_button print_generate_barcode" id="print_generate_barcode_button"
@@ -103,10 +103,10 @@
 						</t>
 <!--					</t-->
 				</select> 
-				<input type="checkbox" id="checkbox" style="margin-left: 5px;"/><span style="font-size: 22px; display: inline-block;">Select All
+				<input type="checkbox" id="checkbox" style="margin-left: 5px;"/><span style="font-size: 22px; display: inline-block;"> Selec. todos
 			</span></div>
 			<div class="col-md-2">
-				<button style="width: 120px; font-size: 22px;"
+				<button style="width: 160px; font-size: 22px;"
 					class="btn btn-primary common_button print_multi_barcode" id="print_multi_barcode_button"
 					type="button">Print</button>
 			</div>
@@ -124,10 +124,10 @@
 						</t>
 <!--					</t-->
 				</select> 
-				<input type="checkbox" id="checkbox" style="margin-left: 5px;"/><span style="font-size: 22px; display: inline-block;">Select All
+				<input type="checkbox" id="checkbox" style="margin-left: 5px;"/><span style="font-size: 22px; display: inline-block;"> Selec. todos
 			</span></div>
 			<div class="col-md-2">
-				<button style="width: 120px; font-size: 22px;"
+				<button style="width: 160px; font-size: 22px;"
 					class="btn btn-primary common_button print_multi_barcode" id="print_multi_barcode_button"
 					type="button">Print</button>
 			</div>
