@@ -1041,6 +1041,7 @@ add_an_item: function(event){
 	   	event.preventDefault();
 		var barcode_list = [];
 	   	var location = $("#my-select").val() ;
+	   	var quantity = $("#quantity_internal").val() ;
         var product_id =document.getElementById('my-canet-product').value;
         var dest_location_id =  $("#my-dest-select").val() ;
         var barcode_ids =  $("#barcode_product").attr("ids");
@@ -1059,6 +1060,7 @@ add_an_item: function(event){
 				'type_of_order': type_of_order,
 				'dest_location_id': dest_location_id,
 				'barcode_ids' :barcode_list,
+				'quantity': quantity,
  				});
 			self._rpc({
 			        model: 'operation.dashboard',
@@ -1084,6 +1086,7 @@ transfer_to_task : function(event){
 	   	var ctx = {};
 		var barcode_list = [];
 	   	var location = $("#my-select").val() ;
+	   	var quantity = $("#quantity_internal").val() ;
         var product_id =document.getElementById('my-canet-product').value;
         var dest_location_id =  $("#my-dest-select").val() ;
         var task_number =  $("#task_number").val() ;
@@ -1106,6 +1109,7 @@ transfer_to_task : function(event){
 				'maintenance_number':maintenance_number,
 				'dest_location_id': dest_location_id,
 				'barcode_ids' :barcode_list,
+				'quantity':quantity,
  				});
 			self._rpc({
 			        model: 'operation.dashboard',
@@ -1263,6 +1267,7 @@ return_to_task_button : function(event){
          console.log("_--------product_id-------------",product_id)
 		var type_of_order = document.getElementById("type-select").value;
 		var task_number = $("#task_number").val() ;
+		var quantity  = $("#quantity_internal").val() ;
 		var maintenance_number =  $("#maintenance_number").val() ;
 	   	var report_data = [];
 		var barcode_list = []
@@ -1278,6 +1283,9 @@ return_to_task_button : function(event){
 		}
 		if (type_of_order == undefined ){
 			self.do_warn(_("Warning"),_("Please Select Order Type!"));
+		}
+		if (quantity == undefined ||  quantity == ''){
+			self.do_warn(_("Warning"),_("Please Add Quantity!"));
 		}
 		if (type_of_order != undefined ){
 		      if (type_of_order == 'Proyecto' ){
@@ -1331,6 +1339,7 @@ return_to_task_button : function(event){
 				$("#my-canet-product").attr("disabled", true);
 				$("#barcode_product").attr("disabled", true);
 				$("#maintenance_number").attr("disabled", true);
+				$("#quantity_internaltransfer_to_task").attr("disabled", true);
 				$("#task_number").attr("disabled", true);
 	            		// hide delete button
 	            	}else{

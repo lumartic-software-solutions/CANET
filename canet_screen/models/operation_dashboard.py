@@ -525,12 +525,13 @@ class OperationDashboard(models.Model):
 
             for barcode in data.get('barcode_ids'):
                 lot_brw = lot_obj.browse(int(barcode))
+                quantity = float(data.get('quantity')) or 1.0
                 move_line_vals = {
                     'product_id': lot_brw[0].product_id.id,
                     'product_uom_id': lot_brw[0].product_id.uom_id.id,
                     'lot_id': lot_brw.id,
                     'lot_name': lot_brw.name,
-                    'qty_done': 1.0,
+                    'qty_done': quantity,
                     'location_id': location_search,
                     'location_dest_id': location_dest_search,
                     'date': date,
@@ -648,14 +649,15 @@ class OperationDashboard(models.Model):
                     if location_dest_search:
                         location_dest_search = location_dest_search[0].id
                 for barcode in data.get('barcode_ids'):
+                    quantity = float(data.get('quantity')) or 1.0
                     lot_brw = lot_obj.browse(int(barcode))
                     operation_line_vals = {
                         'product_id': lot_brw[0].product_id.id,
                         'name': lot_brw[0].product_id.name,
                         'product_uom': lot_brw[0].product_id.uom_id.id,
                         'lot_id': lot_brw.id,
+                        'product_uom_qty': quantity,
                         'price_unit': lot_brw[0].product_id.list_price,
-                        'product_uom_qty': 1.0,
                         'tax_id': lot_brw[0].product_id.taxes_id,
                         'location_id': location_search,
                         'location_dest_id': location_dest_search,
