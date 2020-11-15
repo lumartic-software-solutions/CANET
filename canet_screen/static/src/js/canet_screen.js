@@ -496,7 +496,7 @@ TypeOrderOnChangeEvent: function (event)
 		                    });
 		            		$("#display_generate_barcode").addClass("scrolllist");
 		            		var number_of_barcode_html = $('#number_of_barcode').html()
-		            		var number_of_barcode_span = $("<span id='set_number_of_barcode' ids='"+result.created_barcode_ids+"'>" +number_of_barcode + "</span>");
+		            		var number_of_barcode_span = $("<span id='set_number_of_barcode' ids='"+result.created_barcode_ids+"'>" +number_of_barcode + "</span><input type='test' id='barcode_text'/>");
 		            		$('#number_of_barcode').replaceWith(number_of_barcode_span);
 		            		// display print button
 		            		$("#print_generate_barcode_button").css("display", "inline");
