@@ -60,7 +60,7 @@
 			</div>
             <div class="col-md-8" style="width:920px">
 				 <select class="select2 my-canet-equ" id="my-canet-equ" multiple="multiple"
-                         style="height: 35px;font-size: 20px;margin-top: 20px;overflow-y: auto!important;">
+                         style="height: 35px;font-size: 20px;margin-top: 20px;overflow-y: auto!important;width:720px;">
 					 <option> -- select an option -- </option>
                       <t t-foreach="widget.equipment_list" t-as="i">
 							<option t-attf-value="#{i['name']}"  ><span t-esc="i['name']" /></option>
