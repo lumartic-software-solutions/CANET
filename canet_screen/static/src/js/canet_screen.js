@@ -520,10 +520,13 @@ TypeOrderOnChangeEvent: function (event)
 		   	event.preventDefault();
 //		   	var barcode_data = []
 		   	var barcode_ids = $("#set_number_of_barcode").attr("ids");
-		   	var div_barcode = document.getElementById("display_generate_barcode").value;
-
+		   	var div_barcode = $("#display_generate_barcode").html();
 		   	var barcode_text = $("#barcode_text").val();
-		   	console.log("**********display_barcode*****",div_barcode )
+		   	console.log("**********display_barcode*****",barcode_text )
+		   	for (var line in div_barcode){
+                 console.log("_____________line",line)
+		   	}
+
 		   	var barcode_data = barcode_ids.split(",");
 	   	   // append barcode to print report
    	    	if (barcode_ids != undefined ){
