@@ -520,7 +520,7 @@ TypeOrderOnChangeEvent: function (event)
 		   	event.preventDefault();
 //		   	var barcode_data = []
 		   	var barcode_ids = $("#set_number_of_barcode").attr("ids");
-		   	var display_barcode = $("#display_generate_barcode").val();
+		   	var display_barcode = $("#display_generate_barcode").html();
 		   	console.log("**********display_barcode*****",display_barcode )
 		   	var barcode_data = barcode_ids.split(",");
 	   	   // append barcode to print report
@@ -531,6 +531,7 @@ TypeOrderOnChangeEvent: function (event)
 	                model: 'operation.dashboard',
 	                method: 'print_generate_barcode',
 	                args: [[],barcode_data],
+
 
 	            })
 	            .then(function(result) {
