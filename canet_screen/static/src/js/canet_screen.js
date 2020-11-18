@@ -522,7 +522,7 @@ TypeOrderOnChangeEvent: function (event)
 		   	var barcode_ids = $("#set_number_of_barcode").attr("ids");
 		   	var div_barcode = $("#display_generate_barcode").text();
 		   	console.log("**********div_barcode text*****",div_barcode )
-		   	var barcode_text = $("#display_generate_barcode").html();
+		   	var barcode_text = $("#display_generate_barcode").html().split("<br>");
             console.log("********html barcode_text****",barcode_text )
 
 		   	var barcode_data = barcode_ids.split(",");
