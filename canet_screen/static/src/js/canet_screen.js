@@ -487,7 +487,7 @@ TypeOrderOnChangeEvent: function (event)
 		            		var barcode_list =''
 		            		var text_of_barcode_span
 		            		for(var line in result.created_barcode_data){
-						    	   barcode_list += '<span> ('+result.created_barcode_data[line]['count']+')</span>  <span>'+result.created_barcode_data[line]['barcode'] +'</span><input type="text" id="barcode_text"/><br/> '
+						    	   barcode_list += '<span> ('+result.created_barcode_data[line]['count']+')</span>  <span>'+result.created_barcode_data[line]['barcode'] +'</span><input type="test" id="barcode_text"/><br/> '
 
 					    	}
 		            		$("#display_generate_barcode").append(barcode_list);
@@ -525,7 +525,7 @@ TypeOrderOnChangeEvent: function (event)
 		   	var barcode_data = barcode_ids.split(",");
 	   	   // append barcode to print report
    	    	if (barcode_ids != undefined ){
-   	    		barcode_data.push(parseInt(barcode_ids), lot_text);
+   	    		barcode_data.push(parseInt(barcode_ids));
                //printing barcode
    	    		self._rpc({
 	                model: 'operation.dashboard',
