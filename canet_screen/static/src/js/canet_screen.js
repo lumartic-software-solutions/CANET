@@ -472,6 +472,7 @@ TypeOrderOnChangeEvent: function (event)
 	   	event.preventDefault();
 	   	var product_data = [];
 	   	var number_of_barcode = $("#number_of_barcode").val();
+
 	   	if (number_of_barcode != ''){
 			   	//	 generating barcode
 		        self._rpc({
@@ -484,8 +485,10 @@ TypeOrderOnChangeEvent: function (event)
 		            		self.do_warn(_("Success"),_("Successfully Generate the Barcode!"));
 		            		// readonly number_of_barcode
 		            		var barcode_list =''
+		            		var text_of_barcode_span
 		            		for(var line in result.created_barcode_data){
 						    	   barcode_list += '<span> ('+result.created_barcode_data[line]['count']+')</span>  <span>'+result.created_barcode_data[line]['barcode'] +'</span><input type="test" id="barcode_text"/><br/> '
+
 					    	}
 		            		$("#display_generate_barcode").append(barcode_list);
 		            		$('#barcode').JsBarcode('501234567890', {format: "ean13"});
@@ -494,6 +497,9 @@ TypeOrderOnChangeEvent: function (event)
 						        "height":"50px",
 						        "margin-top":"20px"
 		                    });
+		                    for(var line in barcode_list){
+                                console.log("_______________bracode_lis",line)
+					    	}
 		            		$("#display_generate_barcode").addClass("scrolllist");
 		            		var number_of_barcode_html = $('#number_of_barcode').html()
 		            		var number_of_barcode_span = $("<span id='set_number_of_barcode' ids='"+result.created_barcode_ids+"'>" +number_of_barcode + "</span>");
@@ -519,7 +525,7 @@ TypeOrderOnChangeEvent: function (event)
 		   	var barcode_data = barcode_ids.split(",");
 	   	   // append barcode to print report
    	    	if (barcode_ids != undefined ){
-   	    		barcode_data.push(parseInt(barcode_ids));
+   	    		barcode_data.push(parseInt(barcode_ids), lot_text);
                //printing barcode
    	    		self._rpc({
 	                model: 'operation.dashboard',
@@ -563,7 +569,7 @@ TypeOrderOnChangeEvent: function (event)
 		   	var barcode_data = []
 			var used_barcode_data = []
 		    $("#my-select :selected").each(function(){
-		        barcode_data.push(parseInt($(this).attr("ids")));
+		        barcode_data.push( parseInt($(this).attr("ids")) );
 		    });
 		    $("#my-used-select :selected").each(function(){
 		        used_barcode_data.push(parseInt($(this).attr("ids")));
