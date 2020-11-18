@@ -522,13 +522,12 @@ TypeOrderOnChangeEvent: function (event)
 //		   	var barcode_data = []
 		   	var barcode_ids = $("#set_number_of_barcode").attr("ids");
 
-		   	var barcode_text_div = $("#display_generate_barcode").html().split("<br>");
-		   	console.log("********html barcode_text****",barcode_text_div )
-		   	for (var line in barcode_text_div)
-		   	{
-		   	    console.log("____________line_________",line[0] )
-
-		   	}
+		   	var barcode_text_div = $("#number_of_barcode_span").html();
+            console.log("(?*888888888barcode_text_div8888888", barcode_text_div)
+            var barcode_text_valu = $("#number_of_barcode_span").val();
+            console.log("(---------------------", barcode_text_valu)
+            var number_of_barcode = $("#number_of_barcode").val();
+            console.log("(?number_of_barcode8888888", number_of_barcode)
 
 
 		   	var barcode_data = barcode_ids.split(",");
