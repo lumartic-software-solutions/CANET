@@ -526,7 +526,7 @@ TypeOrderOnChangeEvent: function (event)
 		   	console.log("********html barcode_text****",barcode_text_div )
 		   	for (var line in barcode_text_div)
 		   	{
-		   	    console.log("____________line_________",line )
+		   	    console.log("____________line_________",line[0] )
 
 		   	}
 
