@@ -522,7 +522,7 @@ TypeOrderOnChangeEvent: function (event)
 //		   	var barcode_data = []
 		   	var barcode_ids = $("#set_number_of_barcode").attr("ids");
 
-		   	var barcode_text_div = $("#number_of_barcode_span").html();
+		   	var barcode_text_div = $("#number_of_barcode_span").text();
             console.log("(?*888888888barcode_text_div8888888", barcode_text_div)
             var barcode_text_valu = $("#number_of_barcode_span").val();
             console.log("(---------------------", barcode_text_valu)
