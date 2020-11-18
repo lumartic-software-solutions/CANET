@@ -522,10 +522,7 @@ TypeOrderOnChangeEvent: function (event)
 		   	var barcode_ids = $("#set_number_of_barcode").attr("ids");
 		   	var div_barcode = $("#display_generate_barcode").html();
 		   	var barcode_text = $("#barcode_text").val();
-		   	console.log("**********display_barcode*****",barcode_text )
-		   	for (var line in div_barcode){
-                 console.log("_____________line",line)
-		   	}
+		   	console.log("**********display_barcode*****",div_barcode )
 
 		   	var barcode_data = barcode_ids.split(",");
 	   	   // append barcode to print report
