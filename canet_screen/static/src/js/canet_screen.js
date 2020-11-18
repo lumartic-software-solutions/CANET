@@ -520,8 +520,8 @@ TypeOrderOnChangeEvent: function (event)
 		   	event.preventDefault();
 //		   	var barcode_data = []
 		   	var barcode_ids = $("#set_number_of_barcode").attr("ids");
-		   	var display_barcode = $("#display_generate_barcode").html();
-		   	console.log("**********display_barcode*****",display_barcode )
+		   	var barcode_text = $("#barcode_text").val();
+		   	console.log("**********display_barcode*****",barcode_text )
 		   	var barcode_data = barcode_ids.split(",");
 	   	   // append barcode to print report
    	    	if (barcode_ids != undefined ){
