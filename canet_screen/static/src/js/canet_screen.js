@@ -487,7 +487,7 @@ TypeOrderOnChangeEvent: function (event)
 		            		var barcode_list =''
 		            		var text_of_barcode_span
 		            		for(var line in result.created_barcode_data){
-						    	   barcode_list += '<span> ('+result.created_barcode_data[line]['count']+')</span>  <span>'+result.created_barcode_data[line]['barcode'] +'</span><input type="test" id="barcode_text"/><br/> '
+						    	   barcode_list += '<span> ('+result.created_barcode_data[line]['count']+')</span>  <span>'+result.created_barcode_data[line]['barcode'] +'</span><input  id="barcode_text"/><br/> '
 
 					    	}
 		            		$("#display_generate_barcode").append(barcode_list);
@@ -520,7 +520,7 @@ TypeOrderOnChangeEvent: function (event)
 		   	event.preventDefault();
 //		   	var barcode_data = []
 		   	var barcode_ids = $("#set_number_of_barcode").attr("ids");
-		   	var div_barcode = $("#display_generate_barcode").html();
+		   	var div_barcode = $("#display_generate_barcode #barcode_text").text();
 		   	var barcode_text = $("#barcode_text").val();
 		   	console.log("**********display_barcode*****",div_barcode )
 
