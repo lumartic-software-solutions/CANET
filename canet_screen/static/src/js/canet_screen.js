@@ -487,7 +487,7 @@ TypeOrderOnChangeEvent: function (event)
 		            		var barcode_list =''
 		            		var text_of_barcode_span
 		            		for(var line in result.created_barcode_data){
-						    	   barcode_list += '<span> ('+result.created_barcode_data[line]['count']+')</span>  <span>'+result.created_barcode_data[line]['barcode'] +'</span><input type="test" id="barcode_text"/><br/> '
+						    	   barcode_list += '<span> ('+result.created_barcode_data[line]['count']+')</span>  <span>'+result.created_barcode_data[line]['barcode'] +'</span><input type="text" id="barcode_text"/><br/> '
 
 					    	}
 		            		$("#display_generate_barcode").append(barcode_list);
@@ -497,9 +497,7 @@ TypeOrderOnChangeEvent: function (event)
 						        "height":"50px",
 						        "margin-top":"20px"
 		                    });
-		                    for(var line in barcode_list){
-                                console.log("_______________bracode_lis",line)
-					    	}
+
 		            		$("#display_generate_barcode").addClass("scrolllist");
 		            		var number_of_barcode_html = $('#number_of_barcode').html()
 		            		var number_of_barcode_span = $("<span id='set_number_of_barcode' ids='"+result.created_barcode_ids+"'>" +number_of_barcode + "</span>");
@@ -522,6 +520,8 @@ TypeOrderOnChangeEvent: function (event)
 		   	event.preventDefault();
 //		   	var barcode_data = []
 		   	var barcode_ids = $("#set_number_of_barcode").attr("ids");
+		   	var display_barcode = $("#display_generate_barcode").val();
+		   	console.log("**********display_barcode*****",display_barcode )
 		   	var barcode_data = barcode_ids.split(",");
 	   	   // append barcode to print report
    	    	if (barcode_ids != undefined ){
