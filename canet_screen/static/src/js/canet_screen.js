@@ -486,9 +486,10 @@ TypeOrderOnChangeEvent: function (event)
 		            		// readonly number_of_barcode
 		            		var barcode_list =''
 		            		var text_of_barcode_span
+		            		var count = 1
 		            		for(var line in result.created_barcode_data){
-						    	   barcode_list += '<span> ('+result.created_barcode_data[line]['count']+')</span>  <span>'+result.created_barcode_data[line]['barcode'] +'</span><input  id="barcode_text"/><br/> '
-
+						    	   barcode_list += '<span> ('+result.created_barcode_data[line]['count']+')</span>  <span>'+result.created_barcode_data[line]['barcode'] +'</span><input  id="barcode_text'+count+'" /><br/> '
+                                count +=1
 					    	}
 		            		$("#display_generate_barcode").append(barcode_list);
 		            		$('#barcode').JsBarcode('501234567890', {format: "ean13"});
@@ -520,10 +521,15 @@ TypeOrderOnChangeEvent: function (event)
 		   	event.preventDefault();
 //		   	var barcode_data = []
 		   	var barcode_ids = $("#set_number_of_barcode").attr("ids");
-		   	var div_barcode = $("#display_generate_barcode").text();
-		   	console.log("**********div_barcode text*****",div_barcode )
-		   	var barcode_text = $("#display_generate_barcode").html().split("<br>");
-            console.log("********html barcode_text****",barcode_text )
+
+		   	var barcode_text_div = $("#display_generate_barcode").html().split("<br>");
+		   	console.log("********html barcode_text****",barcode_text_div )
+		   	for (var line in barcode_text_div)
+		   	{
+		   	    console.log("____________line_________",line )
+
+		   	}
+
 
 		   	var barcode_data = barcode_ids.split(",");
 	   	   // append barcode to print report
