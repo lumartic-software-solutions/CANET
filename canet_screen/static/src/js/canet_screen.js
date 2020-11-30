@@ -487,10 +487,12 @@ TypeOrderOnChangeEvent: function (event)
 		            		var barcode_list =''
 		            		var text_of_barcode_span
 		            		var count = 1
+		            		// devangi-code start
 		            		for(var line in result.created_barcode_data){
-						    	   barcode_list += '<span> ('+result.created_barcode_data[line]['count']+')</span>  <span>'+result.created_barcode_data[line]['barcode'] +'</span><input  id="barcode_text'+count+'" /><br/> '
+						    	   barcode_list += '<span> ('+result.created_barcode_data[line]['count']+')</span>  <span>'+result.created_barcode_data[line]['barcode'] +'</span><input  barcode="'+result.created_barcode_data[line]['barcode'] +'" id="barcode_text'+count+'" /><br/> '
                                 count +=1
 					    	}
+					    	// devangi-code stop
 		            		$("#display_generate_barcode").append(barcode_list);
 		            		$('#barcode').JsBarcode('501234567890', {format: "ean13"});
 		                    $('#barcode').css({
@@ -520,16 +522,16 @@ TypeOrderOnChangeEvent: function (event)
 		   	event.stopPropagation();
 		   	event.preventDefault();
 //		   	var barcode_data = []
+            // devangi-code start
+            var get_text ={};
+            $("#display_generate_barcode > input").each(function() {
+                get_text[$(this).attr('barcode')]=$(this).val();
+              });
+           // devangi-code stop
 		   	var barcode_ids = $("#set_number_of_barcode").attr("ids");
-
 		   	var barcode_text_div = $("#number_of_barcode_span").text();
-            console.log("(?*888888888barcode_text_div8888888", barcode_text_div)
             var barcode_text_valu = $("#number_of_barcode_span").val();
-            console.log("(---------------------", barcode_text_valu)
             var number_of_barcode = $("#number_of_barcode").val();
-            console.log("(?number_of_barcode8888888", number_of_barcode)
-
-
 		   	var barcode_data = barcode_ids.split(",");
 	   	   // append barcode to print report
    	    	if (barcode_ids != undefined ){
@@ -558,14 +560,18 @@ TypeOrderOnChangeEvent: function (event)
 //	            			return self.$el.html(receipt);;
 	        	        }else{
 	        	        	//print pdf barcode
+	        	        	// devangi-code start
+	        	        	var update_data = result.data;
+	        	        	update_data['get_text'] = get_text;
 	        	        	var action = {
 			                        type: 'ir.actions.report',
 			                        report_type: 'qweb-pdf',
 			                        report_name: "canet_screen.report_barcode",
 			                        report_file: "canet_screen.report_barcode",
-			                        data: result.data,
+			                        data: update_data,
 			                    };
 				            return self.do_action(action);
+				            // devangi-code stop
 	        	        }
 	            	}
 	            });
