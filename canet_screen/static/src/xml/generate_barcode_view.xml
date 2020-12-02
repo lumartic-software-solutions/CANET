@@ -96,7 +96,7 @@
 				<span>Código de barras, no usado.</span>
 			</div>
 			<div class="col-md-7">
-				 <select class="select2" multiple="multiple" id="my-select-barcode"  style="height: 53px;font-size: 22px;" >
+				 <select class="select2" multiple="multiple" id="my-select-barcode"  style="height: 53px;font-size: 22px;width: 600px;" >
 <!--					<t t-if="widget.operation_data.set_unused_barcode_list == 'True'" -->
 					 	<t t-foreach="widget.operation_data.set_barcode_list" t-as="i">
 							<option t-attf-value="#{i['barcode']}"  t-attf-ids="#{i['id']}"><span t-esc="i['barcode']" /></option>
@@ -117,7 +117,7 @@
 				<span>Código de barras, usado.</span>
 			</div>
 			<div class="col-md-7">
-				 <select class="select2" multiple="multiple" id="my-used-select"  style="height: 53px;font-size: 22px;" >
+				 <select class="select2" multiple="multiple" id="my-used-select"  style="height: 53px;font-size: 22px;width: 600px; " >
 <!--					<t t-if="widget.operation_data.set_unused_barcode_list == 'True'" -->
 					 	<t t-foreach="widget.operation_data.used_set_barcode_list" t-as="i">
 							<option t-attf-value="#{i['barcode']}"  t-attf-ids="#{i['id']}"><span t-esc="i['barcode']" /></option>
