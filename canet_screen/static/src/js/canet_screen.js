@@ -691,7 +691,7 @@ add_an_item: function(event){
 //		    			   "<td style='width: 5%;' class='set_lot_details_ids'><button id='lot_details_id' class='fa fa-bars lot_details_wizard'  aria-hidden='true'></button></td>"+
 		    			   "</tr>");
 		       }
-		       $(".barcodes").editableSelect();
+//		       $(".barcodes").Select2();
 		       $('.products').editableSelect();
 //		       .on('select.editable-select', function (e, li) {
 //		           var ler_code = li.attr('product_ler_code');
@@ -741,6 +741,7 @@ add_an_item: function(event){
 		var record_data= [];
 	   	var location = $(".es-list li[value='" + $(".locations").val() + "']").attr('ids');
 	   	var location_val = $(".locations").val()
+	   	console.log("----location_id---------------",location_val)
 	   	if (location == undefined){
 	   		if ($("#set_loction_id").length > 0){
 	   			location = $("#set_loction_id").text()
@@ -789,7 +790,12 @@ add_an_item: function(event){
 				  		var units = $(this).find('td #product_unit').val()
 				  		var life_date = $(this).find('td .life_datetimepicker').val();
 				  		var line_ids = $(this).find('td #created_line_id');
-				  		console.log("=============product_ids===============",product_ids, units ,barcode_ids,life_date,line_ids)
+				  		if (barcode_ids != undefined){
+                            barcode_ids=barcode_ids
+				  		}
+				  		else{
+				  		        barcode_ids=false
+				  		}
 			   	    	if (line_ids.length > 0){
 			   	    		if (life_date != undefined  && product_ids != undefined && barcode_ids != undefined){
 			   	    			record_data.push({

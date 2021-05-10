@@ -26,7 +26,7 @@
 								<field name="product_uom_id" string="UoM" groups="product.group_uom"/>
 								<field name="location_id" domain="[('id', 'child_of', parent.location_id)]" groups="stock.group_stock_multi_locations"/>
 								<field name="sample_product_id" invisible="1" />
-								<field name="prod_lot_id" required="1" domain="['|',('product_id', '=', sample_product_id),('product_id',
+								<field name="prod_lot_id"  domain="['|',('product_id', '=', sample_product_id),('product_id',
 									'=', product_id)]" context="{'default_product_id': product_id}" groups="stock.group_production_lot"/>
 								<field name="package_id" domain="['|', ('location_id','=', False), ('location_id',
 									'=', location_id)]" groups="stock.group_tracking_lot"/>
@@ -40,7 +40,7 @@
 								<field name="product_uom_id" groups="product.group_uom" string="UoM"/>
 								<field name="location_id" domain="[('id', 'child_of', parent.location_id)]" groups="stock.group_stock_multi_locations"/>
 								<field name="sample_product_id" invisible="1"/>
-								<field name="prod_lot_id" required="1" domain="['|',('product_id', '=', sample_product_id),('product_id',
+								<field name="prod_lot_id"  domain="['|',('product_id', '=', sample_product_id),('product_id',
 									'=', product_id)]" context="{'default_product_id': product_id}" groups="stock.group_production_lot"/>
 								<field name="package_id" domain="['|', ('location_id','=', False), ('location_id',
 									'=', location_id)]"/>
