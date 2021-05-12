@@ -38,7 +38,6 @@ class OperationDashboard(models.Model):
         barcode_list = []
         used_barcode_list = []
         unused_barcode_list = []
-        unsed_wash_barcode_list = []
         product_ids = product_obj.search([('sale_ok', '=', True), ('type', '=', 'product')])
         for data in product_ids:
             set_product = self.set_product_name(data)
@@ -67,12 +66,6 @@ class OperationDashboard(models.Model):
             used_barcode_list.append({'barcode': data.name or '',
                                       'id': str(data.id) or '',
                                       })
-
-        unsed_wash_barcode_list_ids = lot_obj.search([])
-        for data in unsed_wash_barcode_list_ids:
-            unsed_wash_barcode_list.append({'barcode': data.name or '',
-                                            'id': str(data.id) or '',
-                                            })
         location_ids = location_obj.search([('usage', 'in', ['internal'])])
         for location in location_ids:
             orig_location = location
@@ -98,6 +91,7 @@ class OperationDashboard(models.Model):
             product_selection = '<select class="products" style="overflow-y: auto!important; font-size: 18px;"><option> No Data Found !</option> </select>'
         if len(barcode_list) > 0:
             barcode_selection = '<select class="barcodes" style="overflow-y: auto!important; font-size: 18px;">'
+            barcode_selection += '<option > -- seleccione una opción -- </option >'
             for line in barcode_list:
                 barcode_selection += '<option ids="' + line['id'] + '"' + ' value="' + line['barcode'] + '">' + line[
                     'barcode'] + '</option>'
@@ -114,19 +108,15 @@ class OperationDashboard(models.Model):
         if user_id:
             data = {
                 'product_list': product_selection,
-                # 'internal_product_list': internal_product_list,
                 'barcode_list': barcode_selection,
                 'location_list': location_list,
                 'set_product_list': product_list,
                 'set_barcode_list': barcode_list,
                 'used_set_barcode_list': used_barcode_list,
-                # 'unsed_wash_barcode_list': unsed_wash_barcode_list,
-                # 'unused_barcode_list': unused_barcode_list,
                 'set_unused_barcode_list': set_unused_barcode_list,
                 'user_name': user_id[0].get('name'),
                 'user_image_url': user_id[0].get('image'),
-                # 'type_of_order': [{'order': 'Container'}, {'order': 'Drum'}],
-                # 'washing_type': [{'washing': 'dangerous'}, {'washing': 'non_dangerous'}],
+
             }
             user_id[0].update(data)
             return user_id
@@ -315,7 +305,9 @@ class OperationDashboard(models.Model):
         barcode_selection = ''
         if len(barcode_list) > 0:
             barcode_selection = '<select class="barcodes" style="overflow-y: auto!important; font-size: 18px;">'
+            barcode_selection += '<option > -- seleccion una opción - - </option >'
             for line in barcode_list:
+
                 barcode_selection += '<option ids="' + line['id'] + '"' + ' value="' + line['barcode'] + '">' + line[
                     'barcode'] + '</option>'
             barcode_selection += '</select>'
@@ -1022,6 +1014,16 @@ class OperationDashboard(models.Model):
                             'state': 'confirm'
                         }
                         line_vals.append(values)
+                    else:
+                        values = {
+                            'product_id': product_id.id,
+                            'product_uom_id': product_id.uom_id.id,
+                            'product_qty': rec.get('units') or 1.0,
+                            'location_id': location.id,
+                            'state': 'confirm'
+                        }
+                        line_vals.append(values)
+
             vals = {'name': inventory_sequence,
                     'filter': 'none',
                     'line_ids': [(0, 0, data) for data in line_vals],
@@ -1036,16 +1038,21 @@ class OperationDashboard(models.Model):
                 inventory_id = created_inventory_id
             if inventory_id:
                 for line in inventory_id.line_ids:
-                    life_date = parser.parse(str(line.prod_lot_id.life_date)).strftime('%m/%d/%Y %H:%M:%S')
-
+                    life_date = ''
+                    prod_lot_id = False
+                    prod_name = ''
+                    if line.prod_lot_id:
+                        life_date = parser.parse(str(line.prod_lot_id.life_date)).strftime('%m/%d/%Y %H:%M:%S')
+                        prod_name = line.prod_lot_id.name
+                        prod_lot_id = line.prod_lot_id.id
                     set_product = self.set_product_name(line.product_id)
                     inventory_adjustment_table.append({
                         'name': set_product or '',
-                        'prod_lot_id': line.prod_lot_id.name or '',
+                        'prod_lot_id': prod_name,
                         'units': line.product_qty,
                         'id': line.id or False,
-                        'lot_id': line.prod_lot_id.id or False,
-                        'life_date': life_date or '',
+                        'lot_id':prod_lot_id ,
+                        'life_date': life_date ,
                     })
                 return {'success': "Successfully Created The Inventory Adjustments!",
                         'inventory_adjustment_table': inventory_adjustment_table, 'id': inventory_id.id}
