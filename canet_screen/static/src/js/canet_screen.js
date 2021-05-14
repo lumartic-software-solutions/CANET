@@ -246,6 +246,7 @@ var CanetScreen = Widget.extend({
 
  CategoryOnChangeEvent: function (event)
     {
+    console.log("**********************************")
 	var self = this;
        var selectedCategoryValue = document.getElementById('categ_select_id').value;
   if (selectedCategoryValue != undefined){
@@ -256,6 +257,7 @@ var CanetScreen = Widget.extend({
             args: [selectedCategoryValue],
         })
         .then(function (result) {
+        console.log("_______________________result_____",result)
 		if(result.product_selection){
 
 			self.product_list = result.product_selection
@@ -691,7 +693,7 @@ add_an_item: function(event){
 //		    			   "<td style='width: 5%;' class='set_lot_details_ids'><button id='lot_details_id' class='fa fa-bars lot_details_wizard'  aria-hidden='true'></button></td>"+
 		    			   "</tr>");
 		       }
-//		       $(".barcodes").Select2();
+		       $(".barcodes").editableSelect();
 		       $('.products').editableSelect();
 //		       .on('select.editable-select', function (e, li) {
 //		           var ler_code = li.attr('product_ler_code');
@@ -762,12 +764,9 @@ add_an_item: function(event){
 		  		}else{
 		  			product.css('border-bottom-color','#ccc');
 		  		}
-		  		if(barcode.val() == ''){
-		  			barcode.css('border-bottom-color','red');
-		  			allow_save = false
-		  		}else{
-		  			barcode.css('border-bottom-color','#ccc');
-		  		}
+
+		  	    barcode.css('border-bottom-color','#ccc');
+
 		  		if(life_date.val()  == ''){
 		  			life_date.css('border-bottom-color','red');
 		  			allow_save = false
@@ -781,12 +780,14 @@ add_an_item: function(event){
 		  			units.css('border-bottom-color','#ccc');
 		  		}
 	   		})
+	   		console.log("_____________________allow_Save________", allow_save)
 	   		if (allow_save == true){
 	   		    var count_lines = 0
 			  	$('#inventory_adjustments_table tr.active').each(function(){
 			  		count_lines += 1;
 			  			var product_ids = $(".es-list li[value='" + $(this).find('td .products').val() + "']").attr('ids');
 				  		var barcode_ids = $(".es-list li[value='" + $(this).find('td .barcodes').val() + "']").attr('value');
+				  		console.log(">>>>>>>>barcode_ids>>>>>>>>>>>>>>>>>",barcode_ids )
 				  		var units = $(this).find('td #product_unit').val()
 				  		var life_date = $(this).find('td .life_datetimepicker').val();
 				  		var line_ids = $(this).find('td #created_line_id');
@@ -817,6 +818,7 @@ add_an_item: function(event){
 				   	    	}
 			   	    	}
 			   	})
+			   	console.log("%%%%%%%%%%%%%%%%%%count_lines%%%%%%%%%%",count_lines, record_data)
 			   if  (count_lines == record_data.length) {
 				   var created_inventory_id =document.getElementById("created_inventory_id").value 	//	 createing barcode
 				   self._rpc({
@@ -963,7 +965,7 @@ add_an_item: function(event){
 	                         "</tr>"
 	              $(this).replaceWith(data);
 		   	})
-		   	$(".barcodes").editableSelect();
+//		   	$(".barcodes").editableSelect();
 		   	$('.products').editableSelect();
 
 	        var today = new Date();
