@@ -55,17 +55,16 @@ class OperationDashboard(models.Model):
 
         sample_product_id = self.env.ref('canet_screen.sample_product_canet_id').id
 
-        barcode_ids = lot_obj.search([('product_id', '=', sample_product_id)])
-        print("*8888888888888barcode_ids8888888", barcode_ids)
-        used_barcode_ids = lot_obj.search([('product_id', '!=', sample_product_id)], limit=1000)
-        for data in barcode_ids:
-            barcode_list.append({'barcode': data.name or '',
-                                 'id': str(data.id) or '',
-                                 })
-        for data in used_barcode_ids:
-            used_barcode_list.append({'barcode': data.name or '',
-                                      'id': str(data.id) or '',
-                                      })
+        # barcode_ids = lot_obj.search([('product_id', '=', sample_product_id)])
+        # used_barcode_ids = lot_obj.search([('product_id', '!=', sample_product_id)], limit=1000)
+        # for data in barcode_ids:
+        #     barcode_list.append({'barcode': data.name or '',
+        #                          'id': str(data.id) or '',
+        #                          })
+        # for data in used_barcode_ids:
+        #     used_barcode_list.append({'barcode': data.name or '',
+        #                               'id': str(data.id) or '',
+        #                               })
         location_ids = location_obj.search([('usage', 'in', ['internal'])])
         for location in location_ids:
             orig_location = location
@@ -81,25 +80,25 @@ class OperationDashboard(models.Model):
         product_selection = ''
         barcode_selection = ''
         if len(product_list) > 0:
-            product_selection = '<select class="products" style="overflow-y: auto!important; font-size: 18px;">'
+            product_selection = '<select class="products" id ="products" style="overflow-y: auto!important; font-size: 18px;">'
             for line in product_list:
                 product_selection += '<option label="' + line['default_code'] + '" ids="' + line[
                     'id'] + '"' + ' value="' + line['name'] + '">' + line[
                                          'name'] + '</option>'
             product_selection += '</select>'
         else:
-            product_selection = '<select class="products" style="overflow-y: auto!important; font-size: 18px;"><option> No Data Found !</option> </select>'
-        if len(barcode_list) > 0:
-            barcode_selection = '<select class="barcodes" style="overflow-y: auto!important; font-size: 18px;">'
-            barcode_selection += '<option > -- seleccione una opción -- </option >'
-            for line in barcode_list:
-                barcode_selection += '<option ids="' + line['id'] + '"' + ' value="' + line['barcode'] + '">' + line[
-                    'barcode'] + '</option>'
-            barcode_selection += '</select>'
-        else:
-            barcode_selection = '<select class="barcodes" style="overflow-y: auto!important; font-size: ' \
-                                '18px;height:40px"><option> No Data Found ! </option> </select> '
-        print("________________barcode_selection_______v", barcode_selection)
+            product_selection = '<select class="products" id ="products" style="overflow-y: auto!important; font-size: 18px;"><option> No Data Found !</option> </select>'
+        # if len(barcode_list) > 0:
+        #     barcode_selection = '<select class="barcodes" style="overflow-y: auto!important; font-size: 18px;">'
+        #     barcode_selection += '<option > -- seleccione una opción -- </option >'
+        #     for line in barcode_list:
+        #         barcode_selection += '<option ids="' + line['id'] + '"' + ' value="' + line['barcode'] + '">' + line[
+        #             'barcode'] + '</option>'
+        #     barcode_selection += '</select>'
+        # else:
+        #     barcode_selection = '<select class="barcodes" style="overflow-y: auto!important; font-size: ' \
+        #                         '18px;height:40px"><option> No Data Found ! </option> </select> '
+        # print("________________barcode_selection_______v", barcode_selection)
         set_unused_barcode_list = False
 
         if len(unused_barcode_list) > 0:
@@ -108,7 +107,7 @@ class OperationDashboard(models.Model):
         if user_id:
             data = {
                 'product_list': product_selection,
-                'barcode_list': barcode_selection,
+                # 'barcode_list': barcode_selection,
                 'location_list': location_list,
                 'set_product_list': product_list,
                 'set_barcode_list': barcode_list,
@@ -125,22 +124,21 @@ class OperationDashboard(models.Model):
 
     @api.model
     def product_data(self, domain):
+        print ("____________BBBBBBB",domain)
         if domain:
-            product_search = self.env['product.product'].search(domain)
-            display_name = ''
-            lot_list = []
+            if '[' in domain:
+                print ("_________________________dioamin")
+                first_step =  domain.split("[")
+                second_step = first_step[1].split("]")
+                domain = second_step[0]
+                print ("++++++++++++++++++++++++++++", domain)
+                product_search = self.env['product.product'].search([('default_code','=', domain)])
+            else :
+                product_search = self.env['product.product'].search([('name', '=', domain)])
+            print ("+____________________", product_search)
+
             if product_search:
-                lot_product_search = self.env['stock.production.lot'].search(
-                    [('product_id', '=', product_search[0].id)])
-                if product_search[0].recycled_product_id:
-                    display_name = product_search[0].recycled_product_id.display_name
-                if lot_product_search:
-                    for lot in lot_product_search:
-                        lot_list.append({
-                            'name': lot.name,
-                            'id': lot.id, }
-                        )
-                return {'product_name': display_name, 'lot_list': lot_list}
+                return {'product_name': product_search.name, 'lot_list': product_search.barcode}
         else:
             return {}
 
@@ -208,7 +206,7 @@ class OperationDashboard(models.Model):
                                          })
             product_selection = ''
             if len(product_list) > 0:
-                product_selection = '<select class="products" style="overflow-y: auto!important; font-size: 18px;">'
+                product_selection = '<select class="products" id="products" style="overflow-y: auto!important; font-size: 18px;">'
                 for line in product_list:
                     product_selection += '<option label="' + line['default_code'] + '" ids="' + line[
                         'id'] + '"' + ' value="' + line['name'] + '" product_ler_code="' + line['ler_code'] + '">' + \
@@ -216,7 +214,7 @@ class OperationDashboard(models.Model):
                                              'name'] + '</option>'
                 product_selection += '</select>'
             else:
-                product_selection = '<select class="products" style="overflow-y: auto!important; font-size: 18px;"><option> No Data Found !</option> </select>'
+                product_selection = '<select class="products" id="products" style="overflow-y: auto!important; font-size: 18px;"><option> No Data Found !</option> </select>'
 
             return {'product_selection': product_selection,
                     'cat_product_list': product_list}
@@ -707,9 +705,9 @@ class OperationDashboard(models.Model):
         barcode_list = []
         print("*******))created_inventory_id))))))))))", created_inventory_id)
         for rec in record_data:
-            barcode_list.append(int(rec.get('barcode')))
-        if len(barcode_list) != len(set(barcode_list)):
-            return {'warning': 'The combination of serial number and product must be unique !'}
+            barcode = rec.get('barcode')
+        # if len(barcode_list) != len(set(barcode_list)):
+        #     return {'warning': 'The combination of serial number and product must be unique !'}
         if created_inventory_id == 'None':
             # first time saving record
             return self.create_inventory_adjustments_record(record_data, location_id, created_inventory_id)
@@ -727,7 +725,6 @@ class OperationDashboard(models.Model):
     @api.multi
     def create_inventory_adjustments_record(self, record_data, location_id, created_inventory_id):
         inventory_obj = self.env['stock.inventory']
-        lot_obj = self.env['stock.production.lot']
         product_obj = self.env['product.product']
         inventory_adjustment_table = []
         ctx = dict(self._context)
@@ -741,29 +738,17 @@ class OperationDashboard(models.Model):
                 product_id = product_obj.search([('id', '=', int(rec.get('product')))], limit=1)
                 if product_id:
                     ctx.update({'create_wizard_val': True})
-                    lot_id = lot_obj.search([('name', '=', rec.get('barcode'))])
-                    print ("-----------------------lot_id", lot_id, rec , type(rec.get('life_date')))
-                    if lot_id:
-                        life_date = datetime.strptime(rec.get('life_date'), '%m/%d/%Y %H:%M:%S')
-                        lot_id.write({'product_id': product_id.id, 'life_date': life_date })
-                        values = {
-                            'product_id': product_id.id,
-                            'product_uom_id': product_id.uom_id.id,
-                            'prod_lot_id': lot_id.id,
-                            'product_qty': rec.get('units') or 1.0,
-                            'location_id': location.id,
-                            'state': 'confirm'
-                        }
-                        line_vals.append(values)
-                    else:
-                        values = {
-                            'product_id': product_id.id,
-                            'product_uom_id': product_id.uom_id.id,
-                            'product_qty': rec.get('units') or 1.0,
-                            'location_id': location.id,
-                            'state': 'confirm'
-                        }
-                        line_vals.append(values)
+                    print ("-----------------------lot_id", rec , type(rec.get('life_date')))
+
+                    values = {
+                        'product_id': product_id.id,
+                        'product_uom_id': product_id.uom_id.id,
+                        'product_qty': rec.get('units') or 1.0,
+                        'location_id': location.id,
+                        'state': 'confirm',
+                        'barcode': product_id.barcode,
+                    }
+                    line_vals.append(values)
 
             vals = {'name': inventory_sequence,
                     'filter': 'none',
@@ -778,22 +763,17 @@ class OperationDashboard(models.Model):
                 created_inventory_id.write({'line_ids': [(0, 0, data) for data in line_vals]})
                 inventory_id = created_inventory_id
             if inventory_id:
+                new_life_date = parser.parse(str(rec.get('life_date'))).strftime('%Y-%m-%d %H:%M:%S')
+
                 for line in inventory_id.line_ids:
                     life_date = ''
-                    prod_lot_id = False
-                    prod_name = ''
-                    if line.prod_lot_id:
-                        life_date = parser.parse(str(line.prod_lot_id.life_date)).strftime('%m/%d/%Y %H:%M:%S')
-                        prod_name = line.prod_lot_id.name
-                        prod_lot_id = line.prod_lot_id.id
                     set_product = self.set_product_name(line.product_id)
                     inventory_adjustment_table.append({
                         'name': set_product or '',
-                        'prod_lot_id': prod_name,
                         'units': line.product_qty,
                         'id': line.id or False,
-                        'lot_id':prod_lot_id ,
-                        'life_date': life_date ,
+                        'barcode': line.barcode or '',
+                        'life_date':new_life_date,
                     })
                 return {'success': "Successfully Created The Inventory Adjustments!",
                         'inventory_adjustment_table': inventory_adjustment_table, 'id': inventory_id.id}
@@ -809,6 +789,7 @@ class OperationDashboard(models.Model):
         inventory_adjustment_table = []
         inventory_id = inventory_obj.browse(int(created_inventory_id))
         print("*******inventory_id**********", inventory_id)
+        new_life_date = ''
         if inventory_id:
             for rec in record_data:
                 if 'line_id' not in rec:
@@ -822,30 +803,29 @@ class OperationDashboard(models.Model):
                             new_life_date = parser.parse(str(rec.get('life_date'))).strftime('%Y-%m-%d %H:%M:%S')
                             if product_id.id != line.product_id.id:
                                 line.product_id = product_id.id
-                                lot_id = lot_obj.search([('name', '=', rec.get('barcode'))])
-                                lot_id.write({'product_id': product_id.id})
-                            if new_life_date != line.prod_lot_id.life_date:
-                                line.prod_lot_id.life_date = new_life_date
+                                # lot_id = lot_obj.search([('name', '=', rec.get('barcode'))])
+                                # lot_id.write({'product_id': product_id.id})
+                            # if new_life_date != line.prod_lot_id.life_date:
+                            #     line.prod_lot_id.life_date = new_life_date
                             if rec.get('units'):
                                 if rec.get('units') != line.product_qty:
                                     line.product_qty = float(rec.get('units'))
-                            if rec.get('barcode') != line.prod_lot_id.name:
-                                prev_lot_id = lot_obj.search([('id', '=', line.prod_lot_id.id)])
-                                prev_lot_id.write({'life_date': '',
-                                                   'product_id': self.env.ref(
-                                                       'canet_screen.sample_product_canet_id').id})
-                                generate_barcode_id = lot_obj.search([('name', '=', rec.get('barcode'))])
-                                generate_barcode_id.write({'product_id': product_id.id, 'life_date': new_life_date})
-                                line.prod_lot_id = generate_barcode_id.id
+                            if rec.get('barcode') != line.barcode:
+                                # prev_lot_id = lot_obj.search([('id', '=', line.prod_lot_id.id)])
+                                # prev_lot_id.write({'life_date': '',
+                                #                    'product_id': self.env.ref(
+                                #                        'canet_screen.sample_product_canet_id').id})
+                                # generate_barcode_id = lot_obj.search([('name', '=', rec.get('barcode'))])
+                                # generate_barcode_id.write({'product_id': product_id.id, 'life_date': new_life_date})
+                                line.barcode = product_id.id,
                 set_product = self.set_product_name(line.product_id)
-                life_date = parser.parse(str(line.prod_lot_id.life_date)).strftime('%m/%d/%Y %H:%M:%S')
                 inventory_adjustment_table.append({
                     'name': set_product or '',
-                    'prod_lot_id': line.prod_lot_id.name or '',
+                    # 'prod_lot_id': line.prod_lot_id.name or '',
                     'units': line.product_qty,
                     'id': line.id or False,
-                    'lot_id': line.prod_lot_id.id or False,
-                    'life_date': life_date or '',
+                    'barcode': line.barcode or False,
+                    'life_date': new_life_date or '',
 
                 })
             return {'success': 'Successfully Updated The Inventory Adjustments!',
@@ -864,7 +844,7 @@ class OperationDashboard(models.Model):
                         if line.inventory_id.state == 'done':
                             return {'warning': 'You cannot delete a validated inventory adjustement.'}
                         else:
-                            line.prod_lot_id.unlink()
+                            # line.prod_lot_id.unlink()
                             line.unlink()
 
                     return {'success': 'Successfully Deleted the Barcode!'}

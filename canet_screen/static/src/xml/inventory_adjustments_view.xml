@@ -42,7 +42,7 @@
 			</div>
             <div class="col-md-4" id="location_data">
 				<select class="locations" style="margin-top: 18px; margin-bottom: 9px; overflow-y:
-					auto!important; width:100%; font-size: 16px; ">
+					auto!important; width:100%; font-size: 16px;height:35px ">
 					<t t-foreach="widget.location_list" t-as="i">
 						<option t-attf-value="#{i['name']}" t-attf-ids="#{i['id']}"><span t-esc="i['name']" /></option>
 					</t>

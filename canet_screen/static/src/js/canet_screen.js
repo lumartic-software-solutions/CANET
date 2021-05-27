@@ -12,7 +12,6 @@ var ajax = require('web.ajax');
 var ActionManager = require('web.ActionManager');
 var view_registry = require('web.view_registry');
 var QWeb = core.qweb;
-
 var _t = core._t;
 var _lt = core._lt;
 
@@ -61,7 +60,7 @@ var CanetScreen = Widget.extend({
 
 		'change #type-select' : 'TypeOrderOnChangeEvent',
 		'change #categ_select_id' : 'CategoryOnChangeEvent',
-		//'change #my-wash-product' : 'ProductOnChangeEvent',
+		'change .products' : 'ProductOnChangeEvent',
 		'change #barcode_product' : 'LotOnChangeEvent',
 		'change #barcode_equ' : 'LotequOnChangeEvent',
 		'change #my-select' : 'LocationOnChangeEvent',
@@ -78,11 +77,8 @@ var CanetScreen = Widget.extend({
                 method: 'get_operation_info',
             }, []).then(function(result){
             	self.operation_data = result[0]
-                self.product_list = self.operation_data.product_list
+//                self.product_list = self.operation_data.product_list
                 self.barcode_list = self.operation_data.barcode_list
-                self.set_unused_barcode_list = self.operation_data.set_unused_barcode_list
-                self.unused_barcode_list = self.operation_data.unused_barcode_list
-		        self.recycled_product = self.operation_data.recycled_product
 		        self.user_name =  self.operation_data.user_name
 		        self.user_image_url = self.operation_data.user_image_url
 
@@ -136,8 +132,6 @@ var CanetScreen = Widget.extend({
          }, []).then(function(result){
             self.operation_data = result[0]
             self.product_list = self.operation_data.product_list
-//            self.ler_list = self.operation_data.ler_list
-            self.barcode_list = self.operation_data.barcode_list
             self.set_unused_barcode_list = self.operation_data.set_unused_barcode_list
             self.unused_barcode_list = self.operation_data.unused_barcode_list
 	        self.used_set_barcode_list = self.operation_data.used_set_barcode_list
@@ -171,7 +165,34 @@ var CanetScreen = Widget.extend({
 	  },
 
 
+   ProductOnChangeEvent: function (event)
+    {
+        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+        var selectedproductValue = document.getElementById('products').value;
+        var domain_dp = ''
+        console.log("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT", selectedproductValue)
+	    if (selectedproductValue != undefined){
+            	domain_dp = selectedproductValue
+		}
+        this._rpc({
+            model: 'operation.dashboard',
+            method: 'product_data',
+            args: [domain_dp],
+        })
+        .then(function (result) {
+		$('.modal-backdrop').remove();
+		if( (result.lot_list).length > 0)
+		{
+                  console.log("OOOOOOOresult.lot_list OOOOO",result.lot_list )
 
+             document.getElementById('product_barcode').value =  result.lot_list
+
+		}
+
+
+        });
+
+},
   LocationOnChangeEvent: function (event)
     {
        var selectedLOcationValue = document.getElementById('my-select').value;
@@ -296,23 +317,11 @@ var CanetScreen = Widget.extend({
                if (result != undefined){
                if(result.product_name != ''){
 
-//                    var productvalue = document.getElementById('my-canet-product').value;
-
-
-//                        if (productvalue   )
-//
-//                        {
-//                            console.log("*********result.product_name********",result.product_name )
-//                            productvalue.push(result.product_name);
-//                        }
-
-
-                          console.log("*********elseeeee****",result.product_name )
                           $('#my-canet-product').select2('val',  result.product_name);
 
                     }
                 else {
-                  console.log("_____________")
+
                         $('#my-canet-product').select2('val', []);
 
                 }
@@ -673,7 +682,7 @@ add_an_item: function(event){
 		    	   $( "#inventory_adjustments_table tr:nth-last-child(2)").after("<tr class='active'>"+
 		    			   "<td style='width: 27%;' >"+self.product_list+"</td>"+
 		    			   "<td style='width: 17%; '> <input type='text' name='product_unit' id='product_unit' style='height:40px'/></td>"+
-		    			   "<td style='width: 22%;' >"+self.barcode_list+"</td>"+
+		    			   "<td style='width: 22%;' ><input type='text' name='product_barcode' id='product_barcode' style='height:40px'/></td>"+
 		    			   "<td style='width: 22%; '> <input type='text' name='life_date' class='life_datetimepicker' /></td>"+
 		    			   "<td style='width: 7%;'> <input type='hidden' name='line_id'  value='none' /> </td>"+
 		    			   "<td style='width: 5%;'><button class='fa fa-trash-o btndelete' name='delete' aria-hidden='true'/></td>"+
@@ -685,7 +694,7 @@ add_an_item: function(event){
 		    	   $('#inventory_adjustments_table').prepend("<tr class='active'>"+
 		    			   "<td style='width: 27%;'>"+self.product_list+"</td>" +
 		    			   "<td style='width: 17%; '> <input type='text' name='product_unit' id='product_unit' style='height:40px'/></td>"+
-		    			   "<td style='width: 22%;' >"+self.barcode_list+"</td>"+
+		    			   "<td style='width: 22%;' ><input type='text' name='product_barcode' id='product_barcode' style='height:40px'/></td>"+
 		    			   "<td style='width: 22%; '> <input type='text' name='life_date' class='life_datetimepicker' /></td>"+
 		    			   "<td style='width: 7%;'> <input type='hidden' name='line_id' value='none' /></td>"+
 		    			   "<td style='width: 5%;'><button class='fa fa-trash-o btndelete' name='delete' aria-hidden='true'/></td>"+
@@ -693,7 +702,7 @@ add_an_item: function(event){
 //		    			   "<td style='width: 5%;' class='set_lot_details_ids'><button id='lot_details_id' class='fa fa-bars lot_details_wizard'  aria-hidden='true'></button></td>"+
 		    			   "</tr>");
 		       }
-		       $(".barcodes").editableSelect();
+//		       $(".barcodes").editableSelect();
 		       $('.products').editableSelect();
 //		       .on('select.editable-select', function (e, li) {
 //		           var ler_code = li.attr('product_ler_code');
@@ -739,7 +748,7 @@ add_an_item: function(event){
 	   	var self = this;
 	   	event.stopPropagation();
 	   	event.preventDefault();
-		var barcode_data = [];
+//		var barcode_data = [];
 		var record_data= [];
 	   	var location = $(".es-list li[value='" + $(".locations").val() + "']").attr('ids');
 	   	var location_val = $(".locations").val()
@@ -755,7 +764,7 @@ add_an_item: function(event){
 	   		var allow_save = true;
 	   		$('#inventory_adjustments_table tr.active').each(function(){
 		  		var product = $(this).find('td .products')
-		  		var barcode = $(this).find('td .barcodes')
+		  		var barcode = $(this).find('td #product_barcode')
 		  		var units = $(this).find('td #product_unit')
 		  		var life_date = $(this).find('td .life_datetimepicker')
 		  		if (product.val() == ''){
@@ -786,32 +795,33 @@ add_an_item: function(event){
 			  	$('#inventory_adjustments_table tr.active').each(function(){
 			  		count_lines += 1;
 			  			var product_ids = $(".es-list li[value='" + $(this).find('td .products').val() + "']").attr('ids');
-				  		var barcode_ids = $(".es-list li[value='" + $(this).find('td .barcodes').val() + "']").attr('value');
-				  		console.log(">>>>>>>>barcode_ids>>>>>>>>>>>>>>>>>",barcode_ids )
+//				  		var barcode_ids = $(".es-list li[value='" + $(this).find('td .barcodes').val() + "']").attr('value');
+//				  		console.log(">>>>>>>>barcode_ids>>>>>>>>>>>>>>>>>",barcode_ids )
+				  		var barcode = $(this).find('td #product_barcode').val()
 				  		var units = $(this).find('td #product_unit').val()
 				  		var life_date = $(this).find('td .life_datetimepicker').val();
 				  		var line_ids = $(this).find('td #created_line_id');
-				  		if (barcode_ids != undefined){
-                            barcode_ids=barcode_ids
+				  		if (barcode != undefined){
+                            barcode=barcode
 				  		}
 				  		else{
-				  		        barcode_ids=false
+				  		        barcode=false
 				  		}
 			   	    	if (line_ids.length > 0){
-			   	    		if (life_date != undefined  && product_ids != undefined && barcode_ids != undefined){
+			   	    		if (life_date != undefined  && product_ids != undefined){
 			   	    			record_data.push({
 				   	    		    'product': product_ids,
-				   	    		    'barcode': barcode_ids,
+				   	    		    'barcode': barcode,
                                     'units' : units,
 				   	    		    'line_id' : line_ids.attr('line_id'),
 				   	    		    'life_date' : life_date
 				   	    		});
 				   	    	}
 			   	    	}else{
-			   	    		if (life_date != undefined  &&  product_ids != undefined && barcode_ids != undefined){
+			   	    		if (life_date != undefined  &&  product_ids != undefined){
 				   	    		record_data.push({
 				   	    		    'product': product_ids,
-				   	    		    'barcode': barcode_ids,
+				   	    		    'barcode': barcode,
 				   	    		    'units' : units,
 				   	    		    'life_date' : life_date
 				   	    		});
@@ -828,6 +838,7 @@ add_an_item: function(event){
 			            })
 			            .then(function(result) {
 			            	if (result.success) {
+			            	console.log(">>>>>>>>>>>>>>>>>>result>",result)
 			            		// readonly location
 			            		/**var location_html = $('#location_data').html();
 			            		var location_span = $("<div class='col-md-5' id='location_data'><h2 id='set_loction_id' ids='" + location +"'>" + location_val + "</h2></div>");
@@ -838,7 +849,7 @@ add_an_item: function(event){
 			        				 var span = $("<tr class='active'>"+
 			        						"<td style='width: 25%;'  class='set_product_ids'><span id='product_value'>"+ result.inventory_adjustment_table[i]['name'] +"</span></td>"+
 			        						"<td style='width: 15%;'  class='set_unit'><span id='unit_value'>"+  result.inventory_adjustment_table[i]['units']+"</span></td>"+
-			        						"<td style='width: 20%;' lines='"+ result.inventory_adjustment_table[i]['id'] +"' class='set_barcode_ids' >"+ result.inventory_adjustment_table[i]['prod_lot_id'] +"</td>" +
+			        						"<td style='width: 20%;' lines='"+ result.inventory_adjustment_table[i]['barcode'] +"' class='set_barcode' >"+ result.inventory_adjustment_table[i]['barcode'] +"</td>" +
 			        						"<td style='width: 20%;' life_date='"+result.inventory_adjustment_table[i]['life_date'] +"' class='set_life_date' >"+ result.inventory_adjustment_table[i]['life_date'] +"</td>"+
 			        						"<td style='width: 5%;'class='set_line_ids'><input type='hidden' name='line_id' value='"+ result.inventory_adjustment_table[i]['id']+ "'id='created_line_id' line_id='"+ result.inventory_adjustment_table[i]['id'] +"' /> </td>"+
 			        						"<td style='width: 5%;' class='set_delete_ids' ><button class='fa fa-trash-o btndelete' inventory='"+ result.inventory_adjustment_table[i]['id'] +"' name='delete' aria-hidden='true'/></td>" +
@@ -859,8 +870,8 @@ add_an_item: function(event){
 			            		 $("#edit_inventory_adjustments_button").css("display", "inline");
 			            		// remove add an item
 			            		$('#inventory_adjustments_table #add_an_item').remove();
-						$('#categ_select_id').attr("disabled", true)
-						$('.locations').attr("disabled", true)
+                                $('#categ_select_id').attr("disabled", true)
+                                $('.locations').attr("disabled", true)
 			            		self.do_warn(_("Success"),result.success);
 
 
@@ -890,7 +901,7 @@ add_an_item: function(event){
 		   	    console.log("^^^^^^^^^^^^^^^^^^^^^^")
      			var product = $(this).find('td.set_product_ids');
      			var units =  $(this).find('td.set_unit');
-			   	var barcode = $(this).find('td.set_barcode_ids');
+			   	var barcode = $(this).find('td.set_barcode');
 			   	var delete_line = $(this).find('td.set_delete_ids');
 			   	var print_line = $(this).find('td.set_print_ids');
 			   	var lot_details_ids = $(this).find('td.set_lot_details_ids');
@@ -956,7 +967,7 @@ add_an_item: function(event){
 	              var data = "<tr class='active'>"+
 	                         "<td style='width: 25%;' class='set_product_ids'>"+ product_list+"</td>"+
 	                         "<td style='width: 15%; position:absolute;'  class='set_unit'> <input type='text' style='height:40px' name='units' id='product_unit' value='"+units.text() +"'/></td>"+
-	                         "<td style='width: 20%;' class='set_barcode_ids'>"+ barcode_list+"</td>"+
+	                         "<td style='width: 20%;' class='set_barcode_ids'><input type='text' style='height:40px' name='barcode' id='product_barcode' value='"+barcode.text() +"'/></td>"+
 	                         "<td style='width: 20%; position:absolute;'> <input type='text' name='life_date' class='life_datetimepicker' value='"+life_date.text() +"'/></td>"+
 	                         "<td style='width: 5%;'  class='set_line_ids'>"+ line_ids.html()+"</td>"+
 	                         "<td style='width: 5%;'  class='set_delete_ids'>"+delete_line.html()+"</td>"+
@@ -996,8 +1007,7 @@ add_an_item: function(event){
             model: 'operation.dashboard',
             method: 'get_inventory_adjustment_info',
         }, []).then(function(result){
-            //self.operation_data = result[0]
-           self.barcode_list =  result['data']['barcode_list']
+
            self.employee_id = session.employee_id
            self.location_list = result['data']['location_list']
            self.category_list = result['data']['category_list']
